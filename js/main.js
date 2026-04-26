@@ -1,14 +1,14 @@
 // iFLocus Website - Main JavaScript
 
 // ===== NAVBAR =====
-(function () {
+// Must run after DOMContentLoaded so components.js has already injected the header
+document.addEventListener('DOMContentLoaded', function () {
   const hamburger = document.getElementById('navHamburger');
   const navMenu = document.getElementById('navMenu');
 
   if (hamburger && navMenu) {
     hamburger.addEventListener('click', function () {
       navMenu.classList.toggle('open');
-      const spans = hamburger.querySelectorAll('span');
       hamburger.classList.toggle('active');
     });
   }
@@ -33,11 +33,12 @@
 
   // Close menu on outside click
   document.addEventListener('click', function (e) {
-    if (navMenu && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+    if (navMenu && hamburger &&
+        !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
       navMenu.classList.remove('open');
     }
   });
-})();
+});
 
 // ===== HERO SLIDER =====
 (function () {
