@@ -45,9 +45,14 @@ img { max-width: 100%; height: auto; display: block; }
   height: 72px;
 }
 
+.nav-logo {
+  flex-shrink: 0;
+}
 .nav-logo img {
   height: 44px;
   width: auto;
+  max-width: none;
+  object-fit: contain;
 }
 
 .nav-menu {
