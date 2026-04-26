@@ -32,12 +32,21 @@ const HEADER_HTML = `
           <a href="case-studies.html">案例分享 ▾</a>
           <ul class="dropdown-menu">
             <li><a href="case-studies.html">全部案例</a></li>
+            <li><a href="case-studies.html#election">智慧選戰</a></li>
             <li><a href="case-studies.html#3c">3C科技</a></li>
             <li><a href="case-studies.html#retail">優惠活動</a></li>
-            <li><a href="case-studies.html#food">食品餐飲</a></li>
+            <li><a href="case-studies.html#leisure">休閒生活</a></li>
             <li><a href="case-studies.html#fashion">女性時尚</a></li>
+            <li><a href="case-studies.html#survey">名單問卷</a></li>
             <li><a href="case-studies.html#realestate">房地產</a></li>
+            <li><a href="case-studies.html#event">實體活動</a></li>
+            <li><a href="case-studies.html#omo">虛實整合</a></li>
+            <li><a href="case-studies.html#member">會員推廣</a></li>
+            <li><a href="case-studies.html#product">產品推廣</a></li>
+            <li><a href="case-studies.html#telecom">電信通訊</a></li>
             <li><a href="case-studies.html#finance">金融保險</a></li>
+            <li><a href="case-studies.html#food">食品餐飲</a></li>
+            <li><a href="case-studies.html#hk">香港地區</a></li>
           </ul>
         </li>
         <li><a href="about_us.html">關於我們</a></li>
