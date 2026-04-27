@@ -100,6 +100,14 @@ const FOOTER_HTML = `
 
 // Inject components
 document.addEventListener('DOMContentLoaded', function () {
+  // Favicon
+  if (!document.querySelector('link[rel="icon"]')) {
+    const favicon = document.createElement('link');
+    favicon.rel = 'icon';
+    favicon.type = 'image/png';
+    favicon.href = '/images/favicon.png';
+    document.head.appendChild(favicon);
+  }
   // Insert header before first element
   document.body.insertAdjacentHTML('afterbegin', HEADER_HTML);
   // Insert footer at end
