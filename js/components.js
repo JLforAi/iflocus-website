@@ -14,7 +14,7 @@ const HEADER_HTML = `
           <a href="branddrop.html">BrandDrop ▾</a>
           <ul class="dropdown-menu">
             <li><a href="branddrop.html">BrandDrop 介紹</a></li>
-            <li><a href="branddrop.html#pricing">方案定價</a></li>
+            <li><a href="branddrop-start.html">開始旅程</a></li>
           </ul>
         </li>
         <li><a href="locusad.html">場域手機推播廣告</a></li>

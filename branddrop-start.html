@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrandDrop 開始旅程 | iFLocus 絡客思行銷科技</title>
+  <meta name="description" content="只需要 3 分鐘，告訴我們你的品牌故事，AI 幫你打造專屬品牌頁面。">
+  <link rel="stylesheet" href="css/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','GA_MEASUREMENT_ID');</script>
+  <style>
+    .start-hero {
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #ff6600 100%);
+      color: #fff;
+      padding: 72px 24px 56px;
+      text-align: center;
+    }
+    .start-hero h1 { font-size: clamp(28px,5vw,48px); font-weight: 900; margin-bottom: 12px; }
+    .start-hero p { font-size: 16px; opacity: 0.8; }
+
+    .form-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* progress bar */
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .progress-bar::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 0; right: 0;
+      height: 2px;
+      background: #e0e0e0;
+      z-index: 0;
+    }
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 1;
+    }
+    .step-circle {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      color: #999;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s;
+    }
+    .step-circle.active { background: #ff6600; color: #fff; }
+    .step-circle.done { background: #ff6600; color: #fff; }
+    .step-label { font-size: 12px; color: #999; }
+    .step-label.active { color: #ff6600; font-weight: 700; }
+
+    /* form panels */
+    .form-panel { display: none; }
+    .form-panel.active { display: block; }
+    .panel-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #111;
+    }
+    .panel-sub {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 28px;
+    }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #333;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #ddd;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: #ff6600; }
+    .form-group textarea { min-height: 100px; resize: vertical; }
+    .optional { font-size: 12px; color: #aaa; font-weight: 400; }
+
+    /* style/tone grid */
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px,1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .option-card {
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .option-card:hover { border-color: #ff6600; }
+    .option-card.selected { border-color: #ff6600; background: #fff5ee; color: #ff6600; }
+    .option-card .opt-emoji { font-size: 22px; margin-bottom: 4px; }
+
+    /* pricing */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .pricing-card {
+      border: 2px solid #e0e0e0;
+      border-radius: 14px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .pricing-card:hover { border-color: #ff6600; }
+    .pricing-card.selected { border-color: #ff6600; background: #fff5ee; }
+    .pricing-card .plan-name { font-weight: 800; font-size: 16px; margin-bottom: 6px; }
+    .pricing-card .plan-price { font-size: 20px; font-weight: 900; color: #ff6600; margin-bottom: 8px; }
+    .pricing-card .plan-desc { font-size: 12px; color: #666; }
+
+    /* buttons */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      justify-content: flex-end;
+    }
+    .btn-next {
+      background: #ff6600;
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-next:hover { background: #e55a00; }
+    .btn-back {
+      background: #f0f0f0;
+      color: #555;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* success */
+    .success-box {
+      text-align: center;
+      padding: 60px 24px;
+    }
+    .success-box .emoji { font-size: 64px; margin-bottom: 20px; }
+    .success-box h2 { font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+    .success-box p { color: #666; font-size: 15px; line-height: 1.8; }
+
+    @media (max-width: 600px) {
+      .btn-row { flex-direction: column-reverse; }
+      .btn-next, .btn-back { width: 100%; text-align: center; }
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<script src="js/components.js"></script>
+
+<div class="start-hero">
+  <h1>BrandDrop 開始旅程</h1>
+  <p>只需要 3 分鐘，告訴我們你的品牌故事</p>
+</div>
+
+<div class="form-wrap">
+
+  <!-- Progress Bar -->
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-step">
+      <div class="step-circle active" id="sc1">1</div>
+      <div class="step-label active" id="sl1">聯絡資訊</div>
+    </div>
+    <div class="progress-step">
+      <div class="step-circle" id="sc2">2</div>
+      <div class="step-label" id="sl2">品牌資訊</div>
+    </div>
+    <div class="progress-step">
+      <div class="step-circle" id="sc3">3</div>
+      <div class="step-label" id="sl3">頁面風格</div>
+    </div>
+    <div class="progress-step">
+      <div class="step-circle" id="sc4">4</div>
+      <div class="step-label" id="sl4">選擇方案</div>
+    </div>
+  </div>
+
+  <!-- Step 1: Contact -->
+  <div class="form-panel active" id="panel1">
+    <div class="panel-title">STEP 01 / 04 — 您的聯絡資訊</div>
+    <div class="panel-sub">讓我們知道怎麼聯絡到你。</div>
+    <div class="form-group">
+      <label>姓名</label>
+      <input type="text" id="f-name" placeholder="您的姓名">
+    </div>
+    <div class="form-group">
+      <label>品牌 / 公司名稱</label>
+      <input type="text" id="f-brand" placeholder="品牌或公司名稱">
+    </div>
+    <div class="form-group">
+      <label>聯絡 Email</label>
+      <input type="email" id="f-email" placeholder="example@email.com">
+    </div>
+    <div class="form-group">
+      <label>手機 / Line ID <span class="optional">（選填）</span></label>
+      <input type="text" id="f-phone" placeholder="0912-345-678 或 Line ID">
+    </div>
+    <div class="btn-row">
+      <button class="btn-next" onclick="goTo(2)">下一步：品牌資訊 →</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Brand Info -->
+  <div class="form-panel" id="panel2">
+    <div class="panel-title">STEP 02 / 04 — 告訴我們你的品牌</div>
+    <div class="panel-sub">這些資訊會直接影響 AI 生成的文案品質，越詳細越好。</div>
+    <div class="form-group">
+      <label>產品 / 服務名稱</label>
+      <input type="text" id="f-product" placeholder="你的主要產品或服務">
+    </div>
+    <div class="form-group">
+      <label>產業類別</label>
+      <select id="f-industry">
+        <option value="">請選擇</option>
+        <option>運動 / 戶外</option>
+        <option>食品 / 飲料</option>
+        <option>美妝 / 保養</option>
+        <option>服飾 / 配件</option>
+        <option>3C / 工具</option>
+        <option>居家 / 生活</option>
+        <option>寵物</option>
+        <option>教育 / 課程</option>
+        <option>其他</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>目標客群</label>
+      <select id="f-target">
+        <option value="">請選擇</option>
+        <option>中小企業主</option>
+        <option>個人品牌</option>
+        <option>電商賣家</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>品牌特色 / 想傳達的訊息 <span class="optional">（選填）</span></label>
+      <textarea id="f-desc" placeholder="簡短描述你的品牌故事、主打賣點、或想讓客戶記住的事...&#10;如有產品照片，請在送出後回覆 Email 附上，或提供 Google Drive 共享連結。"></textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goTo(1)">← 返回</button>
+      <button class="btn-next" onclick="goTo(3)">下一步：頁面設定 →</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Style -->
+  <div class="form-panel" id="panel3">
+    <div class="panel-title">STEP 03 / 04 — 頁面風格與連結</div>
+    <div class="panel-sub">選擇最符合你品牌個性的視覺風格與文案口吻。</div>
+    <div class="form-group">
+      <label>版型風格</label>
+      <div class="option-grid" id="styleGrid">
+        <div class="option-card" onclick="selectOption(this,'styleGrid')"><div class="opt-emoji">🖤</div>DARK</div>
+        <div class="option-card" onclick="selectOption(this,'styleGrid')"><div class="opt-emoji">🎨</div>VIBE</div>
+        <div class="option-card" onclick="selectOption(this,'styleGrid')"><div class="opt-emoji">🤍</div>CLEAN</div>
+        <div class="option-card" onclick="selectOption(this,'styleGrid')"><div class="opt-emoji">🤖</div>AI 決定</div>
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:24px">
+      <label>文案口吻</label>
+      <div class="option-grid" id="toneGrid">
+        <div class="option-card" onclick="selectOption(this,'toneGrid')"><div class="opt-emoji">🔥</div>熱血教練</div>
+        <div class="option-card" onclick="selectOption(this,'toneGrid')"><div class="opt-emoji">✨</div>質感品牌</div>
+        <div class="option-card" onclick="selectOption(this,'toneGrid')"><div class="opt-emoji">😊</div>親切鄰居</div>
+        <div class="option-card" onclick="selectOption(this,'toneGrid')"><div class="opt-emoji">💼</div>專業達人</div>
+        <div class="option-card" onclick="selectOption(this,'toneGrid')"><div class="opt-emoji">📱</div>網紅種草</div>
+        <div class="option-card" onclick="selectOption(this,'toneGrid')"><div class="opt-emoji">🤖</div>AI 決定</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goTo(2)">← 返回</button>
+      <button class="btn-next" onclick="goTo(4)">下一步：選擇方案 →</button>
+    </div>
+  </div>
+
+  <!-- Step 4: Pricing -->
+  <div class="form-panel" id="panel4">
+    <div class="panel-title">STEP 04 / 04 — 選擇你的方案</div>
+    <div class="panel-sub">選好方案後我們會在 1 個工作天內與你確認細節。</div>
+    <div class="pricing-grid" id="pricingGrid">
+      <div class="pricing-card" onclick="selectPricing(this)">
+        <div class="plan-name">單次體驗</div>
+        <div class="plan-price">NT$6,900</div>
+        <div class="plan-desc">一次性品牌頁面製作，適合快速試水溫</div>
+      </div>
+      <div class="pricing-card" onclick="selectPricing(this)">
+        <div class="plan-name">成長方案</div>
+        <div class="plan-price">NT$2,999<span style="font-size:14px;font-weight:400">/月</span></div>
+        <div class="plan-desc">月訂閱，持續更新優化品牌頁面</div>
+      </div>
+      <div class="pricing-card" onclick="selectPricing(this)">
+        <div class="plan-name">品牌方案</div>
+        <div class="plan-price">NT$5,999<span style="font-size:14px;font-weight:400">/月</span></div>
+        <div class="plan-desc">進階功能，多頁面、專屬顧問服務</div>
+      </div>
+      <div class="pricing-card" onclick="selectPricing(this)">
+        <div class="plan-name">企業授權</div>
+        <div class="plan-price">客製報價</div>
+        <div class="plan-desc">大型企業或代理商，請洽業務</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goTo(3)">← 返回</button>
+      <button class="btn-next" onclick="submitForm()">✨ 送出需求，開始製作</button>
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div class="form-panel" id="panel5">
+    <div class="success-box">
+      <div class="emoji">🎉</div>
+      <h2>收到了！</h2>
+      <p>感謝你選擇 BrandDrop。<br>我們已收到你的需求，將在 <strong>1 個工作天內</strong>透過 Email 與你聯繫確認細節。</p>
+      <a href="index.html" class="btn btn-primary" style="display:inline-block;margin-top:32px">回到首頁</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function goTo(step) {
+  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel' + step).classList.add('active');
+  for (let i = 1; i <= 4; i++) {
+    const circle = document.getElementById('sc' + i);
+    const label = document.getElementById('sl' + i);
+    circle.classList.remove('active', 'done');
+    label.classList.remove('active');
+    if (i < step) { circle.classList.add('done'); circle.textContent = '✓'; }
+    else if (i === step) { circle.classList.add('active'); circle.textContent = i; label.classList.add('active'); }
+    else { circle.textContent = i; }
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectOption(el, gridId) {
+  document.querySelectorAll('#' + gridId + ' .option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function selectPricing(el) {
+  document.querySelectorAll('#pricingGrid .pricing-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function submitForm() {
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  if (!name || !email) { alert('請填寫姓名與 Email'); goTo(1); return; }
+  document.getElementById('progressBar').style.display = 'none';
+  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel5').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+<script src="js/main.js"></script>
+</body>
+</html>
