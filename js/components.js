@@ -9,14 +9,7 @@ const HEADER_HTML = `
     <nav>
       <ul class="nav-menu" id="navMenu">
         <li><a href="index.html">首頁</a></li>
-        <li class="has-dropdown">
-          <a href="iflocus.html">iFLocus OMO ▾</a>
-          <ul class="dropdown-menu">
-            <li><a href="iflocus.html">iFLocus OMO 介紹</a></li>
-            <li><a href="locusad.html">場域手機推播廣告</a></li>
-            <li><a href="ailocus.html">AiLocus</a></li>
-          </ul>
-        </li>
+        <li><a href="iflocus.html">iFLocus OMO</a></li>
         <li class="has-dropdown">
           <a href="branddrop.html">BrandDrop ▾</a>
           <ul class="dropdown-menu">
