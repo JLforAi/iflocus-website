@@ -19,96 +19,297 @@
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','GA_MEASUREMENT_ID');</script>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .img-section {
-      padding: 40px 0;
+    /* ── Hero ── */
+    .ifl-hero {
+      background: linear-gradient(135deg, #0d0d1a 0%, #1a1240 40%, #2d0a3e 70%, #1a0d2e 100%);
+      color: #fff;
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-    .img-section.bg-light {
-      background: var(--bg-light, #f8f9fa);
+    .ifl-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(180,60,220,0.18) 0%, transparent 60%),
+                  radial-gradient(ellipse at 30% 80%, rgba(60,100,220,0.15) 0%, transparent 50%);
+      pointer-events: none;
     }
-    .img-section .inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px;
+    .ifl-hero .inner { position: relative; max-width: 860px; margin: 0 auto; }
+    .ifl-hero .logo-text {
+      font-size: clamp(36px, 8vw, 72px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
     }
-    .img-section img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 12px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    .ifl-hero .logo-text span { color: #f5a623; }
+    .ifl-hero h2 {
+      font-size: clamp(20px, 4vw, 36px);
+      font-weight: 700;
+      margin: 0 0 16px;
     }
+    .ifl-hero .accent {
+      font-size: clamp(18px, 3.5vw, 28px);
+      color: #ff4d6d;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .ifl-hero .tag-line {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 40px;
+    }
+    .ifl-hero-features {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: 28px;
+    }
+    .ifl-hero-features .feat {
+      flex: 1;
+      min-width: 120px;
+      max-width: 220px;
+      padding: 0 20px;
+      border-right: 1px solid rgba(255,255,255,0.15);
+      text-align: center;
+    }
+    .ifl-hero-features .feat:last-child { border-right: none; }
+    .ifl-hero-features .feat .icon { font-size: 28px; margin-bottom: 8px; }
+    .ifl-hero-features .feat .title { font-size: 15px; font-weight: 700; }
+    .ifl-hero-features .feat .sub { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+    /* ── Pain points ── */
+    .pain-section { padding: 72px 24px; background: #fff; }
+    .pain-section .inner { max-width: 960px; margin: 0 auto; }
+    .pain-heading {
+      font-size: clamp(22px, 3.5vw, 32px);
+      font-weight: 800;
+      border-left: 5px solid #e63950;
+      padding-left: 16px;
+      margin-bottom: 36px;
+    }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .pain-card {
+      border-radius: 16px;
+      padding: 28px 28px 32px;
+      border: 2px solid;
+    }
+    .pain-card.bad { border-color: #f4a5b0; background: #fff8f9; }
+    .pain-card.good { border-color: #a5c8f4; background: #f5f9ff; }
+    .pain-card .card-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+    .pain-card.bad .card-label { color: #e63950; }
+    .pain-card.good .card-label { color: #1a6fc4; }
+    .pain-card ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+    .pain-card ul li { font-size: 15px; color: #444; line-height: 1.6; }
+    .pain-card.bad ul li::before { content: '✕ '; color: #e63950; font-weight: 700; }
+
+    /* ── Win Formula ── */
+    .win-section { padding: 72px 24px; background: #f8f9fa; }
+    .win-section .inner { max-width: 960px; margin: 0 auto; }
+    .win-heading {
+      font-size: clamp(22px, 3.5vw, 32px);
+      font-weight: 800;
+      border-left: 5px solid #e63950;
+      padding-left: 16px;
+      margin-bottom: 36px;
+    }
+    .win-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .win-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    }
+    .win-card .win-icon { font-size: 40px; margin-bottom: 14px; }
+    .win-card .win-title { font-size: 18px; font-weight: 800; margin-bottom: 14px; color: #111; }
+    .win-card p { font-size: 14px; color: #666; line-height: 1.8; margin: 0; }
+
+    /* ── Scenarios ── */
+    .scenario-section { padding: 72px 24px; background: #fff; }
+    .scenario-section .inner { max-width: 960px; margin: 0 auto; }
+    .scenario-heading {
+      font-size: clamp(22px, 3.5vw, 32px);
+      font-weight: 800;
+      border-left: 5px solid #e63950;
+      padding-left: 16px;
+      margin-bottom: 36px;
+    }
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .scenario-card { border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    .scenario-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+    .scenario-card .cap {
+      padding: 16px;
+      font-weight: 700;
+      font-size: 15px;
+      text-align: center;
+      background: #fff;
+      color: #111;
+    }
+
+    /* ── v3 gallery ── */
+    .gallery-section { padding: 40px 24px; }
+    .gallery-section.alt { background: #f8f9fa; }
+    .gallery-section .inner { max-width: 1100px; margin: 0 auto; }
+    .gallery-section img { width: 100%; height: auto; display: block; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+
+    /* ── RWD ── */
     @media (max-width: 768px) {
-      .img-section {
-        padding: 20px 0;
-      }
-      .img-section .inner {
-        padding: 0 12px;
-      }
-      .img-section img {
-        border-radius: 8px;
-      }
+      .ifl-hero { padding: 60px 16px 44px; }
+      .ifl-hero-features .feat { min-width: 100px; padding: 0 12px; }
+      .pain-section, .win-section, .scenario-section { padding: 48px 16px; }
+      .pain-grid { grid-template-columns: 1fr; }
+      .win-grid { grid-template-columns: 1fr; }
+      .scenario-grid { grid-template-columns: 1fr; }
+      .gallery-section { padding: 24px 12px; }
     }
     @media (max-width: 480px) {
-      .img-section {
-        padding: 12px 0;
-      }
-      .img-section .inner {
-        padding: 0 8px;
-      }
-      .img-section img {
-        border-radius: 6px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      }
+      .ifl-hero { padding: 48px 12px 36px; }
+      .ifl-hero-features { gap: 0; }
+      .ifl-hero-features .feat { min-width: 90px; padding: 0 8px; }
+      .pain-section, .win-section, .scenario-section { padding: 36px 12px; }
+      .gallery-section { padding: 16px 8px; }
+      .scenario-card img { height: 180px; }
     }
   </style>
 </head>
 <body>
 <script src="js/components.js"></script>
 
-<div class="page-hero">
-  <h1>iFLocus OMO</h1>
-  <p>在地影響力人流引爆方案 — 全方位 OMO 解決方案提供商</p>
-</div>
-
-<div class="img-section">
+<!-- HERO -->
+<div class="ifl-hero">
   <div class="inner">
-    <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2026/01/%E5%9C%96%E7%89%87-56.jpg" alt="iFLocus OMO 在地影響力人流引爆方案" onerror="this.closest('.img-section').style.display='none'">
+    <div class="logo-text"><span>iF</span>Locus</div>
+    <h2>在地影響力人流引爆方案</h2>
+    <div class="accent">在地微廣告推播 × 影響力應援</div>
+    <div class="tag-line">LBS 精準鎖定 × 網紅應援雙核心 ｜ Influencer × Locus</div>
+    <div class="ifl-hero-features">
+      <div class="feat">
+        <div class="icon">📍</div>
+        <div class="title">地區鎖定</div>
+        <div class="sub">LBS 精準投放</div>
+      </div>
+      <div class="feat">
+        <div class="icon">🎀</div>
+        <div class="title">活力啦啦隊</div>
+        <div class="sub">KOL 網紅光環</div>
+      </div>
+      <div class="feat">
+        <div class="icon">⭐</div>
+        <div class="title">網紅資源</div>
+        <div class="sub">社群擴散</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="img-section bg-light">
+<!-- PAIN POINTS -->
+<div class="pain-section">
   <div class="inner">
-    <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2026/01/%E5%9C%96%E7%89%87-57.jpg" alt="iFLocus OMO 解決方案" onerror="this.closest('.img-section').style.display='none'">
+    <h2 class="pain-heading">微型商家的行銷挑戰與解方</h2>
+    <div class="pain-grid">
+      <div class="pain-card bad">
+        <div class="card-label">
+          <span>🚫</span> 常見痛點
+        </div>
+        <ul>
+          <li>新店開幕卻無人知曉？</li>
+          <li>節慶促銷（如週年慶、佳節）人流不足？</li>
+          <li>街頭傳單效率低！</li>
+        </ul>
+      </div>
+      <div class="pain-card good">
+        <div class="card-label">
+          <span>🚀</span> iFLocus 解方
+        </div>
+        <ul>
+          <li>O2O 核心策略：</li>
+          <li>結合「實體活動熱度」與「數位精準推播」。</li>
+          <li>短期爆發吸晴 + 長期持續導客。</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="img-section">
+<!-- WIN FORMULA -->
+<div class="win-section">
   <div class="inner">
-    <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2026/01/%E5%9C%96%E7%89%87-58.jpg" alt="iFLocus OMO 功能說明" onerror="this.closest('.img-section').style.display='none'">
+    <h2 class="win-heading">iFLocus 勝利方程式</h2>
+    <div class="win-grid">
+      <div class="win-card">
+        <div class="win-icon">👥</div>
+        <div class="win-title">瞬間集客</div>
+        <p>邀請具影響力 KOL 現場應援<br>提升現場人流、排隊感與品牌熱度</p>
+      </div>
+      <div class="win-card">
+        <div class="win-icon">🎯</div>
+        <div class="win-title">精準導流</div>
+        <p>在地微廣告推播<br>捕捉周邊潛力客群<br>引導至門市、實體活動</p>
+      </div>
+      <div class="win-card">
+        <div class="win-icon">💰</div>
+        <div class="win-title">超高 CP 值</div>
+        <p>效益最大化<br>實體活動 + 手機廣告<br>一次擁有</p>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="img-section bg-light">
+<!-- SCENARIOS -->
+<div class="scenario-section">
   <div class="inner">
-    <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2026/01/%E5%9C%96%E7%89%87-59.jpg" alt="iFLocus OMO 應用場景" onerror="this.closest('.img-section').style.display='none'">
+    <h2 class="scenario-heading">適用情境</h2>
+    <div class="scenario-grid">
+      <div class="scenario-card">
+        <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2023/07/iFLocus-%E7%B6%B2%E9%A0%81-v3-12-1-scaled.jpg" alt="開店引流 × 開幕活動" onerror="this.style.background='#f0f0f0';this.style.height='200px'">
+        <div class="cap">開店引流 × 開幕活動</div>
+      </div>
+      <div class="scenario-card">
+        <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2023/07/iFLocus-%E7%B6%B2%E9%A0%81-v3-13-1.jpg" alt="促銷檔期 × 快閃亮點" onerror="this.style.background='#f0f0f0';this.style.height='200px'">
+        <div class="cap">促銷檔期 × 快閃亮點</div>
+      </div>
+      <div class="scenario-card">
+        <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2023/07/iFLocus-%E7%B6%B2%E9%A0%81-v3-14-1-scaled.jpg" alt="招商活動 × 品牌曝光" onerror="this.style.background='#f0f0f0';this.style.height='200px'">
+        <div class="cap">招商活動 × 品牌曝光</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="img-section">
+<!-- GALLERY: v3 series -->
+<div class="gallery-section alt">
   <div class="inner">
-    <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2026/01/%E5%9C%96%E7%89%87-60.jpg" alt="iFLocus OMO 成效數據" onerror="this.closest('.img-section').style.display='none'">
+    <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2023/07/iFLocus-%E7%B6%B2%E9%A0%81-v3-10-2-1.jpg" alt="iFLocus OMO 整合行銷" onerror="this.closest('.gallery-section').style.display='none'">
   </div>
 </div>
 
-<div class="img-section bg-light">
+<div class="gallery-section">
   <div class="inner">
-    <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2026/01/%E5%9C%96%E7%89%87-61.jpg" alt="iFLocus OMO 整合行銷流程" onerror="this.closest('.img-section').style.display='none'">
-  </div>
-</div>
-
-<div class="img-section">
-  <div class="inner">
-    <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2026/01/%E5%9C%96%E7%89%87-62.jpg" alt="iFLocus OMO 服務優勢" onerror="this.closest('.img-section').style.display='none'">
+    <img loading="lazy" src="https://adlocus.com/wp-content/uploads/2023/07/iFLocus-%E7%B6%B2%E9%A0%81-v3-11-1.png" alt="iFLocus OMO 解決方案" onerror="this.closest('.gallery-section').style.display='none'">
   </div>
 </div>
 
