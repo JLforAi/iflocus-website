@@ -4,7 +4,7 @@ const HEADER_HTML = `
 <header class="site-header">
   <div class="nav-container">
     <a href="index.html" class="nav-logo">
-      <img src="images/logo-locus-clean.png" alt="iFLocus 絡客思行銷科技">
+      <img src="images/logos/locus-color-word.png" alt="LOCUS 絡客思行銷科技">
     </a>
     <nav>
       <ul class="nav-menu" id="navMenu">
@@ -52,7 +52,7 @@ const FOOTER_HTML = `
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="images/logo-locus-clean.png" alt="iFLocus 絡客思行銷科技">
+      <img src="images/logos/locus-color-word.png" alt="LOCUS 絡客思行銷科技">
       <p>iFLocus 絡客思以影響力營銷為主軸，整合 KOL/KOC、運動行銷、影音內容、OMO應援、數位媒體與 AiLocus 大數據服務，協助品牌提升聲量、信任與轉換。</p>
       <a href="mailto:sales@iflocus.com" class="footer-email">sales@iflocus.com</a>
     </div>
