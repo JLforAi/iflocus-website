@@ -12,7 +12,12 @@ const HEADER_HTML = `
         <li class="has-dropdown">
           <a href="iflocus.html">iFLocus ▾</a>
           <ul class="dropdown-menu">
+            <li><a href="brand-philosophy.html">品牌理念</a></li>
             <li><a href="iflocus.html">OMO應援服務</a></li>
+            <li><a href="sports-marketing.html">運動行銷</a></li>
+            <li><a href="integrated-marketing.html">整合行銷</a></li>
+            <li><a href="corporate-training.html">企業培訓</a></li>
+            <li><a href="video-production.html">影音拍攝</a></li>
           </ul>
         </li>
         <li class="has-dropdown">
