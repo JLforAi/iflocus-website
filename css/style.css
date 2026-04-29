@@ -832,6 +832,43 @@ section { padding: 80px 0; }
 .step-text h4 { font-size: 17px; margin-bottom: 6px; }
 .step-text p { font-size: 14px; color: var(--text-light); }
 
+/* ===== PRESENTATION ASSETS ===== */
+.ppt-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+  margin-top: 42px;
+}
+
+.ppt-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+}
+
+.ppt-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ppt-card-body {
+  padding: 18px 20px 20px;
+}
+
+.ppt-card-body h3 {
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+.ppt-card-body p {
+  color: var(--text-light);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .footer-inner {
