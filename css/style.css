@@ -968,6 +968,22 @@ section { padding: 80px 0; }
 .step-text p { font-size: 14px; color: var(--text-light); }
 
 /* ===== PRESENTATION ASSETS ===== */
+.image-frame {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+}
+
+.image-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .ppt-gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
