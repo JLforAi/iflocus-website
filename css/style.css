@@ -571,10 +571,11 @@ section { padding: 80px 0; }
 }
 
 .page-hero.hero-scenic.hero-home {
-  --hero-image: url("../images/home-hero-iflocus-light.jpg");
+  --hero-image: url("../images/home-hero-iflocus-desktop.jpg");
   min-height: 0;
-  height: min(56.25vw, calc(100vh - 72px));
-  aspect-ratio: 1366 / 768;
+  height: 58.6vw;
+  max-height: calc(100vh - 72px);
+  aspect-ratio: 1338 / 784;
   margin-top: 72px;
   padding: 0;
   text-align: center;
@@ -594,20 +595,6 @@ section { padding: 80px 0; }
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
-}
-
-.home-hero-actions {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 18px 24px 28px;
-  background: #d7e8f6;
-}
-
-.home-hero-actions .btn {
-  min-width: 220px;
-  box-shadow: 0 10px 28px rgba(0,0,0,0.16);
 }
 
 .hero-sports {
@@ -1146,16 +1133,12 @@ section { padding: 80px 0; }
 
   .page-hero.hero-scenic.hero-home {
     min-height: 0;
-    height: 56.25vw;
-    aspect-ratio: 1366 / 768;
+    height: 58.6vw;
+    aspect-ratio: 1338 / 784;
     background-image: var(--hero-image);
     background-size: contain;
     background-position: center top;
     padding: 0;
-  }
-
-  .home-hero-actions .btn {
-    min-width: 160px;
   }
 
   .brand-logo-strip {
