@@ -48,7 +48,7 @@ const FOOTER_HTML = `
   <div class="footer-inner">
     <div class="footer-brand">
       <img src="https://adlocus.com/wp-content/uploads/2023/07/Locus-logo.png" alt="iFLocus">
-      <p>iFLocus 絡客思行銷科技，以「場域行銷科技」為核心，結合大數據與AI運算，提供企業精準的場域行動廣告與整合行銷解決方案。</p>
+      <p>iFLocus 絡客思以影響力營銷為主軸，整合 KOL/KOC、運動行銷、影音內容、OMO應援、數位媒體與 AiLocus 大數據服務，協助品牌提升聲量、信任與轉換。</p>
       <a href="mailto:sales@iflocus.com" class="footer-email">sales@iflocus.com</a>
     </div>
     <div class="footer-col">
