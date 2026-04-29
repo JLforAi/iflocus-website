@@ -473,6 +473,105 @@ section { padding: 80px 0; }
   margin-top: 72px;
 }
 
+.page-hero.hero-scenic {
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: max(24px, calc((100vw - 1180px) / 2));
+  padding-right: 24px;
+  overflow: hidden;
+  text-align: left;
+  isolation: isolate;
+  background-image:
+    linear-gradient(90deg, rgba(10,16,28,0.86) 0%, rgba(10,16,28,0.68) 42%, rgba(10,16,28,0.28) 100%),
+    linear-gradient(135deg, var(--hero-tint, rgba(0,102,204,0.48)), rgba(255,255,255,0.04)),
+    var(--hero-image);
+  background-size: cover;
+  background-position: var(--hero-position, center);
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.12);
+}
+
+.page-hero.hero-scenic::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 120px;
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(248,249,250,0.18));
+  z-index: -1;
+}
+
+.page-hero.hero-scenic h1 {
+  max-width: 720px;
+  text-shadow: 0 2px 18px rgba(0,0,0,0.32);
+}
+
+.page-hero.hero-scenic p {
+  max-width: 650px;
+  opacity: 0.92;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.28);
+}
+
+.page-hero.hero-scenic .flex-center {
+  justify-content: flex-start;
+}
+
+.hero-home,
+.hero-brand-philosophy,
+.hero-about {
+  --hero-image: url("../images/iflocus-56.jpg");
+  --hero-tint: rgba(216,48,58,0.42);
+  --hero-position: center right;
+}
+
+.hero-sports {
+  --hero-image: url("../images/iflocus-62.jpg");
+  --hero-tint: rgba(255,90,0,0.38);
+  --hero-position: center right;
+}
+
+.hero-integrated,
+.hero-contact {
+  --hero-image: url("../images/page-assets/brand-service-overview.jpg");
+  --hero-tint: rgba(49,138,86,0.40);
+  --hero-position: center right;
+}
+
+.hero-training {
+  --hero-image: url("../images/page-assets/training-service.jpg");
+  --hero-tint: rgba(0,102,204,0.34);
+  --hero-position: center right;
+}
+
+.hero-video {
+  --hero-image: url("../images/page-assets/video-service.jpg");
+  --hero-tint: rgba(255,102,0,0.36);
+  --hero-position: center right;
+}
+
+.hero-ailocus,
+.hero-locusad,
+.hero-app-partners {
+  --hero-image: url("../images/iflocus-61.jpg");
+  --hero-tint: rgba(0,129,204,0.44);
+  --hero-position: center right;
+}
+
+.hero-case-studies,
+.hero-news {
+  --hero-image: url("../images/page-assets/integrated-case-franchise.jpg");
+  --hero-tint: rgba(90,74,204,0.36);
+  --hero-position: center;
+}
+
+.hero-branddrop {
+  --hero-image: url("../images/page-assets/integrated-workflow.jpg");
+  --hero-tint: rgba(255,102,0,0.40);
+  --hero-position: center;
+}
+
 .page-hero h1 {
   font-size: clamp(28px, 5vw, 48px);
   font-weight: 700;
@@ -929,6 +1028,17 @@ section { padding: 80px 0; }
   .slider-arrow { display: none; }
 
   .pricing-card.featured { transform: scale(1); }
+
+  .page-hero.hero-scenic {
+    min-height: 360px;
+    background-image:
+      linear-gradient(180deg, rgba(10,16,28,0.84) 0%, rgba(10,16,28,0.70) 58%, rgba(10,16,28,0.48) 100%),
+      linear-gradient(135deg, var(--hero-tint, rgba(0,102,204,0.48)), rgba(255,255,255,0.02)),
+      var(--hero-image);
+    background-position: center;
+  }
+
+  .page-hero.hero-scenic { padding-left: 24px; }
 }
 
 @media (max-width: 480px) {
