@@ -402,14 +402,6 @@ section { padding: 80px 0; }
   color: var(--text-light);
 }
 
-.brand-logo-strip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  margin: 34px 0 40px;
-}
-
-.brand-logo-item,
 .service-logo-card {
   min-height: 150px;
   display: flex;
@@ -422,20 +414,15 @@ section { padding: 80px 0; }
   box-shadow: 0 4px 18px rgba(0,0,0,0.08);
 }
 
-.brand-logo-item img {
-  max-height: 82px;
-  object-fit: contain;
-}
-
 .service-logo-card {
-  height: 200px;
+  height: 180px;
   border-width: 0 0 1px;
   border-radius: 12px 12px 0 0;
   box-shadow: none;
 }
 
 .service-logo-card img {
-  max-height: 86px;
+  max-height: 72px;
   object-fit: contain;
 }
 
@@ -1141,9 +1128,6 @@ section { padding: 80px 0; }
     padding: 0;
   }
 
-  .brand-logo-strip {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 480px) {
