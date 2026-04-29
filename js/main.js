@@ -27,7 +27,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav-menu a').forEach(function (a) {
     if (a.getAttribute('href') === currentPath) {
-      a.closest('li').classList.add('active');
+      const currentItem = a.closest('li');
+      const dropdownItem = a.closest('.has-dropdown');
+
+      currentItem.classList.add('active');
+      if (dropdownItem) {
+        dropdownItem.classList.add('active');
+      }
     }
   });
 

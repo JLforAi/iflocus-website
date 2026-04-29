@@ -9,37 +9,27 @@ const HEADER_HTML = `
     <nav>
       <ul class="nav-menu" id="navMenu">
         <li><a href="index.html">首頁</a></li>
-        <li><a href="iflocus.html">iFLocus OMO</a></li>
+        <li class="has-dropdown">
+          <a href="iflocus.html">iFLocus ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="iflocus.html">OMO應援服務</a></li>
+          </ul>
+        </li>
+        <li class="has-dropdown">
+          <a href="ailocus.html">AiLocus ▾</a>
+          <ul class="dropdown-menu">
+            <li><a href="ailocus.html">Ai大數據</a></li>
+            <li><a href="locusad.html">場域手機推播廣告</a></li>
+            <li><a href="locusad.html">企業版APP場域推播服務</a></li>
+            <li><a href="app_partners.html">加入APP聯播網</a></li>
+            <li><a href="case-studies.html">案例分享</a></li>
+          </ul>
+        </li>
         <li class="has-dropdown">
           <a href="branddrop.html">BrandDrop ▾</a>
           <ul class="dropdown-menu">
-            <li><a href="branddrop.html">BrandDrop 介紹</a></li>
+            <li><a href="branddrop.html">介紹</a></li>
             <li><a href="branddrop-start.html">開始旅程</a></li>
-          </ul>
-        </li>
-        <li><a href="locusad.html">場域手機推播廣告</a></li>
-        <li><a href="ailocus.html">AiLocus</a></li>
-        <li><a href="locus_ps.html">LocusPS 企業版</a></li>
-        <li><a href="app_partners.html">加入APP聯播網</a></li>
-        <li class="has-dropdown">
-          <a href="case-studies.html">案例分享 ▾</a>
-          <ul class="dropdown-menu">
-            <li><a href="case-studies.html">全部案例</a></li>
-            <li><a href="case-studies.html#election">智慧選戰</a></li>
-            <li><a href="case-studies.html#3c">3C科技</a></li>
-            <li><a href="case-studies.html#retail">優惠活動</a></li>
-            <li><a href="case-studies.html#leisure">休閒生活</a></li>
-            <li><a href="case-studies.html#fashion">女性時尚</a></li>
-            <li><a href="case-studies.html#survey">名單問卷</a></li>
-            <li><a href="case-studies.html#realestate">房地產</a></li>
-            <li><a href="case-studies.html#event">實體活動</a></li>
-            <li><a href="case-studies.html#omo">虛實整合</a></li>
-            <li><a href="case-studies.html#member">會員推廣</a></li>
-            <li><a href="case-studies.html#product">產品推廣</a></li>
-            <li><a href="case-studies.html#telecom">電信通訊</a></li>
-            <li><a href="case-studies.html#finance">金融保險</a></li>
-            <li><a href="case-studies.html#food">食品餐飲</a></li>
-            <li><a href="case-studies.html#hk">香港地區</a></li>
           </ul>
         </li>
         <li><a href="about_us.html">關於我們</a></li>
@@ -64,12 +54,12 @@ const FOOTER_HTML = `
     <div class="footer-col">
       <h4>產品服務</h4>
       <ul>
-        <li><a href="iflocus.html">iFLocus OMO</a></li>
-        <li><a href="branddrop.html">BrandDrop</a></li>
+        <li><a href="iflocus.html">OMO應援服務</a></li>
+        <li><a href="ailocus.html">Ai大數據</a></li>
         <li><a href="locusad.html">場域手機推播廣告</a></li>
-        <li><a href="ailocus.html">AiLocus</a></li>
-        <li><a href="locus_ps.html">LocusPS 企業版</a></li>
+        <li><a href="locusad.html">企業版APP場域推播服務</a></li>
         <li><a href="app_partners.html">加入APP聯播網</a></li>
+        <li><a href="branddrop.html">BrandDrop</a></li>
       </ul>
     </div>
     <div class="footer-col">
