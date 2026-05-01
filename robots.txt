@@ -3,6 +3,7 @@
 
 User-agent: *
 Allow: /
+Disallow: /internal/
 
 # AI crawlers — explicitly allow for GEO visibility
 User-agent: GPTBot

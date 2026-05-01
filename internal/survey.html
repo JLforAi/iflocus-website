@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>SurveyAI — Internal Tool | iFLocus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+/* ===== RESET & BASE ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07080d;
+  --card:rgba(255,255,255,0.035);
+  --card-border:rgba(255,255,255,0.07);
+  --gold:#E8C547;
+  --gold-dim:#C9A84C;
+  --purple:#A78BFA;
+  --green:#34D399;
+  --red:#EF4444;
+  --orange:#F59E0B;
+  --text:#E2E2E8;
+  --text-muted:#6B7280;
+  --text-dim:#9CA3AF;
+  --header-h:60px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:15px;line-height:1.6}
+a{color:inherit;text-decoration:none}
+input,select,textarea,button{font-family:inherit;font-size:inherit}
+button{cursor:pointer}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+
+/* ===== PASSWORD SCREEN ===== */
+#pw-screen{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+}
+.pw-box{
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--card-border);
+  border-radius:20px;
+  padding:48px 40px;
+  width:360px;
+  text-align:center;
+}
+.pw-box .pw-icon{font-size:40px;margin-bottom:16px}
+.pw-box h2{font-size:22px;font-weight:600;color:var(--gold);margin-bottom:8px}
+.pw-box p{color:var(--text-muted);font-size:13px;margin-bottom:28px}
+.pw-input{
+  width:100%;padding:12px 16px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:10px;color:var(--text);
+  font-size:16px;letter-spacing:0.15em;
+  margin-bottom:12px;outline:none;
+  transition:border-color 0.2s;
+}
+.pw-input:focus{border-color:var(--gold)}
+.pw-input.error{border-color:var(--red);animation:shake 0.3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.pw-err{color:var(--red);font-size:12px;margin-bottom:12px;min-height:16px}
+.btn-pw{
+  width:100%;padding:12px;
+  background:var(--gold);color:#000;
+  font-weight:700;border:none;border-radius:10px;
+  font-size:15px;transition:opacity 0.2s;
+}
+.btn-pw:hover{opacity:0.88}
+
+/* ===== HEADER ===== */
+#app-header{
+  position:fixed;top:0;left:0;right:0;height:var(--header-h);z-index:100;
+  background:rgba(7,8,13,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--card-border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;gap:16px;
+}
+.header-brand{
+  display:flex;align-items:center;gap:10px;
+  min-width:180px;
+}
+.header-brand-icon{
+  width:32px;height:32px;background:var(--gold);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:#000;
+}
+.header-brand-text{
+  display:flex;flex-direction:column;line-height:1.2;
+}
+.header-brand-name{font-weight:700;font-size:15px;color:var(--gold)}
+.header-brand-sub{font-size:10px;color:var(--text-muted);letter-spacing:0.12em;font-weight:500}
+
+/* ===== STEP INDICATOR ===== */
+.step-indicator{
+  display:flex;align-items:center;gap:0;
+  flex:1;justify-content:center;max-width:480px;
+}
+.step-item{
+  display:flex;align-items:center;gap:8px;
+  cursor:pointer;position:relative;
+}
+.step-item:not(:last-child)::after{
+  content:'';display:block;width:40px;height:1px;
+  background:rgba(255,255,255,0.12);margin:0 4px;
+}
+.step-item.active:not(:last-child)::after,
+.step-item.done:not(:last-child)::after{background:var(--gold);opacity:0.4}
+.step-circle{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;
+  border:2px solid rgba(255,255,255,0.15);
+  color:var(--text-muted);transition:all 0.3s;flex-shrink:0;
+}
+.step-item.done .step-circle{
+  background:var(--gold);border-color:var(--gold);color:#000;
+}
+.step-item.active .step-circle{
+  border-color:var(--gold);color:var(--gold);
+  box-shadow:0 0 0 3px rgba(232,197,71,0.15);
+}
+.step-label{
+  font-size:11px;color:var(--text-muted);white-space:nowrap;
+  transition:color 0.3s;
+}
+.step-item.active .step-label{color:var(--gold)}
+.step-item.done .step-label{color:var(--text-dim)}
+@media(max-width:640px){.step-label{display:none}.step-item:not(:last-child)::after{width:24px}}
+.header-right{min-width:180px;display:flex;justify-content:flex-end}
+
+/* ===== MAIN LAYOUT ===== */
+#app-main{
+  display:none;padding-top:var(--header-h);min-height:100vh;
+}
+.step-page{display:none;max-width:860px;margin:0 auto;padding:32px 20px 80px}
+.step-page.active{display:block}
+
+/* ===== CARDS ===== */
+.card{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:16px;padding:24px;margin-bottom:20px;
+}
+.card-title{
+  font-size:13px;font-weight:600;letter-spacing:0.1em;
+  color:var(--text-muted);text-transform:uppercase;margin-bottom:16px;
+}
+.card-title span{color:var(--gold);margin-right:6px}
+
+/* ===== PAGE TITLES ===== */
+.page-title{
+  font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px;
+}
+.page-subtitle{color:var(--text-muted);font-size:14px;margin-bottom:28px}
+
+/* ===== UPLOAD ZONE ===== */
+.upload-zone{
+  border:2px dashed rgba(232,197,71,0.25);
+  border-radius:14px;padding:40px 24px;
+  text-align:center;cursor:pointer;
+  transition:all 0.25s;background:rgba(232,197,71,0.02);
+}
+.upload-zone:hover,.upload-zone.drag-over{
+  border-color:var(--gold);background:rgba(232,197,71,0.06);
+}
+.upload-icon{font-size:36px;margin-bottom:12px}
+.upload-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
+.upload-sub{font-size:13px;color:var(--text-muted)}
+.upload-sub span{color:var(--gold)}
+#file-input{display:none}
+
+.upload-actions{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;justify-content:center}
+
+/* ===== BUTTONS ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;border-radius:8px;font-weight:600;
+  border:none;font-size:14px;transition:all 0.2s;
+}
+.btn-gold{background:var(--gold);color:#000}
+.btn-gold:hover{opacity:0.88}
+.btn-outline{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.15);color:var(--text-dim);
+}
+.btn-outline:hover{border-color:rgba(255,255,255,0.3);color:var(--text)}
+.btn-ghost{background:rgba(255,255,255,0.05);color:var(--text-dim)}
+.btn-ghost:hover{background:rgba(255,255,255,0.09);color:var(--text)}
+.btn-purple{background:rgba(167,139,250,0.15);color:var(--purple);border:1px solid rgba(167,139,250,0.25)}
+.btn-purple:hover{background:rgba(167,139,250,0.25)}
+.btn-green{background:rgba(52,211,153,0.12);color:var(--green);border:1px solid rgba(52,211,153,0.2)}
+.btn-green:hover{background:rgba(52,211,153,0.2)}
+.btn-sm{padding:7px 14px;font-size:13px}
+.btn-lg{padding:13px 28px;font-size:16px}
+.btn:disabled{opacity:0.4;cursor:not-allowed}
+
+/* ===== PREVIEW BLOCKS ===== */
+.preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.preview-grid{grid-template-columns:1fr}}
+.preview-field{display:flex;flex-direction:column;gap:4px}
+.preview-label{font-size:11px;color:var(--text-muted);font-weight:500}
+.preview-value{font-size:14px;color:var(--text);background:rgba(255,255,255,0.04);
+  border-radius:8px;padding:8px 12px;min-height:36px;word-break:break-word}
+.preview-value.empty{color:var(--text-muted);font-style:italic}
+
+/* ===== CHIPS ===== */
+.chip-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{
+  padding:7px 14px;border-radius:20px;font-size:13px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:transparent;color:var(--text-dim);
+  cursor:pointer;transition:all 0.2s;
+}
+.chip:hover{border-color:rgba(255,255,255,0.25);color:var(--text)}
+.chip.selected{
+  background:rgba(232,197,71,0.12);
+  border-color:rgba(232,197,71,0.4);
+  color:var(--gold);font-weight:600;
+}
+
+/* ===== TOGGLES ===== */
+.toggle-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.toggle-row:last-child{border-bottom:none}
+.toggle-info{flex:1}
+.toggle-name{font-size:14px;color:var(--text);font-weight:500}
+.toggle-desc{font-size:12px;color:var(--text-muted);margin-top:2px}
+.toggle-switch{
+  position:relative;width:44px;height:24px;flex-shrink:0;margin-left:16px;
+}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-thumb{
+  position:absolute;inset:0;border-radius:12px;
+  background:rgba(255,255,255,0.1);cursor:pointer;transition:background 0.2s;
+}
+.toggle-thumb::before{
+  content:'';position:absolute;width:18px;height:18px;
+  left:3px;top:3px;border-radius:50%;
+  background:#fff;transition:transform 0.2s;
+}
+input:checked+.toggle-thumb{background:var(--gold)}
+input:checked+.toggle-thumb::before{transform:translateX(20px)}
+.toggle-switch.always-on .toggle-thumb{background:var(--green);cursor:default}
+.toggle-switch.always-on .toggle-thumb::before{transform:translateX(20px)}
+
+/* ===== FORM ELEMENTS ===== */
+.form-row{margin-bottom:16px}
+.form-label{
+  display:block;font-size:13px;font-weight:500;
+  color:var(--text-muted);margin-bottom:6px;
+}
+.form-input,.form-select{
+  width:100%;padding:10px 14px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;color:var(--text);outline:none;
+  transition:border-color 0.2s;
+}
+.form-input:focus,.form-select:focus{border-color:rgba(232,197,71,0.4)}
+.form-select option{background:#1a1a2e;color:var(--text)}
+.form-hint{font-size:12px;color:var(--text-muted);margin-top:4px}
+
+/* ===== MODE CARDS ===== */
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:500px){.mode-cards{grid-template-columns:1fr}}
+.mode-card{
+  padding:20px;border-radius:14px;cursor:pointer;
+  border:2px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.03);
+  transition:all 0.25s;text-align:left;
+}
+.mode-card:hover{border-color:rgba(232,197,71,0.3)}
+.mode-card.selected{
+  border-color:var(--gold);
+  background:rgba(232,197,71,0.05);
+}
+.mode-card-icon{font-size:26px;margin-bottom:10px}
+.mode-card-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
+.mode-card-desc{font-size:13px;color:var(--text-muted)}
+
+/* ===== COUNT QUICK BTNS ===== */
+.count-btns{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.count-btn{
+  padding:7px 18px;border-radius:20px;font-size:13px;font-weight:600;
+  border:1px solid rgba(255,255,255,0.12);
+  background:transparent;color:var(--text-dim);cursor:pointer;transition:all 0.2s;
+}
+.count-btn:hover{border-color:var(--gold);color:var(--gold)}
+.count-btn.active{background:rgba(232,197,71,0.12);border-color:var(--gold);color:var(--gold)}
+
+/* ===== ALERT BANNERS ===== */
+.alert{
+  padding:12px 16px;border-radius:10px;font-size:13px;
+  display:flex;align-items:flex-start;gap:10px;margin-bottom:16px;
+}
+.alert-warning{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:#FCD34D}
+.alert-info{background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);color:var(--purple)}
+.alert-success{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);color:var(--green)}
+.alert-icon{flex-shrink:0;font-size:16px;margin-top:1px}
+
+/* ===== SUMMARY CARD ===== */
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.summary-item{background:rgba(255,255,255,0.04);border-radius:10px;padding:14px 16px}
+.summary-item-label{font-size:11px;color:var(--text-muted);margin-bottom:4px;font-weight:500}
+.summary-item-value{font-size:15px;font-weight:700;color:var(--text)}
+
+/* ===== CHART BAR ===== */
+.chart-container{overflow-x:auto;padding-bottom:4px}
+.chart-bars{display:flex;align-items:flex-end;gap:6px;height:80px;margin-top:8px}
+.chart-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:32px}
+.chart-bar{
+  width:100%;background:rgba(232,197,71,0.25);border-radius:4px 4px 0 0;
+  min-height:4px;transition:height 0.3s;
+}
+.chart-bar-label{font-size:10px;color:var(--text-muted)}
+.chart-bar-val{font-size:10px;color:var(--gold);font-weight:600}
+
+/* ===== PROMPT BOX ===== */
+.prompt-box{
+  background:rgba(0,0,0,0.35);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;padding:20px;
+  font-family:'Courier New',monospace;
+  font-size:13px;color:#b0c4de;
+  line-height:1.8;white-space:pre-wrap;word-break:break-word;
+  max-height:320px;overflow-y:auto;
+}
+
+/* ===== TABS ===== */
+.tab-list{display:flex;gap:4px;margin-bottom:16px;
+  border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:0;}
+.tab-btn{
+  padding:9px 18px;border:none;background:transparent;
+  color:var(--text-muted);font-size:14px;font-weight:500;cursor:pointer;
+  border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;
+}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-btn:hover:not(.active){color:var(--text)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* ===== STEPS GUIDE ===== */
+.steps-guide{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;
+  margin-top:16px;
+}
+.guide-step{
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+  border-radius:12px;padding:16px;
+}
+.guide-step-num{
+  width:26px;height:26px;border-radius:50%;
+  background:rgba(232,197,71,0.15);color:var(--gold);
+  font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;margin-bottom:10px;
+}
+.guide-step-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.guide-step-desc{font-size:12px;color:var(--text-muted);line-height:1.5}
+
+/* ===== TAGS SUMMARY ===== */
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tag{
+  padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;
+}
+.tag-gold{background:rgba(232,197,71,0.15);color:var(--gold);border:1px solid rgba(232,197,71,0.25)}
+.tag-purple{background:rgba(167,139,250,0.12);color:var(--purple);border:1px solid rgba(167,139,250,0.2)}
+.tag-green{background:rgba(52,211,153,0.1);color:var(--green);border:1px solid rgba(52,211,153,0.2)}
+
+/* ===== STEP NAV ===== */
+.step-nav{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:28px;padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+
+/* ===== ALWAYS-ON GREEN CARD ===== */
+.always-on-card{
+  background:rgba(52,211,153,0.08);
+  border:1px solid rgba(52,211,153,0.2);
+  border-radius:10px;padding:12px 16px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.always-on-card .icon{font-size:18px;margin-top:1px}
+.always-on-card p{font-size:13px;color:var(--green);line-height:1.5}
+
+/* ===== DOWNLOAD LINK ===== */
+.template-dl{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 16px;border-radius:8px;font-size:13px;
+  background:rgba(52,211,153,0.08);
+  border:1px solid rgba(52,211,153,0.2);
+  color:var(--green);transition:background 0.2s;
+}
+.template-dl:hover{background:rgba(52,211,153,0.15)}
+
+/* ===== MISC ===== */
+.divider{height:1px;background:rgba(255,255,255,0.07);margin:20px 0}
+.text-gold{color:var(--gold)}
+.text-green{color:var(--green)}
+.text-purple{color:var(--purple)}
+.text-muted{color:var(--text-muted)}
+.text-sm{font-size:13px}
+.fw-700{font-weight:700}
+.mt-8{margin-top:8px}
+.mt-12{margin-top:12px}
+.mt-16{margin-top:16px}
+.mb-8{margin-bottom:8px}
+.row{display:flex;gap:12px;align-items:flex-start}
+.row .form-row{flex:1}
+.hidden{display:none!important}
+
+/* ===== COPY BTN ===== */
+.copy-btn-wrap{display:flex;justify-content:flex-end;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<!-- PASSWORD SCREEN -->
+<div id="pw-screen">
+  <div class="pw-box">
+    <div class="pw-icon">🔐</div>
+    <h2>SurveyAI</h2>
+    <p>此為 iFLocus 內部工具，請輸入存取密碼</p>
+    <input type="password" id="pw-input" class="pw-input" placeholder="輸入密碼" autocomplete="off">
+    <div class="pw-err" id="pw-err"></div>
+    <button class="btn-pw" onclick="checkPassword()">進入工具</button>
+  </div>
+</div>
+
+<!-- APP HEADER -->
+<header id="app-header" style="display:none">
+  <div class="header-brand">
+    <div class="header-brand-icon">📋</div>
+    <div class="header-brand-text">
+      <span class="header-brand-name">SurveyAI</span>
+      <span class="header-brand-sub">INTERNAL TOOL</span>
+    </div>
+  </div>
+
+  <nav class="step-indicator" id="step-indicator">
+    <div class="step-item" data-step="1" onclick="jumpToStep(1)">
+      <div class="step-circle">1</div>
+      <div class="step-label">匯入需求</div>
+    </div>
+    <div class="step-item" data-step="2" onclick="jumpToStep(2)">
+      <div class="step-circle">2</div>
+      <div class="step-label">受訪者設定</div>
+    </div>
+    <div class="step-item" data-step="3" onclick="jumpToStep(3)">
+      <div class="step-circle">3</div>
+      <div class="step-label">排程設定</div>
+    </div>
+    <div class="step-item" data-step="4" onclick="jumpToStep(4)">
+      <div class="step-circle">4</div>
+      <div class="step-label">產生 Prompt</div>
+    </div>
+  </nav>
+
+  <div class="header-right">
+    <button class="btn btn-outline btn-sm" onclick="resetAll()" title="新增另一個案件">＋ 新案件</button>
+  </div>
+</header>
+
+<!-- APP MAIN -->
+<main id="app-main">
+
+<!-- ===== STEP 1 ===== -->
+<div class="step-page active" id="step-1">
+  <div class="page-title">匯入客戶市調需求單</div>
+  <div class="page-subtitle">上傳 .xlsx 需求單，或使用範例資料快速體驗</div>
+
+  <div class="card">
+    <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+      <div class="upload-icon">📂</div>
+      <div class="upload-title">拖曳或點擊上傳需求單</div>
+      <div class="upload-sub">支援 <span>.xlsx</span> 格式</div>
+      <input type="file" id="file-input" accept=".xlsx,.xls" onchange="handleFileChange(event)">
+    </div>
+    <div class="upload-actions">
+      <button class="btn btn-outline btn-sm" onclick="useSampleData()">📝 使用範例資料</button>
+      <a href="客戶市調需求單.xlsx" download class="template-dl">⬇ 下載需求單範本</a>
+    </div>
+  </div>
+
+  <!-- PREVIEW (hidden until data loaded) -->
+  <div id="preview-container" class="hidden">
+    <div class="card">
+      <div class="card-title"><span>📁</span>基本資料</div>
+      <div class="preview-grid" id="preview-basic"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>🎯</span>市調目標</div>
+      <div id="preview-goals"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>👥</span>目標受眾</div>
+      <div class="preview-grid" id="preview-audience"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span>📋</span>問卷資訊</div>
+      <div class="preview-grid" id="preview-survey"></div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn btn-outline" onclick="document.getElementById('file-input').click()">↩ 重新上傳</button>
+      <button class="btn btn-gold btn-lg" onclick="goToStep(2)">下一步：受訪者設定 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STEP 2 ===== -->
+<div class="step-page" id="step-2">
+  <div class="page-title">受訪者條件設定</div>
+  <div class="page-subtitle">設定篩選條件與隨機變數，系統將依此生成受訪者輪廓</div>
+
+  <div class="alert alert-info hidden" id="audience-hint">
+    <span class="alert-icon">ℹ️</span>
+    <span id="audience-hint-text"></span>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🔒</span>固定條件（單選）</div>
+
+    <div class="form-row">
+      <div class="form-label">性別</div>
+      <div class="chip-group" data-field="gender">
+        <div class="chip selected" data-val="random">不限（隨機）</div>
+        <div class="chip" data-val="female">女性</div>
+        <div class="chip" data-val="male">男性</div>
+        <div class="chip" data-val="nonbinary">非二元性別</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-label">年齡層</div>
+      <div class="chip-group" data-field="age">
+        <div class="chip selected" data-val="random">不限（隨機）</div>
+        <div class="chip" data-val="18-24">18–24歲</div>
+        <div class="chip" data-val="25-34">25–34歲</div>
+        <div class="chip" data-val="35-44">35–44歲</div>
+        <div class="chip" data-val="45-54">45–54歲</div>
+        <div class="chip" data-val="55+">55歲以上</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-label">居住地</div>
+      <div class="chip-group" data-field="location">
+        <div class="chip selected" data-val="random">不限（隨機）</div>
+        <div class="chip" data-val="taipei">台北市</div>
+        <div class="chip" data-val="newtaipei">新北市</div>
+        <div class="chip" data-val="taoyuan">桃園市</div>
+        <div class="chip" data-val="taichung">台中市</div>
+        <div class="chip" data-val="tainan">台南市</div>
+        <div class="chip" data-val="kaohsiung">高雄市</div>
+        <div class="chip" data-val="other">其他縣市</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-label">職業</div>
+      <div class="chip-group" data-field="occupation">
+        <div class="chip selected" data-val="random">不限（隨機）</div>
+        <div class="chip" data-val="student">學生</div>
+        <div class="chip" data-val="office">上班族（一般）</div>
+        <div class="chip" data-val="manager">主管/經理</div>
+        <div class="chip" data-val="freelance">自由業</div>
+        <div class="chip" data-val="entrepreneur">創業者</div>
+        <div class="chip" data-val="homemaker">家庭主婦/夫</div>
+        <div class="chip" data-val="retired">退休人士</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-label">月收入</div>
+      <div class="chip-group" data-field="income">
+        <div class="chip selected" data-val="random">不限（隨機）</div>
+        <div class="chip" data-val="<30k">3萬以下</div>
+        <div class="chip" data-val="30-50k">3–5萬</div>
+        <div class="chip" data-val="50-80k">5–8萬</div>
+        <div class="chip" data-val=">80k">8萬以上</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-label">教育程度</div>
+      <div class="chip-group" data-field="education">
+        <div class="chip selected" data-val="random">不限（隨機）</div>
+        <div class="chip" data-val="highschool">高中職</div>
+        <div class="chip" data-val="college">大學/專科</div>
+        <div class="chip" data-val="master+">碩士以上</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🎲</span>隨機變數（AI 自由發揮）</div>
+
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <div class="toggle-name">個性特質</div>
+        <div class="toggle-desc">例：謹慎理性 / 衝動感性 / 社交外向 / 內斂保守</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="tog-personality" checked>
+        <span class="toggle-thumb"></span>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <div class="toggle-name">生活型態</div>
+        <div class="toggle-desc">例：健康養生型 / 忙碌都市型 / 居家宅宅型</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="tog-lifestyle" checked>
+        <span class="toggle-thumb"></span>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <div class="toggle-name">消費習慣</div>
+        <div class="toggle-desc">例：比價精打細算 / 品牌忠誠型 / 衝動型購物</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="tog-shopping" checked>
+        <span class="toggle-thumb"></span>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <div class="toggle-name">常用社群平台</div>
+        <div class="toggle-desc">例：Instagram / Facebook / TikTok / 幾乎不用</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="tog-social">
+        <span class="toggle-thumb"></span>
+      </label>
+    </div>
+
+    <div class="divider"></div>
+    <div class="always-on-card">
+      <span class="icon">✅</span>
+      <p><strong style="color:var(--green)">姓名 × 背景細節</strong>（永遠啟用）<br>
+      AI 將為每位受訪者設定真實台灣姓名、職場背景、生活細節，讓回答更具個人色彩。</p>
+    </div>
+  </div>
+
+  <div class="step-nav">
+    <button class="btn btn-outline" onclick="goToStep(1)">← 上一步</button>
+    <button class="btn btn-gold btn-lg" onclick="goToStep(3)">下一步：排程設定 →</button>
+  </div>
+</div>
+
+<!-- ===== STEP 3 ===== -->
+<div class="step-page" id="step-3">
+  <div class="page-title">排程與份數設定</div>
+  <div class="page-subtitle">選擇模擬模式，設定份數與執行節奏</div>
+
+  <div class="card">
+    <div class="card-title"><span>⚙️</span>模擬模式</div>
+    <div class="mode-cards">
+      <button class="mode-card selected" id="mode-ai" onclick="selectMode('ai')">
+        <div class="mode-card-icon">🤖</div>
+        <div class="mode-card-title">純 AI 模擬</div>
+        <div class="mode-card-desc">全部由 AI 依條件產出受訪者回答</div>
+      </button>
+      <button class="mode-card" id="mode-expand" onclick="selectMode('expand')">
+        <div class="mode-card-icon">🔬</div>
+        <div class="mode-card-title">樣本擴增</div>
+        <div class="mode-card-desc">已有少量真實回答，AI 依模式擴增</div>
+      </button>
+    </div>
+
+    <!-- 樣本擴增子設定 -->
+    <div id="expand-settings" class="hidden">
+      <div class="row">
+        <div class="form-row">
+          <label class="form-label">已有真實份數（最少 10 份）</label>
+          <input type="number" id="real-count" class="form-input" min="10" value="20" oninput="updateAiCount()">
+        </div>
+        <div class="form-row">
+          <label class="form-label">擴增至總份數</label>
+          <input type="number" id="total-count-expand" class="form-input" min="20" value="300" oninput="updateAiCount()">
+        </div>
+      </div>
+      <div class="alert alert-info" id="ai-count-display">
+        <span class="alert-icon">🤖</span>
+        <span id="ai-count-text">AI 需產出 <strong>280 份</strong></span>
+      </div>
+    </div>
+
+    <!-- 純模擬份數 -->
+    <div id="pure-settings">
+      <div class="form-label mb-8">選擇模擬份數</div>
+      <div class="count-btns" id="count-btns">
+        <button class="count-btn" data-n="100" onclick="selectCount(100)">100 份</button>
+        <button class="count-btn" data-n="300" onclick="selectCount(300)">300 份</button>
+        <button class="count-btn active" data-n="500" onclick="selectCount(500)">500 份</button>
+        <button class="count-btn" data-n="1000" onclick="selectCount(1000)">1,000 份</button>
+        <button class="count-btn" data-n="3000" onclick="selectCount(3000)">3,000 份</button>
+      </div>
+      <input type="number" id="custom-count" class="form-input" style="max-width:180px" value="500" oninput="onCustomCount(this.value)">
+      <div class="alert alert-warning hidden mt-12" id="count-warning">
+        <span class="alert-icon">⚠️</span>
+        <span>份數低於 500 份，統計代表性可能不足，建議評估研究目的是否合適。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🕐</span>執行時間設定</div>
+
+    <div class="toggle-row" style="padding-top:0">
+      <div class="toggle-info">
+        <div class="toggle-name">分天執行（模擬真實填寫節奏）</div>
+        <div class="toggle-desc">將份數分散於多天，更符合真實問卷填寫行為</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="tog-schedule" onchange="toggleSchedule()">
+        <span class="toggle-thumb"></span>
+      </label>
+    </div>
+
+    <div id="schedule-off-msg" class="alert alert-info mt-12">
+      <span class="alert-icon">💡</span>
+      <span>關閉分天執行：AI 將一次性產出所有問卷回答，適合急件或測試用途。</span>
+    </div>
+
+    <div id="schedule-settings" class="hidden mt-12">
+      <div class="row">
+        <div class="form-row">
+          <label class="form-label">執行天數（1–30天）</label>
+          <input type="number" id="sch-days" class="form-input" min="1" max="30" value="7" oninput="renderChart()">
+        </div>
+        <div class="form-row">
+          <label class="form-label">每天開始時間（小時）</label>
+          <input type="number" id="sch-start" class="form-input" min="0" max="23" value="9" oninput="renderChart()">
+        </div>
+        <div class="form-row">
+          <label class="form-label">每天結束時間（小時）</label>
+          <input type="number" id="sch-end" class="form-input" min="0" max="23" value="22" oninput="renderChart()">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-row">
+          <label class="form-label">每份間隔最小（分鐘）</label>
+          <input type="number" id="sch-min" class="form-input" min="1" value="3" oninput="renderChart()">
+        </div>
+        <div class="form-row">
+          <label class="form-label">每份間隔最大（分鐘）</label>
+          <input type="number" id="sch-max" class="form-input" min="1" value="15" oninput="renderChart()">
+        </div>
+      </div>
+      <div class="form-label mt-8 mb-8">前 7 天每日份數預覽</div>
+      <div class="chart-container">
+        <div class="chart-bars" id="schedule-chart"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="summary-card">
+    <div class="card-title"><span>📊</span>設定摘要</div>
+    <div class="summary-grid" id="summary-grid"></div>
+  </div>
+
+  <div class="step-nav">
+    <button class="btn btn-outline" onclick="goToStep(2)">← 上一步</button>
+    <button class="btn btn-gold btn-lg" onclick="goToStep(4)">下一步：產生 Prompt →</button>
+  </div>
+</div>
+
+<!-- ===== STEP 4 ===== -->
+<div class="step-page" id="step-4">
+  <div class="page-title">產生 AI Prompt</div>
+  <div class="page-subtitle">複製以下 Prompt，貼入 Claude / ChatGPT 開始執行模擬</div>
+
+  <div class="tag-row" id="summary-tags"></div>
+
+  <!-- TABS (for expand mode) -->
+  <div id="prompt-tabs" class="hidden">
+    <div class="tab-list">
+      <button class="tab-btn active" data-tab="pure" onclick="switchPromptTab('pure')">🤖 純模擬 Prompt</button>
+      <button class="tab-btn" data-tab="expand" onclick="switchPromptTab('expand')">🔬 樣本擴增 Prompt</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div id="tab-pure" class="tab-pane active">
+      <div class="copy-btn-wrap">
+        <button class="btn btn-outline btn-sm" id="copy-pure-btn" onclick="copyPrompt('pure')">📋 複製 Prompt</button>
+      </div>
+      <div class="prompt-box" id="prompt-pure"></div>
+    </div>
+    <div id="tab-expand" class="tab-pane">
+      <div class="copy-btn-wrap">
+        <button class="btn btn-outline btn-sm" id="copy-expand-btn" onclick="copyPrompt('expand')">📋 複製 Prompt</button>
+      </div>
+      <div class="prompt-box" id="prompt-expand"></div>
+    </div>
+  </div>
+
+  <!-- EXECUTION PROMPT -->
+  <div class="card">
+    <div class="card-title"><span>▶️</span>執行 Prompt</div>
+    <div class="copy-btn-wrap">
+      <button class="btn btn-outline btn-sm" id="copy-exec-btn" onclick="copyPrompt('exec')">📋 複製 Prompt</button>
+    </div>
+    <div class="prompt-box" id="prompt-exec"></div>
+  </div>
+
+  <!-- STEPS GUIDE -->
+  <div class="card">
+    <div class="card-title"><span>📖</span>執行步驟說明</div>
+    <div class="steps-guide" id="steps-guide"></div>
+  </div>
+
+  <div class="step-nav" style="justify-content:flex-end;gap:12px">
+    <button class="btn btn-outline" onclick="goToStep(3)">← 上一步</button>
+    <button class="btn btn-ghost" onclick="exportJSON()">⬇ 匯出設定 JSON</button>
+    <button class="btn btn-gold" onclick="resetAll()">＋ 新增另一個案件</button>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ===== STATE =====
+const STATE = {
+  data: {},
+  conditions: {
+    gender:'random', age:'random', location:'random',
+    occupation:'random', income:'random', education:'random'
+  },
+  toggles: { personality:true, lifestyle:true, shopping:true, social:false },
+  mode: 'ai',
+  count: 500,
+  realCount: 20,
+  totalCountExpand: 300,
+  schedule: false,
+  schDays: 7, schStart: 9, schEnd: 22, schMin: 3, schMax: 15,
+  currentStep: 1,
+  maxUnlocked: 1
+};
+
+// ===== PASSWORD =====
+const PASS = 'iflocus2025';
+function checkPassword(){
+  const v = document.getElementById('pw-input').value;
+  if(v===PASS){
+    sessionStorage.setItem('survey-auth','1');
+    document.getElementById('pw-screen').style.display='none';
+    document.getElementById('app-header').style.display='flex';
+    document.getElementById('app-main').style.display='block';
+  } else {
+    const inp=document.getElementById('pw-input');
+    inp.classList.add('error');
+    document.getElementById('pw-err').textContent='密碼錯誤，請再試一次';
+    setTimeout(()=>inp.classList.remove('error'),400);
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkPassword()});
+if(sessionStorage.getItem('survey-auth')==='1'){
+  document.getElementById('pw-screen').style.display='none';
+  document.getElementById('app-header').style.display='flex';
+  document.getElementById('app-main').style.display='block';
+}
+
+// ===== STEP NAVIGATION =====
+function goToStep(n){
+  if(n<1||n>4)return;
+  if(n>STATE.maxUnlocked+1 && n>STATE.currentStep)return;
+  STATE.currentStep=n;
+  if(n>STATE.maxUnlocked)STATE.maxUnlocked=n;
+  document.querySelectorAll('.step-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('step-'+n).classList.add('active');
+  updateStepIndicator();
+  window.scrollTo(0,0);
+  if(n===3)updateSummaryCard();
+  if(n===4)buildPrompts();
+}
+function jumpToStep(n){
+  if(n<=STATE.maxUnlocked)goToStep(n);
+}
+function updateStepIndicator(){
+  document.querySelectorAll('.step-item').forEach(el=>{
+    const s=parseInt(el.dataset.step);
+    el.classList.remove('active','done');
+    if(s===STATE.currentStep)el.classList.add('active');
+    else if(s<STATE.currentStep)el.classList.add('done');
+  });
+}
+updateStepIndicator();
+
+// ===== CHIPS =====
+document.querySelectorAll('.chip-group').forEach(group=>{
+  group.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      group.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected');
+      STATE.conditions[group.dataset.field]=chip.dataset.val;
+    });
+  });
+});
+
+// ===== XLSX FIELD MAP =====
+const FIELD_MAP = {
+  '公司/品牌名稱':'companyName','產品/服務名稱':'productName',
+  '聯絡人姓名':'contactName','聯絡 Email':'contactEmail',
+  '案件編號/備註':'caseNote','產品主要功能與特色':'productDesc',
+  '定價範圍':'priceRange','主要銷售管道':'salesChannel',
+  '目前市場競爭狀況':'competition','這次市調最想了解什麼？':'surveyGoal',
+  '有哪些假設想要驗證？':'hypothesis','希望市調結論能幫助你做什麼決策？':'decision',
+  '性別':'targetGender','年齡層':'targetAge','居住地':'targetLocation',
+  '職業類別':'targetOccupation','月收入範圍':'targetIncome',
+  '其他特徵':'targetOther','問卷平台':'surveyPlatform',
+  '問卷連結':'surveyUrl','期望模擬份數':'surveyCount',
+  '希望完成時間':'deadline','其他說明':'extraNotes'
+};
+
+// ===== FILE UPLOAD =====
+function handleDragOver(e){e.preventDefault();document.getElementById('upload-zone').classList.add('drag-over')}
+function handleDragLeave(){document.getElementById('upload-zone').classList.remove('drag-over')}
+function handleDrop(e){
+  e.preventDefault();document.getElementById('upload-zone').classList.remove('drag-over');
+  const file=e.dataTransfer.files[0];if(file)parseXLSX(file);
+}
+function handleFileChange(e){const file=e.target.files[0];if(file)parseXLSX(file)}
+
+function parseXLSX(file){
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const wb=XLSX.read(e.target.result,{type:'binary'});
+      const ws=wb.Sheets[wb.SheetNames[0]];
+      const rows=XLSX.utils.sheet_to_json(ws,{header:1});
+      const data={};
+      rows.forEach(row=>{
+        const key=String(row[1]||'').trim();
+        const val=String(row[2]||'').trim();
+        if(FIELD_MAP[key])data[FIELD_MAP[key]]=val;
+      });
+      STATE.data=data;
+      renderPreview();
+    }catch(err){alert('檔案解析失敗，請確認格式正確')}
+  };
+  reader.readAsBinaryString(file);
+}
+
+function useSampleData(){
+  STATE.data={
+    companyName:'NaturaBella 有機保養',productName:'玫瑰精華保濕日霜',
+    contactName:'林雅筑',contactEmail:'yachuh.lin@naturabella.com',
+    caseNote:'NB-2025-003',
+    productDesc:'含80%有機玫瑰萃取，主打保濕+修護雙效，無香精、無防腐劑，通過歐盟有機認證',
+    priceRange:'NT$1,200–1,800',
+    salesChannel:'品牌官網、Momo、PChome、實體通路（誠品、新光三越美妝區）',
+    competition:'面對韓系保養品牌（COSRX、IOPE）及本土品牌（DR.WU、茶樹）的強力競爭，消費者對「有機」訴求的信任度仍有分歧',
+    surveyGoal:'消費者是否願意為有機認證支付溢價？影響他們選擇保養品的關鍵因素是什麼？',
+    hypothesis:'25–40歲女性對有機成分的重視程度高於價格敏感度；IG是最主要的保養資訊來源',
+    decision:'定價策略調整、行銷渠道資源分配、下一季新品開發方向',
+    targetGender:'女性為主',targetAge:'25–44歲',
+    targetLocation:'台北/新北/台中為主',targetOccupation:'上班族、美妝愛好者',
+    targetIncome:'4–8萬',targetOther:'有使用保養品習慣，對成分標示有基本認知',
+    surveyPlatform:'Google表單',surveyUrl:'https://forms.gle/example123',
+    surveyCount:'500',deadline:'2025/05/15',
+    extraNotes:'請模擬台灣在地消費者語境，避免過於書面化的回答風格'
+  };
+  renderPreview();
+}
+
+function renderPreview(){
+  const d=STATE.data;
+  document.getElementById('preview-container').classList.remove('hidden');
+
+  // Basic
+  document.getElementById('preview-basic').innerHTML=renderFields([
+    ['公司/品牌',d.companyName],['產品/服務',d.productName],
+    ['聯絡人',d.contactName],['Email',d.contactEmail],
+    ['案件編號',d.caseNote],['定價範圍',d.priceRange],
+    ['銷售管道',d.salesChannel],['競爭狀況',d.competition]
+  ]);
+
+  // Goals
+  document.getElementById('preview-goals').innerHTML=renderFieldsColumn([
+    ['市調目標',d.surveyGoal],['驗證假設',d.hypothesis],['決策依據',d.decision],['產品描述',d.productDesc]
+  ]);
+
+  // Audience
+  document.getElementById('preview-audience').innerHTML=renderFields([
+    ['性別',d.targetGender],['年齡層',d.targetAge],
+    ['居住地',d.targetLocation],['職業',d.targetOccupation],
+    ['月收入',d.targetIncome],['其他特徵',d.targetOther]
+  ]);
+
+  // Survey
+  document.getElementById('preview-survey').innerHTML=renderFields([
+    ['問卷平台',d.surveyPlatform],['問卷連結',d.surveyUrl],
+    ['期望份數',d.surveyCount],['期望完成',d.deadline],
+    ['其他說明',d.extraNotes]
+  ]);
+
+  // Audience hint in step 2
+  const hints=[];
+  if(d.targetGender)hints.push('性別：'+d.targetGender);
+  if(d.targetAge)hints.push('年齡：'+d.targetAge);
+  if(d.targetLocation)hints.push('居住地：'+d.targetLocation);
+  if(hints.length){
+    const el=document.getElementById('audience-hint');
+    el.classList.remove('hidden');
+    document.getElementById('audience-hint-text').textContent='需求單已包含目標受眾資訊 — '+hints.join('、')+'。可參考下方設定條件。';
+  }
+
+  STATE.maxUnlocked=Math.max(STATE.maxUnlocked,1);
+}
+
+function renderFields(pairs){
+  return pairs.map(([label,val])=>`
+    <div class="preview-field">
+      <div class="preview-label">${label}</div>
+      <div class="preview-value ${val?'':'empty'}">${val||'（未填寫）'}</div>
+    </div>`).join('');
+}
+function renderFieldsColumn(pairs){
+  return pairs.map(([label,val])=>`
+    <div class="preview-field" style="margin-bottom:12px">
+      <div class="preview-label">${label}</div>
+      <div class="preview-value ${val?'':'empty'}">${val||'（未填寫）'}</div>
+    </div>`).join('');
+}
+
+// ===== STEP 3 — MODE & COUNT =====
+function selectMode(m){
+  STATE.mode=m;
+  document.getElementById('mode-ai').classList.toggle('selected',m==='ai');
+  document.getElementById('mode-expand').classList.toggle('selected',m==='expand');
+  document.getElementById('expand-settings').classList.toggle('hidden',m!=='expand');
+  document.getElementById('pure-settings').classList.toggle('hidden',m==='expand');
+  updateSummaryCard();
+}
+function selectCount(n){
+  STATE.count=n;
+  document.querySelectorAll('.count-btn').forEach(b=>b.classList.toggle('active',parseInt(b.dataset.n)===n));
+  document.getElementById('custom-count').value=n;
+  document.getElementById('count-warning').classList.toggle('hidden',n>=500);
+  renderChart();updateSummaryCard();
+}
+function onCustomCount(v){
+  const n=parseInt(v)||0;
+  STATE.count=n;
+  document.querySelectorAll('.count-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('count-warning').classList.toggle('hidden',n>=500);
+  renderChart();updateSummaryCard();
+}
+function updateAiCount(){
+  const r=parseInt(document.getElementById('real-count').value)||0;
+  const t=parseInt(document.getElementById('total-count-expand').value)||0;
+  STATE.realCount=r;STATE.totalCountExpand=t;
+  const ai=Math.max(0,t-r);
+  document.getElementById('ai-count-text').innerHTML='AI 需產出 <strong>'+ai+' 份</strong>';
+  updateSummaryCard();renderChart();
+}
+
+function toggleSchedule(){
+  const on=document.getElementById('tog-schedule').checked;
+  STATE.schedule=on;
+  document.getElementById('schedule-off-msg').classList.toggle('hidden',on);
+  document.getElementById('schedule-settings').classList.toggle('hidden',!on);
+  if(on)renderChart();
+  updateSummaryCard();
+}
+
+function renderChart(){
+  const on=document.getElementById('tog-schedule').checked;
+  if(!on)return;
+  const days=Math.min(7,parseInt(document.getElementById('sch-days').value)||7);
+  const total=STATE.mode==='expand'?STATE.totalCountExpand:STATE.count;
+  const perDay=Math.ceil(total/Math.max(1,parseInt(document.getElementById('sch-days').value)||7));
+  // slight variation
+  const vals=Array.from({length:days},(_,i)=>{
+    const v=perDay+Math.round((Math.random()-0.5)*perDay*0.3);
+    return Math.max(1,v);
+  });
+  const mx=Math.max(...vals);
+  const container=document.getElementById('schedule-chart');
+  container.innerHTML=vals.map((v,i)=>`
+    <div class="chart-bar-wrap">
+      <div class="chart-bar-val">${v}</div>
+      <div class="chart-bar" style="height:${Math.max(6,Math.round(v/mx*64))}px"></div>
+      <div class="chart-bar-label">Day${i+1}</div>
+    </div>`).join('');
+}
+
+function updateSummaryCard(){
+  const total=STATE.mode==='expand'?STATE.totalCountExpand:STATE.count;
+  const days=parseInt(document.getElementById('sch-days').value)||7;
+  const perDay=STATE.schedule?Math.ceil(total/days):0;
+  document.getElementById('summary-grid').innerHTML=`
+    <div class="summary-item"><div class="summary-item-label">模式</div><div class="summary-item-value">${STATE.mode==='ai'?'🤖 純 AI 模擬':'🔬 樣本擴增'}</div></div>
+    <div class="summary-item"><div class="summary-item-label">總份數</div><div class="summary-item-value text-gold">${total.toLocaleString()} 份</div></div>
+    <div class="summary-item"><div class="summary-item-label">執行方式</div><div class="summary-item-value">${STATE.schedule?'分天執行':'一次產出'}</div></div>
+    ${STATE.schedule?`<div class="summary-item"><div class="summary-item-label">每天約</div><div class="summary-item-value text-green">${perDay} 份</div></div>`:''}
+    ${STATE.mode==='expand'?`<div class="summary-item"><div class="summary-item-label">真實樣本</div><div class="summary-item-value">${STATE.realCount} 份</div></div>`:''}
+  `;
+}
+
+// ===== STEP 4 — PROMPTS =====
+function buildPrompts(){
+  const d=STATE.data;
+  const c=STATE.conditions;
+  const total=STATE.mode==='expand'?STATE.totalCountExpand:STATE.count;
+  const aiCount=STATE.mode==='expand'?total-STATE.realCount:total;
+
+  // Build conditions string
+  const condParts=[];
+  const condMap={gender:{random:'性別不限',female:'女性',male:'男性',nonbinary:'非二元性別'},
+    age:{random:'年齡不限','18-24':'18–24歲','25-34':'25–34歲','35-44':'35–44歲','45-54':'45–54歲','55+':'55歲以上'},
+    location:{random:'居住地不限',taipei:'台北市',newtaipei:'新北市',taoyuan:'桃園市',taichung:'台中市',tainan:'台南市',kaohsiung:'高雄市',other:'其他縣市'},
+    occupation:{random:'職業不限',student:'學生',office:'上班族',manager:'主管/經理',freelance:'自由業',entrepreneur:'創業者',homemaker:'家庭主婦/夫',retired:'退休人士'},
+    income:{random:'收入不限','<30k':'月收3萬以下','30-50k':'月收3–5萬','50-80k':'月收5–8萬','>80k':'月收8萬以上'},
+    education:{random:'學歷不限',highschool:'高中職',college:'大學/專科','master+':'碩士以上'}
+  };
+  Object.entries(c).forEach(([field,val])=>{
+    if(val!=='random' && condMap[field]?.[val])condParts.push(condMap[field][val]);
+  });
+  const randomVars=[];
+  if(STATE.toggles.personality||document.getElementById('tog-personality').checked)randomVars.push('個性特質');
+  if(STATE.toggles.lifestyle||document.getElementById('tog-lifestyle').checked)randomVars.push('生活型態');
+  if(STATE.toggles.shopping||document.getElementById('tog-shopping').checked)randomVars.push('消費習慣');
+  if(document.getElementById('tog-social').checked)randomVars.push('常用社群平台');
+  randomVars.push('姓名及背景細節');
+
+  const condStr=condParts.length?condParts.join('、')+'，':'';
+  const randomStr='其中'+randomVars.join('、')+'由你自由設定';
+
+  const urlLine=d.surveyUrl?`問卷連結：${d.surveyUrl}`:'（請貼入問卷內容或連結）';
+
+  // Persona desc
+  const personaParts=[];
+  if(c.gender!=='random')personaParts.push(condMap.gender[c.gender]);
+  if(c.age!=='random')personaParts.push(condMap.age[c.age]);
+  if(c.location!=='random')personaParts.push('住在'+condMap.location[c.location]);
+  if(c.occupation!=='random')personaParts.push(condMap.occupation[c.occupation]);
+  if(c.income!=='random')personaParts.push(condMap.income[c.income]);
+  if(c.education!=='random')personaParts.push(condMap.education[c.education]);
+  const personaDesc=personaParts.length?personaParts.join('、')+'的台灣消費者':'台灣消費者（年齡、性別、職業等由你自由設定）';
+
+  const purePrompt=`你是一位參與線上問卷調查的真實受訪者。
+
+【受訪者背景卡片】
+你目前是一位 ${personaDesc}。
+${d.companyName?`（本次調查對象品牌：${d.companyName}，產品：${d.productName||''}）`:''}
+
+【第一次填寫】
+請根據你的背景，以第一人稱語氣填寫以下問卷，每個問題給出具體且帶個人色彩的回答。
+${urlLine}
+
+【後續回答，共需產出 ${aiCount} 份】
+繼續模擬其他受訪者，每份請更換一位不同背景的受訪者。
+條件：${condStr}${randomStr}。
+每份之間請模擬真實填寫節奏，給出不同個性、語氣、意見傾向的回答。`;
+
+  const expandPrompt=`【樣本擴增指令】
+
+參考基礎：
+- 已有 ${STATE.realCount} 份真實受訪者回答
+- 需擴增至總 ${total} 份（AI 需產出 ${aiCount} 份）
+
+擴增原則：
+1. 分析真實資料中的意見傾向與常見回答模式
+2. 保持整體比例與真實樣本相符（不過度偏移）
+3. 加入合理的個人差異，避免所有回答雷同
+4. 用與真實樣本相近的語言風格與親密度
+
+受訪者條件：${condStr}${randomStr}。
+${urlLine}`;
+
+  const execPrompt=`請開始執行模擬，先告知：
+1. 你目前的受訪者設定（姓名、背景概述）
+2. 預計產出格式（每份如何呈現）
+
+然後依序完成全部 ${aiCount} 份問卷填寫。
+${STATE.schedule?`\n執行節奏：請在每份回答之間稍作停頓說明（Day 1 / 共${Math.ceil(total/(parseInt(document.getElementById('sch-days').value)||7))}份 等）。`:''}`;
+
+  document.getElementById('prompt-pure').textContent=purePrompt;
+  document.getElementById('prompt-expand').textContent=expandPrompt;
+  document.getElementById('prompt-exec').textContent=execPrompt;
+
+  // Show/hide tabs
+  const hasTabs=STATE.mode==='expand';
+  document.getElementById('prompt-tabs').classList.toggle('hidden',!hasTabs);
+
+  // Tags
+  const tagsEl=document.getElementById('summary-tags');
+  tagsEl.innerHTML=`
+    ${d.companyName?`<span class="tag tag-gold">${d.companyName}</span>`:''}
+    ${d.productName?`<span class="tag tag-purple">${d.productName}</span>`:''}
+    <span class="tag tag-gold">${STATE.mode==='ai'?'🤖 純 AI 模擬':'🔬 樣本擴增'}</span>
+    <span class="tag tag-green">${(STATE.mode==='expand'?total:STATE.count).toLocaleString()} 份</span>
+    <span class="tag tag-purple">${STATE.schedule?'分天執行':'一次產出'}</span>
+  `;
+
+  // Steps guide
+  const guideSteps= STATE.mode==='ai' ? [
+    {title:'複製純模擬 Prompt',desc:'點擊「複製 Prompt」，將完整 Prompt 複製到剪貼簿'},
+    {title:'貼入 AI 對話框',desc:'開啟 Claude 或 ChatGPT，貼上 Prompt 並送出'},
+    {title:'複製執行 Prompt',desc:'AI 確認受訪者設定後，再貼入「執行 Prompt」啟動批次產出'},
+    {title:'整理輸出結果',desc:'將 AI 產出的問卷回答整理為表格，匯入分析工具'}
+  ] : [
+    {title:'上傳真實樣本',desc:`將 ${STATE.realCount} 份真實回答整理為文字，貼入 AI 對話框前置說明`},
+    {title:'複製樣本擴增 Prompt',desc:'點擊「複製 Prompt」，貼入 Prompt 後緊接真實樣本資料'},
+    {title:'執行樣本擴增',desc:`AI 分析真實樣本模式後，產出 ${aiCount} 份風格相近但有差異的回答`},
+    {title:'驗證與整合',desc:'比對 AI 產出與真實樣本的一致性，整合為完整資料集'}
+  ];
+
+  document.getElementById('steps-guide').innerHTML=guideSteps.map((s,i)=>`
+    <div class="guide-step">
+      <div class="guide-step-num">${i+1}</div>
+      <div class="guide-step-title">${s.title}</div>
+      <div class="guide-step-desc">${s.desc}</div>
+    </div>`).join('');
+}
+
+function switchPromptTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+  document.getElementById('tab-pure').classList.toggle('active',tab==='pure');
+  document.getElementById('tab-expand').classList.toggle('active',tab==='expand');
+}
+
+async function copyPrompt(which){
+  let text='';
+  if(which==='pure')text=document.getElementById('prompt-pure').textContent;
+  else if(which==='expand')text=document.getElementById('prompt-expand').textContent;
+  else text=document.getElementById('prompt-exec').textContent;
+  try{
+    await navigator.clipboard.writeText(text);
+    const btnId={pure:'copy-pure-btn',expand:'copy-expand-btn',exec:'copy-exec-btn'}[which];
+    const btn=document.getElementById(btnId);
+    const orig=btn.textContent;
+    btn.textContent='✓ 已複製！';
+    btn.style.color='var(--green)';
+    setTimeout(()=>{btn.textContent=orig;btn.style.color='';},2000);
+  }catch(e){alert('請手動選取文字複製')}
+}
+
+function exportJSON(){
+  const payload={
+    exportedAt:new Date().toISOString(),
+    projectData:STATE.data,
+    conditions:STATE.conditions,
+    toggles:{
+      personality:document.getElementById('tog-personality').checked,
+      lifestyle:document.getElementById('tog-lifestyle').checked,
+      shopping:document.getElementById('tog-shopping').checked,
+      social:document.getElementById('tog-social').checked
+    },
+    mode:STATE.mode,
+    count:STATE.mode==='expand'?STATE.totalCountExpand:STATE.count,
+    realCount:STATE.mode==='expand'?STATE.realCount:null,
+    schedule:{
+      enabled:STATE.schedule,
+      days:parseInt(document.getElementById('sch-days').value)||7,
+      startHour:parseInt(document.getElementById('sch-start').value)||9,
+      endHour:parseInt(document.getElementById('sch-end').value)||22,
+      intervalMin:parseInt(document.getElementById('sch-min').value)||3,
+      intervalMax:parseInt(document.getElementById('sch-max').value)||15
+    }
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  const name=(STATE.data.caseNote||STATE.data.companyName||'survey')+'-settings.json';
+  a.download=name.replace(/[^a-zA-Z0-9一-鿿\-_.]/g,'');
+  a.click();
+}
+
+function resetAll(){
+  if(!confirm('確定要清空所有設定，新增另一個案件？'))return;
+  Object.assign(STATE,{
+    data:{},conditions:{gender:'random',age:'random',location:'random',occupation:'random',income:'random',education:'random'},
+    toggles:{personality:true,lifestyle:true,shopping:true,social:false},
+    mode:'ai',count:500,realCount:20,totalCountExpand:300,
+    schedule:false,schDays:7,schStart:9,schEnd:22,schMin:3,schMax:15,
+    currentStep:1,maxUnlocked:1
+  });
+  // Reset UI
+  document.getElementById('preview-container').classList.add('hidden');
+  document.getElementById('file-input').value='';
+  document.querySelectorAll('.chip-group').forEach(g=>{
+    g.querySelectorAll('.chip').forEach((c,i)=>{c.classList.toggle('selected',i===0)});
+  });
+  document.getElementById('tog-personality').checked=true;
+  document.getElementById('tog-lifestyle').checked=true;
+  document.getElementById('tog-shopping').checked=true;
+  document.getElementById('tog-social').checked=false;
+  document.getElementById('mode-ai').classList.add('selected');
+  document.getElementById('mode-expand').classList.remove('selected');
+  document.getElementById('expand-settings').classList.add('hidden');
+  document.getElementById('pure-settings').classList.remove('hidden');
+  selectCount(500);
+  document.getElementById('tog-schedule').checked=false;
+  toggleSchedule();
+  document.getElementById('audience-hint').classList.add('hidden');
+  goToStep(1);
+}
+</script>
+</body>
+</html>
