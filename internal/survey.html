@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@4.0.1/dist/pptxgen.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.7.0/dist/pptxgen.bundle.js"></script>
 <style>
 /* ===== RESET & BASE ===== */
 *{margin:0;padding:0;box-sizing:border-box}
@@ -1622,6 +1622,25 @@ function buildExportReportHTML(data){
           </div>
         </div>`;
       }).join('')}
+      <table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:11px;color:#374151">
+        <thead>
+          <tr style="background:#F3F4F6">
+            <th style="text-align:left;padding:6px;border:1px solid #E5E7EB">類別</th>
+            <th style="text-align:right;padding:6px;border:1px solid #E5E7EB">數量</th>
+            <th style="text-align:right;padding:6px;border:1px solid #E5E7EB">百分比</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${chartEntries(counts).map(([label,count])=>{
+            const pct=data.total?Math.round(count/data.total*100):0;
+            return `<tr>
+              <td style="padding:6px;border:1px solid #E5E7EB">${escapeHTML(label)}</td>
+              <td style="padding:6px;border:1px solid #E5E7EB;text-align:right">${count}</td>
+              <td style="padding:6px;border:1px solid #E5E7EB;text-align:right">${pct}%</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
     </section>`;
   return `
     <div style="width:860px;background:#fff;color:#111827;font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;padding:36px">
@@ -1688,8 +1707,12 @@ function addPptBarList(pptx,slide,title,counts,total,x,y,w){
 async function downloadQuickReportPPT(){
   const data=STATE.latestReportData;
   if(!data){alert('請先產生快速分析報表');return;}
-  if(typeof pptxgen==='undefined'){alert('PPT 匯出工具尚未載入，請重新整理後再試');return;}
-  const deck=new pptxgen();
+  const PptxGen = window.pptxgen || window.PptxGenJS || window.pptxgenjs;
+  if(typeof PptxGen==='undefined'){
+    alert('PPT 匯出工具尚未載入，請重新整理後再試；若仍失敗，請先下載 PDF。');
+    return;
+  }
+  const deck=new PptxGen();
   deck.defineLayout({name:'LAYOUT_WIDE',width:13.333,height:7.5});
   deck.layout='LAYOUT_WIDE';
   deck.author='iFLocus SurveyAI';
