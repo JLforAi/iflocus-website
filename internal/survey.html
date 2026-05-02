@@ -775,82 +775,116 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
 
 <!-- ===== STEP 4 ===== -->
 <div class="step-page" id="step-4">
-  <div class="page-title">產生 AI Prompt</div>
-  <div class="page-subtitle">複製以下 Prompt，貼入 Claude / ChatGPT 開始執行模擬</div>
+  <div class="page-title">選擇執行方式</div>
+  <div class="page-subtitle">根據你的需求選擇，兩種方式可同時使用</div>
 
   <div class="tag-row" id="summary-tags"></div>
 
-  <!-- TABS (for expand mode) -->
-  <div id="prompt-tabs" class="hidden">
-    <div class="tab-list">
-      <button class="tab-btn active" data-tab="pure" onclick="switchPromptTab('pure')">🤖 純模擬 Prompt</button>
-      <button class="tab-btn" data-tab="expand" onclick="switchPromptTab('expand')">🔬 樣本擴增 Prompt</button>
-    </div>
+  <!-- 執行方式選擇卡片 -->
+  <div class="mode-cards" style="margin-bottom:28px">
+    <button class="mode-card selected" id="exec-mode-prompt" onclick="selectExecMode('prompt')">
+      <div class="mode-card-icon">💬</div>
+      <div class="mode-card-title">AI 模擬回答</div>
+      <div class="mode-card-desc">複製 Prompt 貼到 Claude / ChatGPT，AI 產出模擬受訪者的文字回答</div>
+    </button>
+    <button class="mode-card" id="exec-mode-auto" onclick="selectExecMode('auto')">
+      <div class="mode-card-icon">🖥️</div>
+      <div class="mode-card-title">自動填寫表單</div>
+      <div class="mode-card-desc">執行 Python 腳本，真的自動點擊填寫 Google Form，後台出現真實筆數</div>
+    </button>
   </div>
 
-  <div class="card">
-    <div id="tab-pure" class="tab-pane active">
+  <!-- ── 路徑 A：AI 模擬回答 ── -->
+  <div id="section-prompt">
+    <div class="alert alert-info" style="margin-bottom:16px">
+      <span class="alert-icon">💬</span>
+      <span>複製下方 Prompt → 開啟 <strong>Claude.ai</strong> 或 <strong>ChatGPT</strong> → 貼上送出 → AI 產出模擬回答文字</span>
+    </div>
+
+    <!-- TABS (for expand mode) -->
+    <div id="prompt-tabs" class="hidden">
+      <div class="tab-list">
+        <button class="tab-btn active" data-tab="pure" onclick="switchPromptTab('pure')">🤖 純模擬 Prompt</button>
+        <button class="tab-btn" data-tab="expand" onclick="switchPromptTab('expand')">🔬 樣本擴增 Prompt</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>📝</span>模擬 Prompt</div>
+      <div id="tab-pure" class="tab-pane active">
+        <div class="copy-btn-wrap">
+          <button class="btn btn-outline btn-sm" id="copy-pure-btn" onclick="copyPrompt('pure')">📋 複製 Prompt</button>
+        </div>
+        <div class="prompt-box" id="prompt-pure"></div>
+      </div>
+      <div id="tab-expand" class="tab-pane">
+        <div class="copy-btn-wrap">
+          <button class="btn btn-outline btn-sm" id="copy-expand-btn" onclick="copyPrompt('expand')">📋 複製 Prompt</button>
+        </div>
+        <div class="prompt-box" id="prompt-expand"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>▶️</span>執行 Prompt（貼完第一段後再貼這段）</div>
       <div class="copy-btn-wrap">
-        <button class="btn btn-outline btn-sm" id="copy-pure-btn" onclick="copyPrompt('pure')">📋 複製 Prompt</button>
+        <button class="btn btn-outline btn-sm" id="copy-exec-btn" onclick="copyPrompt('exec')">📋 複製 Prompt</button>
       </div>
-      <div class="prompt-box" id="prompt-pure"></div>
+      <div class="prompt-box" id="prompt-exec"></div>
     </div>
-    <div id="tab-expand" class="tab-pane">
-      <div class="copy-btn-wrap">
-        <button class="btn btn-outline btn-sm" id="copy-expand-btn" onclick="copyPrompt('expand')">📋 複製 Prompt</button>
-      </div>
-      <div class="prompt-box" id="prompt-expand"></div>
+
+    <div class="card">
+      <div class="card-title"><span>📖</span>操作步驟</div>
+      <div class="steps-guide" id="steps-guide"></div>
     </div>
   </div>
 
-  <!-- EXECUTION PROMPT -->
-  <div class="card">
-    <div class="card-title"><span>▶️</span>執行 Prompt</div>
-    <div class="copy-btn-wrap">
-      <button class="btn btn-outline btn-sm" id="copy-exec-btn" onclick="copyPrompt('exec')">📋 複製 Prompt</button>
-    </div>
-    <div class="prompt-box" id="prompt-exec"></div>
-  </div>
-
-  <!-- STEPS GUIDE -->
-  <div class="card">
-    <div class="card-title"><span>📖</span>執行步驟說明</div>
-    <div class="steps-guide" id="steps-guide"></div>
-  </div>
-
-  <!-- 執行自動填寫 -->
-  <div class="card" id="auto-fill-card">
-    <div class="card-title"><span>🤖</span>執行自動填寫</div>
-
-    <div class="row">
-      <div class="form-row" style="flex:2">
-        <label class="form-label">問卷網址</label>
-        <input type="url" id="exec-form-url" class="form-input" placeholder="https://forms.gle/xxx 或 https://www.surveycake.com/s/xxx" oninput="updateExecCmd()">
-      </div>
-      <div class="form-row" style="flex:0 0 110px">
-        <label class="form-label">執行人數</label>
-        <input type="number" id="exec-people" class="form-input" min="1" max="10" value="3" oninput="updateExecCmd()">
-      </div>
+  <!-- ── 路徑 B：自動填寫表單 ── -->
+  <div id="section-auto" class="hidden">
+    <div class="alert alert-success" style="margin-bottom:16px">
+      <span class="alert-icon">🖥️</span>
+      <span>填入問卷網址 → 產生執行指令 → 同事各自在電腦貼上執行 → <strong>Google Form 後台出現真實筆數</strong></span>
     </div>
 
-    <div class="alert alert-info" id="exec-summary" style="margin-bottom:16px">
-      <span class="alert-icon">📊</span>
-      <span id="exec-summary-text">每人跑 <strong>—</strong> 份，共 <strong>—</strong> 份</span>
+    <div class="card">
+      <div class="card-title"><span>⚙️</span>執行設定</div>
+
+      <div class="row">
+        <div class="form-row" style="flex:2">
+          <label class="form-label">問卷網址</label>
+          <input type="url" id="exec-form-url" class="form-input"
+            placeholder="https://forms.gle/xxx 或 https://www.surveycake.com/s/xxx"
+            oninput="updateExecCmd()">
+        </div>
+        <div class="form-row" style="flex:0 0 110px">
+          <label class="form-label">執行人數</label>
+          <input type="number" id="exec-people" class="form-input" min="1" max="10" value="3" oninput="updateExecCmd()">
+        </div>
+      </div>
+
+      <div class="alert alert-info" style="margin-bottom:16px">
+        <span class="alert-icon">📊</span>
+        <span id="exec-summary-text">每人跑 <strong>—</strong> 份，共 <strong>—</strong> 份</span>
+      </div>
+
+      <div id="exec-cmds" class="hidden">
+        <div class="form-label" style="margin-bottom:10px">複製指令給每位同事（各自在自己電腦的終端機執行）</div>
+        <div id="exec-cmd-list"></div>
+        <div class="alert alert-warning mt-12">
+          <span class="alert-icon">📁</span>
+          <span>執行前請先下載設定檔，放到與 <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px">run_10_surveys.py</code> 同一個資料夾</span>
+        </div>
+        <div style="margin-top:12px">
+          <button class="btn btn-green" onclick="exportJSON()">⬇ 下載設定檔 JSON</button>
+        </div>
+      </div>
+      <div id="exec-no-url" class="text-muted text-sm mt-8">請先填入問卷網址以產生執行指令</div>
     </div>
 
-    <div id="exec-cmds" class="hidden">
-      <div class="form-label" style="margin-bottom:10px">複製指令給每位同事（各自在自己電腦執行）</div>
-      <div id="exec-cmd-list"></div>
-      <div class="alert alert-warning mt-12">
-        <span class="alert-icon">📁</span>
-        <span>執行前請先下載設定檔，放到與 <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px">run_10_surveys.py</code> 同一個資料夾</span>
-      </div>
-      <div style="margin-top:12px">
-        <button class="btn btn-green" onclick="exportJSON()">⬇ 下載設定檔 JSON</button>
-      </div>
+    <div class="card">
+      <div class="card-title"><span>📖</span>操作步驟</div>
+      <div class="steps-guide" id="steps-guide-auto"></div>
     </div>
-
-    <div id="exec-no-url" class="text-muted text-sm mt-8">請先填入問卷網址以產生執行指令</div>
   </div>
 
   <div class="step-nav" style="justify-content:flex-end;gap:12px">
@@ -1255,12 +1289,31 @@ ${STATE.schedule?`\n執行節奏：請在每份回答之間稍作停頓說明（
     {title:'驗證與整合',desc:'比對 AI 產出與真實樣本的一致性，整合為完整資料集'}
   ];
 
-  document.getElementById('steps-guide').innerHTML=guideSteps.map((s,i)=>`
+  const stepHTML = steps => steps.map((s,i)=>`
     <div class="guide-step">
       <div class="guide-step-num">${i+1}</div>
       <div class="guide-step-title">${s.title}</div>
       <div class="guide-step-desc">${s.desc}</div>
     </div>`).join('');
+
+  document.getElementById('steps-guide').innerHTML = stepHTML(guideSteps);
+
+  // 自動填寫路徑的步驟說明
+  const autoSteps = [
+    {title:'安裝執行環境',desc:'電腦安裝 Python + Playwright（每人只需裝一次，約 15 分鐘）'},
+    {title:'下載設定檔',desc:'點「下載設定檔 JSON」，與 run_10_surveys.py 放在同一資料夾'},
+    {title:'填入問卷網址',desc:'在下方輸入真實 Google Form 或 SurveyCake 網址'},
+    {title:'複製指令並執行',desc:'將產生的指令貼到電腦終端機，瀏覽器自動開啟填寫，Google Form 後台即出現筆數'},
+  ];
+  document.getElementById('steps-guide-auto').innerHTML = stepHTML(autoSteps);
+}
+
+function selectExecMode(mode){
+  document.getElementById('exec-mode-prompt').classList.toggle('selected', mode==='prompt');
+  document.getElementById('exec-mode-auto').classList.toggle('selected', mode==='auto');
+  document.getElementById('section-prompt').classList.toggle('hidden', mode!=='prompt');
+  document.getElementById('section-auto').classList.toggle('hidden', mode!=='auto');
+  if(mode==='auto') updateExecCmd();
 }
 
 function switchPromptTab(tab){
