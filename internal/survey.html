@@ -818,9 +818,43 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
     <div class="steps-guide" id="steps-guide"></div>
   </div>
 
+  <!-- 執行自動填寫 -->
+  <div class="card" id="auto-fill-card">
+    <div class="card-title"><span>🤖</span>執行自動填寫</div>
+
+    <div class="row">
+      <div class="form-row" style="flex:2">
+        <label class="form-label">問卷網址</label>
+        <input type="url" id="exec-form-url" class="form-input" placeholder="https://forms.gle/xxx 或 https://www.surveycake.com/s/xxx" oninput="updateExecCmd()">
+      </div>
+      <div class="form-row" style="flex:0 0 110px">
+        <label class="form-label">執行人數</label>
+        <input type="number" id="exec-people" class="form-input" min="1" max="10" value="3" oninput="updateExecCmd()">
+      </div>
+    </div>
+
+    <div class="alert alert-info" id="exec-summary" style="margin-bottom:16px">
+      <span class="alert-icon">📊</span>
+      <span id="exec-summary-text">每人跑 <strong>—</strong> 份，共 <strong>—</strong> 份</span>
+    </div>
+
+    <div id="exec-cmds" class="hidden">
+      <div class="form-label" style="margin-bottom:10px">複製指令給每位同事（各自在自己電腦執行）</div>
+      <div id="exec-cmd-list"></div>
+      <div class="alert alert-warning mt-12">
+        <span class="alert-icon">📁</span>
+        <span>執行前請先下載設定檔，放到與 <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px">run_10_surveys.py</code> 同一個資料夾</span>
+      </div>
+      <div style="margin-top:12px">
+        <button class="btn btn-green" onclick="exportJSON()">⬇ 下載設定檔 JSON</button>
+      </div>
+    </div>
+
+    <div id="exec-no-url" class="text-muted text-sm mt-8">請先填入問卷網址以產生執行指令</div>
+  </div>
+
   <div class="step-nav" style="justify-content:flex-end;gap:12px">
     <button class="btn btn-outline" onclick="goToStep(3)">← 上一步</button>
-    <button class="btn btn-ghost" onclick="exportJSON()">⬇ 匯出設定 JSON</button>
     <button class="btn btn-gold" onclick="resetAll()">＋ 新增另一個案件</button>
   </div>
 </div>
@@ -1189,6 +1223,11 @@ ${STATE.schedule?`\n執行節奏：請在每份回答之間稍作停頓說明（
   document.getElementById('prompt-expand').textContent=expandPrompt;
   document.getElementById('prompt-exec').textContent=execPrompt;
 
+  // 自動帶入問卷網址
+  const urlInput=document.getElementById('exec-form-url');
+  if(d.surveyUrl && !urlInput.value) urlInput.value=d.surveyUrl;
+  updateExecCmd();
+
   // Show/hide tabs
   const hasTabs=STATE.mode==='expand';
   document.getElementById('prompt-tabs').classList.toggle('hidden',!hasTabs);
@@ -1244,6 +1283,58 @@ async function copyPrompt(which){
     btn.style.color='var(--green)';
     setTimeout(()=>{btn.textContent=orig;btn.style.color='';},2000);
   }catch(e){alert('請手動選取文字複製')}
+}
+
+function updateExecCmd(){
+  const url = document.getElementById('exec-form-url').value.trim();
+  const people = parseInt(document.getElementById('exec-people').value) || 1;
+  const total = STATE.mode==='expand' ? STATE.totalCountExpand : STATE.count;
+  const perPerson = Math.ceil(total / people);
+  const remainder = total - perPerson * (people - 1);
+
+  document.getElementById('exec-summary-text').innerHTML =
+    `每人跑約 <strong>${perPerson}</strong> 份，共 <strong>${total}</strong> 份（${people} 人分擔）`;
+
+  if(!url){
+    document.getElementById('exec-cmds').classList.add('hidden');
+    document.getElementById('exec-no-url').classList.remove('hidden');
+    return;
+  }
+  document.getElementById('exec-cmds').classList.remove('hidden');
+  document.getElementById('exec-no-url').classList.add('hidden');
+
+  const caseId = STATE.data.caseNote || STATE.data.companyName || 'survey';
+  const jsonName = caseId.replace(/[^a-zA-Z0-9一-鿿\-_]/g,'') + '-settings.json';
+
+  const labels = ['同事 A','同事 B','同事 C','同事 D','同事 E',
+                  '同事 F','同事 G','同事 H','同事 I','同事 J'];
+  let html = '';
+  for(let i=0; i<people; i++){
+    const cnt = (i === people-1) ? remainder : perPerson;
+    const cmd = `python -X utf8 run_10_surveys.py --form-url "${url}" --count ${cnt} --config "${jsonName}"`;
+    html += `
+    <div style="margin-bottom:14px">
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:5px;font-weight:600">${labels[i] || '同事'+(i+1)}（${cnt} 份）</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <code style="flex:1;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);
+          border-radius:8px;padding:10px 14px;font-size:12px;color:#b0c4de;
+          font-family:'Courier New',monospace;word-break:break-all;line-height:1.6">${cmd}</code>
+        <button class="btn btn-outline btn-sm" style="flex-shrink:0"
+          onclick="copyCmd(this,'${cmd.replace(/'/g,"\\'")}')">📋</button>
+      </div>
+    </div>`;
+  }
+  document.getElementById('exec-cmd-list').innerHTML = html;
+}
+
+async function copyCmd(btn, text){
+  try{
+    await navigator.clipboard.writeText(text);
+    const orig = btn.textContent;
+    btn.textContent = '✓';
+    btn.style.color = 'var(--green)';
+    setTimeout(()=>{ btn.textContent=orig; btn.style.color=''; }, 2000);
+  }catch(e){ alert('請手動複製'); }
 }
 
 function exportJSON(){
