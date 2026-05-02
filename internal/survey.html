@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@4.0.1/dist/pptxgen.bundle.js"></script>
 <style>
 /* ===== RESET & BASE ===== */
 *{margin:0;padding:0;box-sizing:border-box}
@@ -1416,6 +1416,23 @@ function extractCodeBlock(text, lang){
   return match ? match[1].trim() : '';
 }
 
+function extractInlineCSV(text){
+  const lines=text.replace(/^\ufeff/,'').split(/\r?\n/);
+  const start=lines.findIndex(line=>line.trim().toLowerCase().startsWith('respondent_id,'));
+  if(start<0)return '';
+  const out=[];
+  for(let i=start;i<lines.length;i++){
+    const line=lines[i].trim();
+    if(!line)continue;
+    if(/^```/.test(line))break;
+    if(/^#{1,6}\s/.test(line))break;
+    if(/^analysis_brief\.md/i.test(line))break;
+    if(/^[-*]\s/.test(line))break;
+    out.push(lines[i]);
+  }
+  return out.join('\n').trim();
+}
+
 function triggerDownload(filename, content, mime, addBom=false){
   const body = addBom ? '\ufeff' + content : content;
   const blob = new Blob([body], {type:mime});
@@ -1458,7 +1475,11 @@ function csvToObjects(csv){
   const rows=parseCSV(csv);
   if(rows.length<2)return [];
   const headers=rows[0].map(h=>String(h||'').trim());
-  return rows.slice(1).map(row=>{
+  const respondentIdx=headers.findIndex(h=>h.toLowerCase()==='respondent_id');
+  return rows.slice(1).filter(row=>{
+    if(respondentIdx<0)return row.some(v=>String(v||'').trim());
+    return /^R\d+/i.test(String(row[respondentIdx]||'').trim());
+  }).map(row=>{
     const obj={};
     headers.forEach((h,i)=>{obj[h]=String(row[i]||'').trim();});
     return obj;
@@ -1720,8 +1741,8 @@ function downloadAiOutputFiles(){
   let csv = extractCodeBlock(raw, 'csv');
   let md = extractCodeBlock(raw, 'markdown') || extractCodeBlock(raw, 'md');
 
-  if(!csv && raw.toLowerCase().startsWith('respondent_id,')){
-    csv = raw;
+  if(!csv){
+    csv = extractInlineCSV(raw);
   }
 
   if(!csv){
