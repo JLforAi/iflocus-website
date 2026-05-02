@@ -58,6 +58,7 @@ jobs:
       DEFAULT_INTERVAL_MAX_SEC: ${{ vars.CLICK_INTERVAL_MAX_SEC }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       TZ: Asia/Taipei
 
     steps:
