@@ -813,15 +813,15 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
     </div>
 
     <div class="card">
-      <div class="card-title"><span>📁</span>建議輸出檔案</div>
+      <div class="card-title"><span>📁</span>下載檔案格式</div>
       <div class="always-on-card">
         <span class="icon">✅</span>
         <p><strong style="color:var(--green)">survey_responses.csv</strong>（UTF-8 CSV，主要分析資料）<br>
-        每列一位受訪者，欄位包含受訪者代號、姓名顯示、背景欄位與各題答案；下載後可直接交給 agent、Excel 或分析工具處理。</p>
+        Prompt 會要求 AI 直接建立可下載檔案。下載後可直接交給 agent、Excel 或分析工具處理。</p>
       </div>
       <div class="alert alert-info mt-12">
         <span class="alert-icon">📝</span>
-        <span>Prompt 也會要求附上 <strong>analysis_brief.md</strong>，記錄案件背景、欄位說明與分析提醒，方便下一個 agent 讀檔後快速接手。</span>
+        <span>同時產出 <strong>analysis_brief.md</strong>，記錄案件背景、欄位說明與分析提醒。若 AI 平台無法附檔，才會改用可複製內容作為備援。</span>
       </div>
     </div>
 
@@ -1227,10 +1227,11 @@ function buildPrompts(){
   const nameDisplay=c.nameDisplay || 'initial';
   const nameDisplayText=nameDisplayMap[nameDisplay] || nameDisplayMap.initial;
   const respondentIdRule=`每份回答都必須有唯一受訪者代號（例如 R001、R002、R003），不得重複。姓名顯示方式：${nameDisplayText}。${nameDisplay==='hidden'?'請不要在輸出中列出姓名，只列受訪者代號與背景摘要。':'請在每份回答開頭列出受訪者代號與姓名顯示。'}`;
-  const fileOutputRule=`請將最終結果整理成可下載檔案，優先提供：
+  const fileOutputRule=`請直接建立並提供兩個可下載附件，不要只把內容貼在對話中：
 1. survey_responses.csv：UTF-8 CSV 格式，每列代表一位受訪者。必要欄位包含 respondent_id、name_display、gender、age_range、location、occupation、income_range、education、personality、lifestyle、shopping_habit、social_platform、answer_summary，以及每一題的答案欄位（例如 q1、q2、q3...）。第一列必須是欄位名稱。
 2. analysis_brief.md：Markdown 格式，簡短記錄案件背景、生成條件、欄位說明、資料限制與後續分析建議。
-如果平台無法直接產生附件，請分別用 \`\`\`csv 與 \`\`\`markdown 程式碼區塊輸出完整內容，讓使用者可以直接另存為上述檔名。不要只輸出一般段落敘述。`;
+請在回答最後清楚列出「已建立可下載檔案：survey_responses.csv、analysis_brief.md」，讓使用者直接點擊下載。
+只有當你的平台無法建立附件時，才改用 \`\`\`csv 與 \`\`\`markdown 程式碼區塊輸出完整內容，並明確提示使用者需要另存為上述檔名。`;
   const randomVars=[];
   if(STATE.toggles.personality||document.getElementById('tog-personality').checked)randomVars.push('個性特質');
   if(STATE.toggles.lifestyle||document.getElementById('tog-lifestyle').checked)randomVars.push('生活型態');
@@ -1321,12 +1322,12 @@ ${STATE.schedule?`\n執行節奏：請在每份回答之間稍作停頓說明（
   const guideSteps= STATE.mode==='ai' ? [
     {title:'複製完整 Prompt',desc:'點擊金色「📋 複製完整 Prompt」按鈕，一次複製所有內容'},
     {title:'貼入 AI 對話框',desc:'開啟 Claude 或 ChatGPT，直接 Ctrl+V 貼上，按 Enter 送出'},
-    {title:'下載 CSV 與 Brief',desc:'取得 survey_responses.csv 與 analysis_brief.md，保留原始欄位與案件脈絡'},
+    {title:'下載檔案',desc:'直接下載 survey_responses.csv 與 analysis_brief.md，保留原始欄位與案件脈絡'},
     {title:'交給 agent 分析',desc:'將下載檔交給 agent 做統計、洞察萃取與報告整理'}
   ] : [
     {title:'上傳真實樣本',desc:`將 ${STATE.realCount} 份真實回答整理為文字，貼入 AI 對話框前置說明`},
     {title:'複製樣本擴增 Prompt',desc:'點擊「複製 Prompt」，貼入 Prompt 後緊接真實樣本資料'},
-    {title:'下載 CSV 與 Brief',desc:`AI 分析真實樣本模式後，產出 ${aiCount} 份並整理成可下載檔案`},
+    {title:'下載檔案',desc:`AI 分析真實樣本模式後，產出 ${aiCount} 份並建立可下載檔案`},
     {title:'交給 agent 分析',desc:'將下載檔交給 agent 驗證一致性、整合資料集並產出洞察'}
   ];
 
