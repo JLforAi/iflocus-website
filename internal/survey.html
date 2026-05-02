@@ -856,6 +856,25 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
       <div style="display:none" id="prompt-exec"></div>
     </div>
 
+    <!-- AI 輸出轉下載檔 -->
+    <div class="card">
+      <div class="card-title"><span>⬇</span>AI 回覆轉下載檔</div>
+      <div class="alert alert-info">
+        <span class="alert-icon">💡</span>
+        <span>如果 ChatGPT / Claude 沒有產生附件，複製 AI 回覆中的 CSV 與 Markdown 區塊，貼到下方後按按鈕，SurveyAI 會自動下載兩個檔案。</span>
+      </div>
+      <div class="form-row">
+        <label class="form-label">貼上 AI 回覆內容</label>
+        <textarea id="ai-output-raw" class="form-input" rows="8" placeholder="貼上包含 ```csv 與 ```markdown 的 AI 回覆內容"></textarea>
+        <div class="form-hint">可貼整段回覆；系統會自動找出 CSV 與 Markdown 區塊。</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-green" onclick="downloadAiOutputFiles()">⬇ 產生下載檔</button>
+        <button class="btn btn-outline" onclick="clearAiOutputBox()">清空</button>
+        <span id="ai-output-status" class="text-sm text-muted"></span>
+      </div>
+    </div>
+
     <!-- 操作流程圖 -->
     <div class="card">
       <div class="card-title"><span>📖</span>操作步驟</div>
@@ -1231,7 +1250,7 @@ function buildPrompts(){
 1. survey_responses.csv：UTF-8 CSV 格式，每列代表一位受訪者。必要欄位包含 respondent_id、name_display、gender、age_range、location、occupation、income_range、education、personality、lifestyle、shopping_habit、social_platform、answer_summary，以及每一題的答案欄位（例如 q1、q2、q3...）。第一列必須是欄位名稱。
 2. analysis_brief.md：Markdown 格式，簡短記錄案件背景、生成條件、欄位說明、資料限制與後續分析建議。
 請在回答最後清楚列出「已建立可下載檔案：survey_responses.csv、analysis_brief.md」，讓使用者直接點擊下載。
-只有當你的平台無法建立附件時，才改用 \`\`\`csv 與 \`\`\`markdown 程式碼區塊輸出完整內容，並明確提示使用者需要另存為上述檔名。`;
+只有當你的平台無法建立附件時，才改用 \`\`\`csv 與 \`\`\`markdown 程式碼區塊輸出完整內容，並明確提示使用者：可整段複製回 SurveyAI 的「AI 回覆轉下載檔」區塊，自動產生下載檔。`;
   const randomVars=[];
   if(STATE.toggles.personality||document.getElementById('tog-personality').checked)randomVars.push('個性特質');
   if(STATE.toggles.lifestyle||document.getElementById('tog-lifestyle').checked)randomVars.push('生活型態');
@@ -1322,12 +1341,12 @@ ${STATE.schedule?`\n執行節奏：請在每份回答之間稍作停頓說明（
   const guideSteps= STATE.mode==='ai' ? [
     {title:'複製完整 Prompt',desc:'點擊金色「📋 複製完整 Prompt」按鈕，一次複製所有內容'},
     {title:'貼入 AI 對話框',desc:'開啟 Claude 或 ChatGPT，直接 Ctrl+V 貼上，按 Enter 送出'},
-    {title:'下載檔案',desc:'直接下載 survey_responses.csv 與 analysis_brief.md，保留原始欄位與案件脈絡'},
+    {title:'產生下載檔',desc:'若 AI 沒有附件，將回覆貼回轉檔區，一鍵下載 CSV 與 Brief'},
     {title:'交給 agent 分析',desc:'將下載檔交給 agent 做統計、洞察萃取與報告整理'}
   ] : [
     {title:'上傳真實樣本',desc:`將 ${STATE.realCount} 份真實回答整理為文字，貼入 AI 對話框前置說明`},
     {title:'複製樣本擴增 Prompt',desc:'點擊「複製 Prompt」，貼入 Prompt 後緊接真實樣本資料'},
-    {title:'下載檔案',desc:`AI 分析真實樣本模式後，產出 ${aiCount} 份並建立可下載檔案`},
+    {title:'產生下載檔',desc:'若 AI 沒有附件，將回覆貼回轉檔區，一鍵下載 CSV 與 Brief'},
     {title:'交給 agent 分析',desc:'將下載檔交給 agent 驗證一致性、整合資料集並產出洞察'}
   ];
 
@@ -1386,6 +1405,63 @@ async function copyPrompt(which){
     btn.style.background='var(--green)';btn.style.color='#000';
     setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';btn.style.color='';},2000);
   }catch(e){alert('請手動選取文字複製')}
+}
+
+function extractCodeBlock(text, lang){
+  const re = new RegExp('```' + lang + '\\s*([\\s\\S]*?)```', 'i');
+  const match = text.match(re);
+  return match ? match[1].trim() : '';
+}
+
+function triggerDownload(filename, content, mime, addBom=false){
+  const body = addBom ? '\ufeff' + content : content;
+  const blob = new Blob([body], {type:mime});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+}
+
+function downloadAiOutputFiles(){
+  const raw = document.getElementById('ai-output-raw').value.trim();
+  const status = document.getElementById('ai-output-status');
+  if(!raw){
+    status.textContent='請先貼上 AI 回覆內容';
+    status.style.color='var(--orange)';
+    return;
+  }
+
+  let csv = extractCodeBlock(raw, 'csv');
+  let md = extractCodeBlock(raw, 'markdown') || extractCodeBlock(raw, 'md');
+
+  if(!csv && raw.toLowerCase().startsWith('respondent_id,')){
+    csv = raw;
+  }
+
+  if(!csv){
+    status.textContent='找不到 CSV 區塊，請確認 AI 回覆包含 ```csv';
+    status.style.color='var(--red)';
+    return;
+  }
+
+  if(!md){
+    md = '# analysis_brief.md\n\n（AI 回覆未提供 Markdown 摘要，請回到對話要求補上 analysis_brief.md。）\n';
+  }
+
+  triggerDownload('survey_responses.csv', csv, 'text/csv;charset=utf-8', true);
+  triggerDownload('analysis_brief.md', md, 'text/markdown;charset=utf-8');
+  status.textContent='已產生下載檔：survey_responses.csv、analysis_brief.md';
+  status.style.color='var(--green)';
+}
+
+function clearAiOutputBox(){
+  document.getElementById('ai-output-raw').value='';
+  const status = document.getElementById('ai-output-status');
+  status.textContent='';
+  status.style.color='';
 }
 
 function updateExecCmd(){
