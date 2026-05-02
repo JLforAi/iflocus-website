@@ -459,7 +459,7 @@ function checkPw(){
   }
 }
 document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw()});
-if(sessionStorage.getItem('guide-auth')==='1'){
+if(sessionStorage.getItem('guide-auth')==='1' || sessionStorage.getItem('survey-auth')==='1'){
   document.getElementById('pw-screen').style.display='none';
   document.getElementById('main').style.display='block';
 }
