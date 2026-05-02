@@ -182,6 +182,7 @@ button{cursor:pointer}
               <br><code>Settings -> Secrets and variables -> Actions</code>
               <ul>
                 <li>點 <code>Secrets</code> 分頁，新增一筆：Name 填 <code>CLICK_TARGET_URL</code>，Secret 填上方 Secrets 區塊產生的網址，例如 <code>https://iflocus.com/internal/clicks.html</code>。</li>
+                <li>若要 Telegram 通知，再新增兩筆 Secrets：Name 填 <code>TELEGRAM_BOT_TOKEN</code>，Secret 填 BotFather 給你的 bot token；Name 填 <code>TELEGRAM_CHAT_ID</code>，Secret 填你的 Telegram chat id。</li>
                 <li>點 <code>Variables</code> 分頁，照上方 Variables 區塊逐行新增。等號左邊填 Name，等號右邊填 Value。</li>
                 <li>範例：Name 填 <code>CLICK_QA_ENABLED</code>，Value 填 <code>false</code>；Name 填 <code>CLICK_COUNT_PER_RUN</code>，Value 填 <code>1</code>；Name 填 <code>CLICK_ALLOWED_HOSTS</code>，Value 填 <code>iflocus.com,www.iflocus.com,dailynowbuzz.com,www.dailynowbuzz.com</code>。</li>
                 <li>第一次測試建議先讓 <code>CLICK_QA_ENABLED=false</code>，用手動測試確認沒問題後，再回 Variables 把 Value 改成 <code>true</code>。</li>

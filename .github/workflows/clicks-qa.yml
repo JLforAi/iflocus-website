@@ -56,6 +56,8 @@ jobs:
       DEFAULT_END_HOUR: ${{ vars.CLICK_END_HOUR }}
       DEFAULT_INTERVAL_MIN_SEC: ${{ vars.CLICK_INTERVAL_MIN_SEC }}
       DEFAULT_INTERVAL_MAX_SEC: ${{ vars.CLICK_INTERVAL_MAX_SEC }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       TZ: Asia/Taipei
 
     steps:
@@ -141,3 +143,22 @@ jobs:
           name: clicks-qa-results
           path: internal/clicks_results/
           if-no-files-found: ignore
+
+      - name: Notify Telegram
+        if: always() && steps.gate.outputs.enabled == 'true'
+        shell: bash
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "Telegram secrets are not set; skipping notification."
+            exit 0
+          fi
+
+          curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -H "Content-Type: application/json" \
+            -d "$(python -c 'import json, os; print(json.dumps({"chat_id": os.environ["TELEGRAM_CHAT_ID"], "text": os.environ["MESSAGE"]}))')" \
+        env:
+          MESSAGE: |
+            iFLocus Clicks QA finished
+            Status: ${{ job.status }}
+            Target: ${{ steps.gate.outputs.target_url }}
+            Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
