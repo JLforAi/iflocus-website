@@ -99,18 +99,9 @@ html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC','Pin
 </head>
 <body>
 
-<div id="pw-screen">
-  <div class="pw-box">
-    <div class="pw-logo">📋</div>
-    <div class="pw-title">SurveyAI 操作指南</div>
-    <div class="pw-sub">請輸入內部密碼</div>
-    <input class="pw-input" type="password" id="pw-input" placeholder="••••••••••••">
-    <button class="pw-btn" onclick="checkPw()">進入</button>
-    <div class="pw-err" id="pw-err"></div>
-  </div>
-</div>
+<div id="pw-screen" style="display:none"></div>
 
-<div id="main" style="display:none">
+<div id="main">
 <div class="page-wrap">
 
   <div class="guide-header">
