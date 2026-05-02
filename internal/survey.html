@@ -1013,7 +1013,7 @@ const PASS = 'iflocus2025';
 function checkPassword(){
   const v = document.getElementById('pw-input').value;
   if(v===PASS){
-    sessionStorage.setItem('survey-auth','1');
+    localStorage.setItem('survey-auth','1');
     document.getElementById('pw-screen').style.display='none';
     document.getElementById('app-header').style.display='flex';
     document.getElementById('app-main').style.display='block';
@@ -1025,7 +1025,7 @@ function checkPassword(){
   }
 }
 document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkPassword()});
-if(sessionStorage.getItem('survey-auth')==='1'){
+if(localStorage.getItem('survey-auth')==='1'){
   document.getElementById('pw-screen').style.display='none';
   document.getElementById('app-header').style.display='flex';
   document.getElementById('app-main').style.display='block';
