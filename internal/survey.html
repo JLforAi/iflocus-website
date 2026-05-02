@@ -528,6 +528,24 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
   </div>
 
   <div class="card">
+    <div class="card-title"><span>🪪</span>名單識別設定</div>
+    <div class="always-on-card">
+      <span class="icon">✅</span>
+      <p><strong style="color:var(--green)">唯一代號 × 背景細節</strong>（永遠啟用）<br>
+      AI 將為每位受訪者建立唯一代號、職場背景、生活細節，讓回答更具個人色彩且方便後續追蹤。</p>
+    </div>
+    <div class="form-row mt-16">
+      <div class="form-label">姓名顯示方式</div>
+      <div class="chip-group" data-field="nameDisplay">
+        <div class="chip" data-val="full">完整姓名</div>
+        <div class="chip selected" data-val="initial">姓氏縮寫（王 O O）</div>
+        <div class="chip" data-val="hidden">不顯示</div>
+      </div>
+      <div class="form-hint">每份回答仍會保留唯一代號；此選項只控制輸出結果是否列出姓名。</div>
+    </div>
+  </div>
+
+  <div class="card">
     <div class="card-title"><span>🔒</span>固定條件（單選）</div>
 
     <div class="form-row">
@@ -639,13 +657,6 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
         <input type="checkbox" id="tog-social">
         <span class="toggle-thumb"></span>
       </label>
-    </div>
-
-    <div class="divider"></div>
-    <div class="always-on-card">
-      <span class="icon">✅</span>
-      <p><strong style="color:var(--green)">姓名 × 背景細節</strong>（永遠啟用）<br>
-      AI 將為每位受訪者設定真實台灣姓名、職場背景、生活細節，讓回答更具個人色彩。</p>
     </div>
   </div>
 
@@ -901,7 +912,8 @@ const STATE = {
   data: {},
   conditions: {
     gender:'random', age:'random', location:'random',
-    occupation:'random', income:'random', education:'random'
+    occupation:'random', income:'random', education:'random',
+    nameDisplay:'initial'
   },
   toggles: { personality:true, lifestyle:true, shopping:true, social:false },
   mode: 'ai',
@@ -1194,12 +1206,20 @@ function buildPrompts(){
   Object.entries(c).forEach(([field,val])=>{
     if(val!=='random' && condMap[field]?.[val])condParts.push(condMap[field][val]);
   });
+  const nameDisplayMap={
+    full:'完整姓名',
+    initial:'姓氏縮寫（例：王 O O）',
+    hidden:'不顯示姓名'
+  };
+  const nameDisplay=c.nameDisplay || 'initial';
+  const nameDisplayText=nameDisplayMap[nameDisplay] || nameDisplayMap.initial;
+  const respondentIdRule=`每份回答都必須有唯一受訪者代號（例如 R001、R002、R003），不得重複。姓名顯示方式：${nameDisplayText}。${nameDisplay==='hidden'?'請不要在輸出中列出姓名，只列受訪者代號與背景摘要。':'請在每份回答開頭列出受訪者代號與姓名顯示。'}`;
   const randomVars=[];
   if(STATE.toggles.personality||document.getElementById('tog-personality').checked)randomVars.push('個性特質');
   if(STATE.toggles.lifestyle||document.getElementById('tog-lifestyle').checked)randomVars.push('生活型態');
   if(STATE.toggles.shopping||document.getElementById('tog-shopping').checked)randomVars.push('消費習慣');
   if(document.getElementById('tog-social').checked)randomVars.push('常用社群平台');
-  randomVars.push('姓名及背景細節');
+  randomVars.push('背景細節');
 
   const condStr=condParts.length?condParts.join('、')+'，':'';
   const randomStr='其中'+randomVars.join('、')+'由你自由設定';
@@ -1229,6 +1249,7 @@ ${urlLine}
 【後續回答，共需產出 ${aiCount} 份】
 繼續模擬其他受訪者，每份請更換一位不同背景的受訪者。
 條件：${condStr}${randomStr}。
+輸出識別：${respondentIdRule}
 每份之間請模擬真實填寫節奏，給出不同個性、語氣、意見傾向的回答。`;
 
   const expandPrompt=`【樣本擴增指令】
@@ -1244,10 +1265,11 @@ ${urlLine}
 4. 用與真實樣本相近的語言風格與親密度
 
 受訪者條件：${condStr}${randomStr}。
+輸出識別：${respondentIdRule}
 ${urlLine}`;
 
   const execPrompt=`請開始執行模擬，先告知：
-1. 你目前的受訪者設定（姓名、背景概述）
+1. 你目前的受訪者設定（受訪者代號、${nameDisplay==='hidden'?'背景概述':'姓名顯示、背景概述'}）
 2. 預計產出格式（每份如何呈現）
 
 然後依序完成全部 ${aiCount} 份問卷填寫。
@@ -1278,9 +1300,9 @@ ${STATE.schedule?`\n執行節奏：請在每份回答之間稍作停頓說明（
 
   // Steps guide
   const guideSteps= STATE.mode==='ai' ? [
-    {title:'複製純模擬 Prompt',desc:'點擊「複製 Prompt」，將完整 Prompt 複製到剪貼簿'},
-    {title:'貼入 AI 對話框',desc:'開啟 Claude 或 ChatGPT，貼上 Prompt 並送出'},
-    {title:'複製執行 Prompt',desc:'AI 確認受訪者設定後，再貼入「執行 Prompt」啟動批次產出'},
+    {title:'複製完整 Prompt',desc:'點擊金色「📋 複製完整 Prompt」按鈕，一次複製所有內容'},
+    {title:'貼入 AI 對話框',desc:'開啟 Claude 或 ChatGPT，直接 Ctrl+V 貼上，按 Enter 送出'},
+    {title:'AI 批次產出回答',desc:`AI 自動產出 ${STATE.count} 份模擬受訪者的完整問卷回答`},
     {title:'整理輸出結果',desc:'將 AI 產出的問卷回答整理為表格，匯入分析工具'}
   ] : [
     {title:'上傳真實樣本',desc:`將 ${STATE.realCount} 份真實回答整理為文字，貼入 AI 對話框前置說明`},
@@ -1403,6 +1425,7 @@ function exportJSON(){
     exportedAt:new Date().toISOString(),
     projectData:STATE.data,
     conditions:STATE.conditions,
+    nameDisplay:STATE.conditions.nameDisplay || 'initial',
     toggles:{
       personality:document.getElementById('tog-personality').checked,
       lifestyle:document.getElementById('tog-lifestyle').checked,
@@ -1432,7 +1455,7 @@ function exportJSON(){
 function resetAll(){
   if(!confirm('確定要清空所有設定，新增另一個案件？'))return;
   Object.assign(STATE,{
-    data:{},conditions:{gender:'random',age:'random',location:'random',occupation:'random',income:'random',education:'random'},
+    data:{},conditions:{gender:'random',age:'random',location:'random',occupation:'random',income:'random',education:'random',nameDisplay:'initial'},
     toggles:{personality:true,lifestyle:true,shopping:true,social:false},
     mode:'ai',count:500,realCount:20,totalCountExpand:300,
     schedule:false,schDays:7,schStart:9,schEnd:22,schMin:3,schMax:15,
@@ -1442,7 +1465,8 @@ function resetAll(){
   document.getElementById('preview-container').classList.add('hidden');
   document.getElementById('file-input').value='';
   document.querySelectorAll('.chip-group').forEach(g=>{
-    g.querySelectorAll('.chip').forEach((c,i)=>{c.classList.toggle('selected',i===0)});
+    const defaultVal = STATE.conditions[g.dataset.field];
+    g.querySelectorAll('.chip').forEach(c=>{c.classList.toggle('selected',c.dataset.val===defaultVal)});
   });
   document.getElementById('tog-personality').checked=true;
   document.getElementById('tog-lifestyle').checked=true;
