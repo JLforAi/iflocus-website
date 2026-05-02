@@ -801,38 +801,38 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
       <span>複製下方 Prompt → 開啟 <strong>Claude.ai</strong> 或 <strong>ChatGPT</strong> → 貼上送出 → AI 產出模擬回答文字</span>
     </div>
 
-    <!-- TABS (for expand mode) -->
+    <!-- 樣本擴增模式 tab（只在 expand 模式顯示）-->
     <div id="prompt-tabs" class="hidden">
       <div class="tab-list">
-        <button class="tab-btn active" data-tab="pure" onclick="switchPromptTab('pure')">🤖 純模擬 Prompt</button>
-        <button class="tab-btn" data-tab="expand" onclick="switchPromptTab('expand')">🔬 樣本擴增 Prompt</button>
+        <button class="tab-btn active" data-tab="pure" onclick="switchPromptTab('pure')">🤖 純模擬</button>
+        <button class="tab-btn" data-tab="expand" onclick="switchPromptTab('expand')">🔬 樣本擴增</button>
       </div>
     </div>
 
+    <!-- 單一完整 Prompt 卡片 -->
     <div class="card">
-      <div class="card-title"><span>📝</span>模擬 Prompt</div>
-      <div id="tab-pure" class="tab-pane active">
-        <div class="copy-btn-wrap">
-          <button class="btn btn-outline btn-sm" id="copy-pure-btn" onclick="copyPrompt('pure')">📋 複製 Prompt</button>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="font-size:16px;font-weight:700;color:var(--text)">完整 Prompt</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:2px">複製後直接貼到 Claude 或 ChatGPT，一次完成</div>
         </div>
-        <div class="prompt-box" id="prompt-pure"></div>
+        <button class="btn btn-gold" id="copy-all-btn" onclick="copyPrompt('all')" style="flex-shrink:0">
+          📋 複製完整 Prompt
+        </button>
+      </div>
+
+      <div id="tab-pure" class="tab-pane active">
+        <div class="prompt-box" id="prompt-pure" style="max-height:420px"></div>
       </div>
       <div id="tab-expand" class="tab-pane">
-        <div class="copy-btn-wrap">
-          <button class="btn btn-outline btn-sm" id="copy-expand-btn" onclick="copyPrompt('expand')">📋 複製 Prompt</button>
-        </div>
-        <div class="prompt-box" id="prompt-expand"></div>
+        <div class="prompt-box" id="prompt-expand" style="max-height:420px"></div>
       </div>
+
+      <!-- 隱藏備用欄位 -->
+      <div style="display:none" id="prompt-exec"></div>
     </div>
 
-    <div class="card">
-      <div class="card-title"><span>▶️</span>執行 Prompt（貼完第一段後再貼這段）</div>
-      <div class="copy-btn-wrap">
-        <button class="btn btn-outline btn-sm" id="copy-exec-btn" onclick="copyPrompt('exec')">📋 複製 Prompt</button>
-      </div>
-      <div class="prompt-box" id="prompt-exec"></div>
-    </div>
-
+    <!-- 操作流程圖 -->
     <div class="card">
       <div class="card-title"><span>📖</span>操作步驟</div>
       <div class="steps-guide" id="steps-guide"></div>
@@ -1324,17 +1324,25 @@ function switchPromptTab(tab){
 
 async function copyPrompt(which){
   let text='';
-  if(which==='pure')text=document.getElementById('prompt-pure').textContent;
-  else if(which==='expand')text=document.getElementById('prompt-expand').textContent;
-  else text=document.getElementById('prompt-exec').textContent;
+  const isExpand = document.getElementById('tab-expand')?.classList.contains('active');
+  if(which==='all'){
+    // 合併主 Prompt + 執行 Prompt 為一份
+    const main = isExpand
+      ? document.getElementById('prompt-expand').textContent
+      : document.getElementById('prompt-pure').textContent;
+    const exec = document.getElementById('prompt-exec').textContent;
+    text = main + (exec ? '\n\n' + exec : '');
+  } else if(which==='pure')  text=document.getElementById('prompt-pure').textContent;
+  else if(which==='expand')  text=document.getElementById('prompt-expand').textContent;
+  else                       text=document.getElementById('prompt-exec').textContent;
   try{
     await navigator.clipboard.writeText(text);
-    const btnId={pure:'copy-pure-btn',expand:'copy-expand-btn',exec:'copy-exec-btn'}[which];
+    const btnId={all:'copy-all-btn',pure:'copy-pure-btn',expand:'copy-expand-btn',exec:'copy-exec-btn'}[which];
     const btn=document.getElementById(btnId);
-    const orig=btn.textContent;
-    btn.textContent='✓ 已複製！';
-    btn.style.color='var(--green)';
-    setTimeout(()=>{btn.textContent=orig;btn.style.color='';},2000);
+    const orig=btn.innerHTML;
+    btn.innerHTML='✓ 已複製！';
+    btn.style.background='var(--green)';btn.style.color='#000';
+    setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';btn.style.color='';},2000);
   }catch(e){alert('請手動選取文字複製')}
 }
 
