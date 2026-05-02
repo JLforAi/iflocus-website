@@ -1,0 +1,143 @@
+name: iFLocus Clicks QA
+
+on:
+  schedule:
+    # UTC 01:23 = Taiwan 09:23. GitHub schedules may be delayed.
+    - cron: "23 1 * * *"
+  workflow_dispatch:
+    inputs:
+      enabled:
+        description: "Run now? Type true to execute."
+        required: true
+        default: "false"
+      url:
+        description: "Owned or authorized URL. Leave empty to use CLICK_TARGET_URL secret."
+        required: false
+        default: ""
+      count:
+        description: "Visits/clicks for this run"
+        required: false
+        default: "1"
+      selector:
+        description: "Optional CSS selector to click after page load"
+        required: false
+        default: ""
+      start_hour:
+        description: "Allowed start hour in runner timezone"
+        required: false
+        default: "0"
+      end_hour:
+        description: "Allowed end hour in runner timezone"
+        required: false
+        default: "23"
+      interval_min_sec:
+        description: "Minimum interval between visits"
+        required: false
+        default: "30"
+      interval_max_sec:
+        description: "Maximum interval between visits"
+        required: false
+        default: "90"
+
+jobs:
+  clicks-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: read
+
+    env:
+      CLICK_ENABLED: ${{ vars.CLICK_QA_ENABLED }}
+      SECRET_TARGET_URL: ${{ secrets.CLICK_TARGET_URL }}
+      DEFAULT_COUNT: ${{ vars.CLICK_COUNT_PER_RUN }}
+      DEFAULT_SELECTOR: ${{ vars.CLICK_SELECTOR }}
+      DEFAULT_ALLOWED_HOSTS: ${{ vars.CLICK_ALLOWED_HOSTS }}
+      DEFAULT_START_HOUR: ${{ vars.CLICK_START_HOUR }}
+      DEFAULT_END_HOUR: ${{ vars.CLICK_END_HOUR }}
+      DEFAULT_INTERVAL_MIN_SEC: ${{ vars.CLICK_INTERVAL_MIN_SEC }}
+      DEFAULT_INTERVAL_MAX_SEC: ${{ vars.CLICK_INTERVAL_MAX_SEC }}
+      TZ: Asia/Taipei
+
+    steps:
+      - name: Decide whether to run
+        id: gate
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            if [ "${{ inputs.enabled }}" != "true" ]; then
+              echo "enabled=false" >> "$GITHUB_OUTPUT"
+              echo "Manual run skipped because enabled is not true."
+              exit 0
+            fi
+          elif [ "$CLICK_ENABLED" != "true" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "Scheduled run skipped because CLICK_QA_ENABLED is not true."
+            exit 0
+          fi
+
+          TARGET_URL="${{ inputs.url }}"
+          if [ -z "$TARGET_URL" ]; then TARGET_URL="$SECRET_TARGET_URL"; fi
+          if [ -z "$TARGET_URL" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "Run skipped because no target URL was provided."
+            exit 0
+          fi
+
+          echo "enabled=true" >> "$GITHUB_OUTPUT"
+          echo "target_url=$TARGET_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout repo
+        if: steps.gate.outputs.enabled == 'true'
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        if: steps.gate.outputs.enabled == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Playwright
+        if: steps.gate.outputs.enabled == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Run Clicks QA
+        if: steps.gate.outputs.enabled == 'true'
+        shell: bash
+        run: |
+          COUNT="${{ inputs.count }}"
+          SELECTOR="${{ inputs.selector }}"
+          START_HOUR="${{ inputs.start_hour }}"
+          END_HOUR="${{ inputs.end_hour }}"
+          INTERVAL_MIN="${{ inputs.interval_min_sec }}"
+          INTERVAL_MAX="${{ inputs.interval_max_sec }}"
+          ALLOWED_HOSTS="${DEFAULT_ALLOWED_HOSTS:-iflocus.com,www.iflocus.com}"
+
+          if [ -z "$COUNT" ]; then COUNT="${DEFAULT_COUNT:-1}"; fi
+          if [ -z "$SELECTOR" ]; then SELECTOR="${DEFAULT_SELECTOR:-}"; fi
+          if [ -z "$START_HOUR" ]; then START_HOUR="${DEFAULT_START_HOUR:-0}"; fi
+          if [ -z "$END_HOUR" ]; then END_HOUR="${DEFAULT_END_HOUR:-23}"; fi
+          if [ -z "$INTERVAL_MIN" ]; then INTERVAL_MIN="${DEFAULT_INTERVAL_MIN_SEC:-30}"; fi
+          if [ -z "$INTERVAL_MAX" ]; then INTERVAL_MAX="${DEFAULT_INTERVAL_MAX_SEC:-90}"; fi
+
+          python -X utf8 internal/clicks_runner.py \
+            --url "${{ steps.gate.outputs.target_url }}" \
+            --count "$COUNT" \
+            --selector "$SELECTOR" \
+            --start-hour "$START_HOUR" \
+            --end-hour "$END_HOUR" \
+            --interval-min-sec "$INTERVAL_MIN" \
+            --interval-max-sec "$INTERVAL_MAX" \
+            --allowed-hosts "$ALLOWED_HOSTS" \
+            --headless \
+            --job-id "gha-clicks-$(date -u +%Y%m%d-%H%M%S)"
+
+      - name: Upload click report
+        if: always() && steps.gate.outputs.enabled == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: clicks-qa-results
+          path: internal/clicks_results/
+          if-no-files-found: ignore

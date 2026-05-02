@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Test artifacts & run results
+internal/survey_results/
+internal/survey_results_*.csv
+internal/clicks_results/
+internal/*.png
+internal/.survey_auto_state.json
+
+# Claude internal
+.claude/
+
+# Large source files & backups
+LOGO/
+backups/
+
+# Internal docs not for deployment
+hidden-pages-ppt-classification.md
+change-log.md

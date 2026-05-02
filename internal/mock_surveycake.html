@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>SurveyAI 測試問卷（SurveyCake 結構模擬）</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:#f5f5f5;min-height:100vh}
+.surveycake-wrapper{max-width:680px;margin:0 auto;padding:20px 16px}
+.sc-header{background:#00bcd4;color:#fff;border-radius:12px 12px 0 0;padding:28px 24px}
+.sc-header h1{font-size:22px;font-weight:600;margin-bottom:6px}
+.sc-header p{font-size:14px;opacity:.85}
+.sc-progress{background:#e0e0e0;height:6px;border-radius:3px;margin:0 0 20px}
+.sc-progress-bar{background:#00bcd4;height:6px;border-radius:3px;transition:width .3s}
+.sc-question{background:#fff;border-radius:8px;padding:24px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.sc-question-title{font-size:15px;font-weight:500;color:#333;margin-bottom:16px;line-height:1.5}
+.sc-required{color:#f44336;margin-left:3px}
+/* 短答 */
+.sc-input{width:100%;border:1px solid #e0e0e0;border-radius:6px;padding:10px 14px;font-size:14px;outline:none;transition:border .2s}
+.sc-input:focus{border-color:#00bcd4}
+textarea.sc-input{min-height:88px;resize:vertical}
+/* 單選 */
+.sc-option{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid #e0e0e0;border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .15s}
+.sc-option:hover{border-color:#00bcd4;background:#f0fbfc}
+.sc-option.selected{border-color:#00bcd4;background:#e0f7fa}
+.sc-radio,.sc-checkbox{width:18px;height:18px;border:2px solid #bdbdbd;border-radius:50%;flex-shrink:0;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.sc-checkbox{border-radius:4px}
+.sc-option.selected .sc-radio,.sc-option.selected .sc-checkbox{border-color:#00bcd4;background:#00bcd4}
+.sc-option.selected .sc-radio::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+.sc-option.selected .sc-checkbox::after{content:'✓';color:#fff;font-size:11px;font-weight:700}
+.sc-option-label{font-size:14px;color:#424242}
+/* 評分星星 */
+.sc-stars{display:flex;gap:8px;margin-top:4px}
+.sc-star{font-size:32px;color:#e0e0e0;cursor:pointer;transition:color .15s;user-select:none}
+.sc-star.lit{color:#ffc107}
+/* NPS */
+.sc-nps{display:flex;gap:4px;flex-wrap:wrap}
+.sc-nps-btn{width:44px;height:44px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer;font-size:13px;font-weight:500;color:#616161;transition:all .15s}
+.sc-nps-btn:hover{border-color:#00bcd4;color:#00bcd4}
+.sc-nps-btn.selected{background:#00bcd4;border-color:#00bcd4;color:#fff}
+.sc-nps-labels{display:flex;justify-content:space-between;font-size:11px;color:#9e9e9e;margin-top:6px}
+/* 下拉 */
+.sc-select{width:100%;border:1px solid #e0e0e0;border-radius:6px;padding:10px 14px;font-size:14px;background:#fff;cursor:pointer;outline:none}
+.sc-select:focus{border-color:#00bcd4}
+/* 滑桿 */
+.sc-slider{width:100%;accent-color:#00bcd4;margin:12px 0 4px}
+.sc-slider-labels{display:flex;justify-content:space-between;font-size:12px;color:#9e9e9e}
+/* 導航 */
+.sc-nav{display:flex;justify-content:flex-end;gap:12px;margin-top:24px}
+.sc-btn{padding:11px 28px;border-radius:6px;font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all .2s}
+.sc-btn-primary{background:#00bcd4;color:#fff}
+.sc-btn-primary:hover{background:#00acc1}
+.sc-btn-secondary{background:#fff;border:1px solid #e0e0e0;color:#616161}
+/* 完成畫面 */
+.sc-done{background:#fff;border-radius:12px;padding:48px 24px;text-align:center}
+.sc-done-icon{font-size:52px;margin-bottom:16px}
+.sc-done h2{font-size:20px;color:#212121;margin-bottom:8px}
+.sc-done p{font-size:14px;color:#757575}
+</style>
+</head>
+<body>
+<div class="surveycake-wrapper" id="surveycake">
+  <div class="sc-header">
+    <h1>有機保養品消費意願調查</h1>
+    <p>幫助我們了解您的購買習慣與偏好</p>
+  </div>
+  <div class="sc-progress"><div class="sc-progress-bar" id="progress-bar" style="width:0%"></div></div>
+
+  <!-- Q1: 短答 -->
+  <div class="sc-question" id="q1">
+    <div class="sc-question-title">1. 您的姓名<span class="sc-required">*</span></div>
+    <input type="text" class="sc-input" placeholder="請輸入您的姓名" id="q1-input">
+  </div>
+
+  <!-- Q2: Email -->
+  <div class="sc-question" id="q2">
+    <div class="sc-question-title">2. 聯絡 Email</div>
+    <input type="email" class="sc-input" placeholder="example@email.com" id="q2-input">
+  </div>
+
+  <!-- Q3: 單選 -->
+  <div class="sc-question" id="q3">
+    <div class="sc-question-title">3. 您的性別<span class="sc-required">*</span></div>
+    <div onclick="selectRadio('q3',this)" class="sc-option" data-val="female"><div class="sc-radio"></div><span class="sc-option-label">女性</span></div>
+    <div onclick="selectRadio('q3',this)" class="sc-option" data-val="male"><div class="sc-radio"></div><span class="sc-option-label">男性</span></div>
+    <div onclick="selectRadio('q3',this)" class="sc-option" data-val="other"><div class="sc-radio"></div><span class="sc-option-label">其他</span></div>
+  </div>
+
+  <!-- Q4: 多選 -->
+  <div class="sc-question" id="q4">
+    <div class="sc-question-title">4. 您購買保養品時參考哪些資訊來源？（可複選）</div>
+    <div onclick="toggleCheck('q4',this)" class="sc-option" data-val="ig"><div class="sc-checkbox"></div><span class="sc-option-label">Instagram / 網紅推薦</span></div>
+    <div onclick="toggleCheck('q4',this)" class="sc-option" data-val="yt"><div class="sc-checkbox"></div><span class="sc-option-label">YouTube 開箱評測</span></div>
+    <div onclick="toggleCheck('q4',this)" class="sc-option" data-val="friend"><div class="sc-checkbox"></div><span class="sc-option-label">朋友/家人推薦</span></div>
+    <div onclick="toggleCheck('q4',this)" class="sc-option" data-val="brand"><div class="sc-checkbox"></div><span class="sc-option-label">品牌官方資訊</span></div>
+    <div onclick="toggleCheck('q4',this)" class="sc-option" data-val="review"><div class="sc-checkbox"></div><span class="sc-option-label">電商評論</span></div>
+  </div>
+
+  <!-- Q5: 星星評分 -->
+  <div class="sc-question" id="q5">
+    <div class="sc-question-title">5. 您對有機保養品的整體滿意度</div>
+    <div class="sc-stars" id="stars-q5">
+      <span class="sc-star" data-val="1" onmouseover="hoverStar('q5',1)" onmouseout="unhoverStar('q5')" onclick="selectStar('q5',1)">★</span>
+      <span class="sc-star" data-val="2" onmouseover="hoverStar('q5',2)" onmouseout="unhoverStar('q5')" onclick="selectStar('q5',2)">★</span>
+      <span class="sc-star" data-val="3" onmouseover="hoverStar('q5',3)" onmouseout="unhoverStar('q5')" onclick="selectStar('q5',3)">★</span>
+      <span class="sc-star" data-val="4" onmouseover="hoverStar('q5',4)" onmouseout="unhoverStar('q5')" onclick="selectStar('q5',4)">★</span>
+      <span class="sc-star" data-val="5" onmouseover="hoverStar('q5',5)" onmouseout="unhoverStar('q5')" onclick="selectStar('q5',5)">★</span>
+    </div>
+  </div>
+
+  <!-- Q6: NPS -->
+  <div class="sc-question" id="q6">
+    <div class="sc-question-title">6. 您有多大意願向朋友推薦有機保養品？</div>
+    <div class="sc-nps" id="nps-q6">
+      <button class="sc-nps-btn" data-val="0" onclick="selectNps('q6',0)">0</button>
+      <button class="sc-nps-btn" data-val="1" onclick="selectNps('q6',1)">1</button>
+      <button class="sc-nps-btn" data-val="2" onclick="selectNps('q6',2)">2</button>
+      <button class="sc-nps-btn" data-val="3" onclick="selectNps('q6',3)">3</button>
+      <button class="sc-nps-btn" data-val="4" onclick="selectNps('q6',4)">4</button>
+      <button class="sc-nps-btn" data-val="5" onclick="selectNps('q6',5)">5</button>
+      <button class="sc-nps-btn" data-val="6" onclick="selectNps('q6',6)">6</button>
+      <button class="sc-nps-btn" data-val="7" onclick="selectNps('q6',7)">7</button>
+      <button class="sc-nps-btn" data-val="8" onclick="selectNps('q6',8)">8</button>
+      <button class="sc-nps-btn" data-val="9" onclick="selectNps('q6',9)">9</button>
+      <button class="sc-nps-btn" data-val="10" onclick="selectNps('q6',10)">10</button>
+    </div>
+    <div class="sc-nps-labels"><span>完全不推薦</span><span>非常推薦</span></div>
+  </div>
+
+  <!-- Q7: 下拉 -->
+  <div class="sc-question" id="q7">
+    <div class="sc-question-title">7. 您每月的保養品預算</div>
+    <select class="sc-select" id="q7-select">
+      <option value="">請選擇</option>
+      <option value="500-">500元以下</option>
+      <option value="500-1000">500–1,000元</option>
+      <option value="1000-2000">1,000–2,000元</option>
+      <option value="2000+">2,000元以上</option>
+    </select>
+  </div>
+
+  <!-- Q8: 滑桿 -->
+  <div class="sc-question" id="q8">
+    <div class="sc-question-title">8. 相較於一般保養品，您願意為有機保養品多支付多少溢價？</div>
+    <input type="range" class="sc-slider" id="q8-slider" min="0" max="100" value="20" step="5"
+           oninput="document.getElementById('q8-val').textContent=this.value+'%'">
+    <div class="sc-slider-labels"><span>0%</span><span id="q8-val">20%</span><span>100%</span></div>
+  </div>
+
+  <!-- Q9: 段落 -->
+  <div class="sc-question" id="q9">
+    <div class="sc-question-title">9. 您對有機保養品有什麼額外建議或想法？</div>
+    <textarea class="sc-input" placeholder="請自由填寫..." id="q9-input" rows="4"></textarea>
+  </div>
+
+  <div class="sc-nav">
+    <button class="sc-btn sc-btn-primary" onclick="submitSurveyCake()">送出問卷</button>
+  </div>
+
+  <div id="sc-done" style="display:none">
+    <div class="sc-done">
+      <div class="sc-done-icon">🎉</div>
+      <h2>感謝您的填寫！</h2>
+      <p>您的回答已成功送出，非常感謝您的參與。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const starState={};const radioState={};const checkState={};
+function selectRadio(qid,el){
+  radioState[qid]=el.dataset.val;
+  el.closest('.sc-question').querySelectorAll('.sc-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');updateProgress();
+}
+function toggleCheck(qid,el){
+  el.classList.toggle('selected');
+  if(!checkState[qid])checkState[qid]=[];
+  const v=el.dataset.val;
+  const i=checkState[qid].indexOf(v);
+  if(i>=0)checkState[qid].splice(i,1);else checkState[qid].push(v);
+  updateProgress();
+}
+function hoverStar(qid,n){
+  document.querySelectorAll(`#stars-${qid} .sc-star`).forEach((s,i)=>{
+    s.style.color=i<n?'#ffc107':'#e0e0e0';
+  });
+}
+function unhoverStar(qid){
+  const cur=starState[qid]||0;
+  document.querySelectorAll(`#stars-${qid} .sc-star`).forEach((s,i)=>{
+    s.classList.toggle('lit',i<cur);s.style.color='';
+  });
+}
+function selectStar(qid,n){
+  starState[qid]=n;unhoverStar(qid);updateProgress();
+}
+function selectNps(qid,n){
+  document.querySelectorAll(`#nps-${qid} .sc-nps-btn`).forEach(b=>b.classList.remove('selected'));
+  document.querySelector(`#nps-${qid} [data-val="${n}"]`).classList.add('selected');
+  updateProgress();
+}
+function updateProgress(){
+  const filled=[
+    document.getElementById('q1-input').value.trim(),
+    radioState['q3'],
+    starState['q5'],
+    document.querySelector('#nps-q6 .sc-nps-btn.selected'),
+  ].filter(Boolean).length;
+  document.getElementById('progress-bar').style.width=(filled/4*100)+'%';
+}
+function submitSurveyCake(){
+  document.getElementById('surveycake').querySelectorAll('.sc-question,.sc-nav').forEach(e=>e.style.display='none');
+  document.getElementById('sc-done').style.display='block';
+  document.getElementById('progress-bar').style.width='100%';
+  document.title='已送出 - SurveyCake Mock';
+}
+</script>
+</body>
+</html>

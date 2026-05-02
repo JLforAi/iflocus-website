@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>SurveyAI 測試問卷（Google Forms 結構模擬）</title>
+<style>
+body{font-family:Google Sans,Roboto,sans-serif;background:#f0ebf8;margin:0;padding:16px}
+.freebirdFormviewerViewHeaderHeader{background:#673ab7;height:10px;border-radius:8px 8px 0 0}
+.freebirdFormviewerViewHeaderHeaderBody{background:#fff;border-radius:0 0 8px 8px;padding:24px;margin-bottom:12px;box-shadow:0 2px 4px rgba(0,0,0,.12)}
+.freebirdFormviewerViewHeaderTitle{font-size:28px;color:#202124;margin-bottom:8px}
+.freebirdFormviewerViewHeaderDescription{font-size:14px;color:#5f6368}
+.freebirdFormviewerViewItemsItemItem{background:#fff;border-radius:8px;padding:20px 24px;margin-bottom:12px;box-shadow:0 2px 4px rgba(0,0,0,.08)}
+[role="heading"]{font-size:16px;color:#202124;margin-bottom:16px;font-weight:400}
+.required-star{color:#d93025}
+.quantumWizTextinputPaperinputInput{width:100%;border:none;border-bottom:1px solid #dadce0;padding:8px 0;font-size:14px;outline:none;background:transparent;box-sizing:border-box}
+.quantumWizTextinputPaperinputInput:focus{border-bottom:2px solid #673ab7}
+textarea.quantumWizTextinputPaperinputInput{min-height:80px;resize:vertical}
+[role="radiogroup"],[role="group"]{display:flex;flex-direction:column;gap:4px}
+.isD0Td{display:flex;align-items:center;gap:12px;padding:10px 8px;border-radius:4px;cursor:pointer}
+.isD0Td:hover{background:#f1f3f4}
+[role="radio"],[role="checkbox"]{width:20px;height:20px;border:2px solid #5f6368;border-radius:50%;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+[role="radio"].checked,[role="checkbox"].checked{border-color:#673ab7;background:#673ab7}
+[role="checkbox"]{border-radius:4px}
+.MocG8c{font-size:14px;color:#202124}
+.quantumWizMenuPaperselectEl{width:100%;padding:8px 0;border:none;border-bottom:1px solid #dadce0;font-size:14px;background:transparent;cursor:pointer}
+.freebirdFormviewerViewItemsScaleScaleColumns{display:flex;gap:0;border:1px solid #dadce0;border-radius:8px;overflow:hidden;margin-top:8px}
+.freebirdFormviewerViewItemsScaleScaleColumnLabel{flex:1;text-align:center;padding:8px 4px;border-right:1px solid #dadce0;cursor:pointer;font-size:12px}
+.freebirdFormviewerViewItemsScaleScaleColumnLabel:last-child{border-right:none}
+.freebirdFormviewerViewItemsScaleScaleColumnLabel:hover{background:#f1f3f4}
+.freebirdFormviewerViewItemsScaleScaleColumnLabel.selected{background:#e8d5fb}
+.freebirdFormviewerViewNavigationSubmitButton{background:#673ab7;color:#fff;border:none;border-radius:4px;padding:12px 24px;font-size:14px;cursor:pointer;margin-top:8px}
+.freebirdFormviewerViewNavigationSubmitButton:hover{background:#5e35b1}
+.scale-labels{display:flex;justify-content:space-between;font-size:11px;color:#5f6368;margin-top:4px;padding:0 4px}
+</style>
+</head>
+<body>
+<div class="freebirdFormviewerViewHeaderHeader"></div>
+<div class="freebirdFormviewerViewHeaderHeaderBody">
+  <div class="freebirdFormviewerViewHeaderTitle">保養品消費習慣調查</div>
+  <div class="freebirdFormviewerViewHeaderDescription">本問卷用於了解消費者對有機保養品的看法，約需3分鐘填寫。</div>
+</div>
+
+<!-- Q1: 短答題 -->
+<div class="freebirdFormviewerViewItemsItemItem" role="listitem" data-item-id="q1">
+  <div role="heading">1. 您最常購買保養品的平台為何？<span class="required-star">*</span></div>
+  <input class="quantumWizTextinputPaperinputInput" type="text" aria-label="您最常購買保養品的平台" placeholder="">
+</div>
+
+<!-- Q2: 段落題 -->
+<div class="freebirdFormviewerViewItemsItemItem" role="listitem" data-item-id="q2">
+  <div role="heading">2. 請描述您選擇保養品時最看重的因素</div>
+  <textarea class="quantumWizTextinputPaperinputInput" aria-label="請描述" rows="3"></textarea>
+</div>
+
+<!-- Q3: 單選題 -->
+<div class="freebirdFormviewerViewItemsItemItem" role="listitem" data-item-id="q3">
+  <div role="heading">3. 您的年齡層<span class="required-star">*</span></div>
+  <div role="radiogroup" aria-labelledby="q3-heading">
+    <label class="isD0Td"><div role="radio" tabindex="0" data-val="18-24" onclick="selectRadio(this)"></div><span class="MocG8c">18–24歲</span></label>
+    <label class="isD0Td"><div role="radio" tabindex="0" data-val="25-34" onclick="selectRadio(this)"></div><span class="MocG8c">25–34歲</span></label>
+    <label class="isD0Td"><div role="radio" tabindex="0" data-val="35-44" onclick="selectRadio(this)"></div><span class="MocG8c">35–44歲</span></label>
+    <label class="isD0Td"><div role="radio" tabindex="0" data-val="45-54" onclick="selectRadio(this)"></div><span class="MocG8c">45–54歲</span></label>
+    <label class="isD0Td"><div role="radio" tabindex="0" data-val="55+" onclick="selectRadio(this)"></div><span class="MocG8c">55歲以上</span></label>
+  </div>
+</div>
+
+<!-- Q4: 多選題 -->
+<div class="freebirdFormviewerViewItemsItemItem" role="listitem" data-item-id="q4">
+  <div role="heading">4. 您使用過哪些保養品類型？（可複選）</div>
+  <div role="group" aria-labelledby="q4-heading">
+    <label class="isD0Td"><div role="checkbox" tabindex="0" onclick="toggleCheckbox(this)"></div><span class="MocG8c">乳液/乳霜</span></label>
+    <label class="isD0Td"><div role="checkbox" tabindex="0" onclick="toggleCheckbox(this)"></div><span class="MocG8c">精華液/安瓶</span></label>
+    <label class="isD0Td"><div role="checkbox" tabindex="0" onclick="toggleCheckbox(this)"></div><span class="MocG8c">面膜</span></label>
+    <label class="isD0Td"><div role="checkbox" tabindex="0" onclick="toggleCheckbox(this)"></div><span class="MocG8c">防曬</span></label>
+    <label class="isD0Td"><div role="checkbox" tabindex="0" onclick="toggleCheckbox(this)"></div><span class="MocG8c">卸妝產品</span></label>
+  </div>
+</div>
+
+<!-- Q5: 下拉選單 -->
+<div class="freebirdFormviewerViewItemsItemItem" role="listitem" data-item-id="q5">
+  <div role="heading">5. 每月保養品消費金額</div>
+  <div style="position:relative">
+    <div role="listbox" id="dropdown-q5" onclick="toggleDropdown(this)" style="border:1px solid #dadce0;border-radius:4px;padding:10px 12px;cursor:pointer;font-size:14px;color:#202124;display:flex;justify-content:space-between;align-items:center">
+      <span id="dropdown-q5-val">請選擇</span><span>▾</span>
+    </div>
+    <div id="dropdown-q5-opts" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #dadce0;border-radius:4px;z-index:10;box-shadow:0 4px 12px rgba(0,0,0,.15)">
+      <div role="option" onclick="selectOption('q5','500以下')" style="padding:10px 12px;cursor:pointer;font-size:14px" onmouseover="this.style.background='#f1f3f4'" onmouseout="this.style.background=''">500以下</div>
+      <div role="option" onclick="selectOption('q5','500–1000')" style="padding:10px 12px;cursor:pointer;font-size:14px" onmouseover="this.style.background='#f1f3f4'" onmouseout="this.style.background=''">500–1,000</div>
+      <div role="option" onclick="selectOption('q5','1000–2000')" style="padding:10px 12px;cursor:pointer;font-size:14px" onmouseover="this.style.background='#f1f3f4'" onmouseout="this.style.background=''">1,000–2,000</div>
+      <div role="option" onclick="selectOption('q5','2000以上')" style="padding:10px 12px;cursor:pointer;font-size:14px" onmouseover="this.style.background='#f1f3f4'" onmouseout="this.style.background=''">2,000以上</div>
+    </div>
+  </div>
+</div>
+
+<!-- Q6: 線性量表 (1–5) -->
+<div class="freebirdFormviewerViewItemsItemItem" role="listitem" data-item-id="q6">
+  <div role="heading">6. 您對「有機認證」的重視程度</div>
+  <div role="radiogroup" style="display:flex;gap:0;margin-top:8px">
+    <div class="freebirdFormviewerViewItemsScaleScaleColumnLabel" onclick="selectScale(this,1)" data-val="1" role="radio">1</div>
+    <div class="freebirdFormviewerViewItemsScaleScaleColumnLabel" onclick="selectScale(this,2)" data-val="2" role="radio">2</div>
+    <div class="freebirdFormviewerViewItemsScaleScaleColumnLabel" onclick="selectScale(this,3)" data-val="3" role="radio">3</div>
+    <div class="freebirdFormviewerViewItemsScaleScaleColumnLabel" onclick="selectScale(this,4)" data-val="4" role="radio">4</div>
+    <div class="freebirdFormviewerViewItemsScaleScaleColumnLabel" onclick="selectScale(this,5)" data-val="5" role="radio">5</div>
+  </div>
+  <div class="scale-labels"><span>完全不重要</span><span>非常重要</span></div>
+</div>
+
+<div class="freebirdFormviewerViewItemsItemItem" style="text-align:right">
+  <button class="freebirdFormviewerViewNavigationSubmitButton" onclick="submitForm()">提交</button>
+</div>
+
+<div id="submit-result" style="display:none;background:#fff;border-radius:8px;padding:24px;text-align:center;margin-top:12px">
+  <div style="font-size:22px;margin-bottom:8px">✅</div>
+  <div style="font-size:18px;color:#202124">已記錄您的回應</div>
+  <div style="font-size:14px;color:#5f6368;margin-top:4px">感謝您填寫此表單</div>
+</div>
+
+<script>
+function selectRadio(el){
+  const group=el.closest('[role="radiogroup"]');
+  group.querySelectorAll('[role="radio"]').forEach(r=>{r.classList.remove('checked');r.style.background='';r.style.borderColor='#5f6368'});
+  el.classList.add('checked');
+  el.style.background='#673ab7';el.style.borderColor='#673ab7';
+  el.setAttribute('aria-checked','true');
+}
+function toggleCheckbox(el){
+  const checked=el.classList.toggle('checked');
+  el.style.background=checked?'#673ab7':'';
+  el.style.borderColor=checked?'#673ab7':'#5f6368';
+  el.setAttribute('aria-checked',checked);
+}
+function toggleDropdown(el){
+  const opts=document.getElementById('dropdown-q5-opts');
+  opts.style.display=opts.style.display==='none'?'block':'none';
+}
+function selectOption(id,val){
+  document.getElementById('dropdown-'+id+'-val').textContent=val;
+  document.getElementById('dropdown-'+id+'-opts').style.display='none';
+}
+function selectScale(el,val){
+  el.closest('[role="radiogroup"]').querySelectorAll('.freebirdFormviewerViewItemsScaleScaleColumnLabel').forEach(s=>s.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function submitForm(){
+  document.querySelectorAll('.freebirdFormviewerViewItemsItemItem').forEach(i=>i.style.display='none');
+  document.getElementById('submit-result').style.display='block';
+  document.title='已提交 - Google Forms Mock';
+}
+</script>
+</body>
+</html>

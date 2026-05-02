@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Clicks QA — Internal Tool | iFLocus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07080d;--card:rgba(255,255,255,0.035);--card-border:rgba(255,255,255,0.07);
+  --gold:#E8C547;--green:#34D399;--red:#EF4444;--orange:#F59E0B;
+  --text:#E2E2E8;--text-muted:#6B7280;--text-dim:#9CA3AF;--header-h:60px;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:15px;line-height:1.6}
+input,select,textarea,button{font-family:inherit;font-size:inherit}
+button{cursor:pointer}
+#pw-screen{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.pw-box{background:rgba(255,255,255,0.04);border:1px solid var(--card-border);border-radius:20px;padding:48px 40px;width:360px;text-align:center}
+.pw-box .pw-icon{font-size:40px;margin-bottom:16px}.pw-box h2{font-size:22px;font-weight:600;color:var(--gold);margin-bottom:8px}.pw-box p{color:var(--text-muted);font-size:13px;margin-bottom:28px}
+.pw-input{width:100%;padding:12px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:var(--text);font-size:16px;letter-spacing:0.15em;margin-bottom:12px;outline:none}
+.pw-input:focus{border-color:var(--gold)}.pw-input.error{border-color:var(--red);animation:shake .3s}@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.pw-err{color:var(--red);font-size:12px;margin-bottom:12px;min-height:16px}.btn-pw{width:100%;padding:12px;background:var(--gold);color:#000;font-weight:700;border:none;border-radius:10px}
+#app-header{position:fixed;top:0;left:0;right:0;height:var(--header-h);z-index:100;background:rgba(7,8,13,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--card-border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;gap:16px}
+.header-brand{display:flex;align-items:center;gap:10px;min-width:180px}.header-brand-icon{width:32px;height:32px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#000}.header-brand-text{display:flex;flex-direction:column;line-height:1.2}.header-brand-name{font-weight:700;font-size:15px;color:var(--gold)}.header-brand-sub{font-size:10px;color:var(--text-muted);letter-spacing:.12em;font-weight:500}
+.header-right{min-width:180px;display:flex;justify-content:flex-end}.mini-link{font-size:12px;color:var(--text-muted);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:7px 10px;text-decoration:none}.mini-link:hover{color:var(--text);border-color:rgba(255,255,255,.24)}
+#app-main{display:none;padding-top:var(--header-h);min-height:100vh}.page{max-width:920px;margin:0 auto;padding:32px 20px 80px}
+.page-title{font-size:24px;font-weight:700;color:var(--text);margin-bottom:6px}.page-subtitle{color:var(--text-muted);font-size:14px;margin-bottom:28px}
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:24px;margin-bottom:20px}.card-title{font-size:13px;font-weight:600;letter-spacing:.1em;color:var(--text-muted);text-transform:uppercase;margin-bottom:16px}.card-title span{color:var(--gold);margin-right:6px}
+.row{display:flex;gap:16px}.form-row{margin-bottom:16px;flex:1}.form-label{display:block;font-size:12px;color:var(--text-dim);font-weight:600;margin-bottom:6px}.form-input,.form-select,.form-textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--text);padding:11px 13px;outline:none}.form-textarea{min-height:88px;resize:vertical}.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;font-weight:600;border:none;font-size:14px;transition:all .2s}.btn-gold{background:var(--gold);color:#000}.btn-outline{background:transparent;border:1px solid rgba(255,255,255,.15);color:var(--text-dim)}.btn-outline:hover{border-color:rgba(255,255,255,.3);color:var(--text)}.btn-green{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.2)}.btn-sm{padding:7px 14px;font-size:13px}
+.alert{display:flex;gap:10px;align-items:flex-start;padding:14px 16px;border-radius:10px;font-size:13px;margin-bottom:16px}.alert-info{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.18);color:#c4b5fd}.alert-warning{background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.2);color:#facc15}.alert-success{background:rgba(52,211,153,.09);border:1px solid rgba(52,211,153,.2);color:#86efac}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.summary-item{background:rgba(255,255,255,.04);border-radius:10px;padding:12px}.summary-item-label{font-size:11px;color:var(--text-muted);margin-bottom:3px}.summary-item-value{font-size:18px;color:var(--text);font-weight:700}
+.code-block{background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px;color:#b0c4de;font-family:'Courier New',monospace;font-size:12px;line-height:1.7;white-space:pre-wrap;word-break:break-all}
+.cmd-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:12px}.cmd-row .code-block{flex:1}.tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:5px 10px;font-size:12px;color:var(--text-dim);margin:0 8px 8px 0}
+.guide-list{display:flex;flex-direction:column;gap:14px}.guide-step{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:14px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(255,255,255,.035)}.guide-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(232,197,71,.14);color:var(--gold);font-weight:700}.guide-title{font-weight:700;color:var(--text);margin-bottom:4px}.guide-desc{font-size:13px;color:var(--text-dim)}.guide-desc code{background:rgba(255,255,255,.08);padding:1px 5px;border-radius:5px;color:#dbeafe}.guide-desc ul{margin:8px 0 0 18px}.guide-desc li{margin:4px 0}
+@media(max-width:680px){.row{flex-direction:column;gap:0}.header-right{display:none}.page{padding:24px 16px 64px}}
+</style>
+</head>
+<body>
+<div id="pw-screen">
+  <div class="pw-box">
+    <div class="pw-icon">🔐</div>
+    <h2>iFLocus Internal</h2>
+    <p>Clicks QA 內部工具</p>
+    <input type="password" id="pw-input" class="pw-input" placeholder="輸入密碼" autocomplete="off">
+    <div class="pw-err" id="pw-err"></div>
+    <button class="btn-pw" onclick="checkPassword()">進入工具</button>
+  </div>
+</div>
+
+<header id="app-header" style="display:none">
+  <div class="header-brand">
+    <div class="header-brand-icon">C</div>
+    <div class="header-brand-text">
+      <div class="header-brand-name">Clicks QA</div>
+      <div class="header-brand-sub">INTERNAL TOOL</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a class="mini-link" href="survey.html">SurveyAI</a>
+  </div>
+</header>
+
+<main id="app-main">
+  <div class="page">
+    <div class="page-title">排程點擊 / 頁面 QA 設定</div>
+    <div class="page-subtitle">用 GitHub Actions 對自有或授權測試頁面做定時訪問、可選擇 CSS selector 點擊、截圖與報告。</div>
+
+    <div class="alert alert-warning">
+      <span>⚠️</span>
+      <span>此工具僅供自有網站、內部頁面或已授權 QA 使用。不要用於任意第三方網址、廣告點擊、流量或點擊數造假。</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🎯</span>目標與次數</div>
+      <div class="form-row">
+        <label class="form-label">要測試的網址</label>
+        <input id="target-url" class="form-input" type="url" placeholder="https://iflocus.com/internal/survey.html" oninput="updateOutput()">
+      </div>
+      <div class="row">
+        <div class="form-row">
+          <label class="form-label">本次執行次數</label>
+          <input id="click-count" class="form-input" type="number" min="1" max="100" value="1" oninput="updateOutput()">
+        </div>
+        <div class="form-row">
+          <label class="form-label">可選：點擊 CSS selector</label>
+          <input id="click-selector" class="form-input" placeholder=".cta-button 或 #submit" oninput="updateOutput()">
+        </div>
+      </div>
+      <div class="alert alert-info">
+        <span>💡</span>
+        <span>若不填 selector，runner 只會載入頁面、等待穩定、截圖並記錄狀態。若填 selector，會在頁面載入後點擊第一個符合的元素。</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>🕐</span>時段與間隔</div>
+      <div class="row">
+        <div class="form-row">
+          <label class="form-label">允許開始時間（小時）</label>
+          <input id="start-hour" class="form-input" type="number" min="0" max="23" value="9" oninput="updateOutput()">
+        </div>
+        <div class="form-row">
+          <label class="form-label">允許結束時間（小時）</label>
+          <input id="end-hour" class="form-input" type="number" min="0" max="23" value="22" oninput="updateOutput()">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-row">
+          <label class="form-label">每次間隔最小（秒）</label>
+          <input id="interval-min" class="form-input" type="number" min="0" value="30" oninput="updateOutput()">
+        </div>
+        <div class="form-row">
+          <label class="form-label">每次間隔最大（秒）</label>
+          <input id="interval-max" class="form-input" type="number" min="0" value="90" oninput="updateOutput()">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">允許網域 allowlist</label>
+        <input id="allowed-hosts" class="form-input" value="iflocus.com,www.iflocus.com" oninput="updateOutput()">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>📊</span>設定摘要</div>
+      <div class="summary-grid" id="summary-grid"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>☁️</span>GitHub Actions 設定</div>
+      <div class="alert alert-success">
+        <span>✅</span>
+        <span>Workflow 已設計為安全預設：必須設定 <strong>CLICK_QA_ENABLED=true</strong> 或手動 Run workflow 填 <strong>enabled=true</strong> 才會執行。</span>
+      </div>
+      <div class="form-label">Secrets</div>
+      <div class="cmd-row">
+        <div class="code-block" id="secrets-output"></div>
+        <button class="btn btn-outline btn-sm" onclick="copyText('secrets-output', this)">複製</button>
+      </div>
+      <div class="form-label">Variables</div>
+      <div class="cmd-row">
+        <div class="code-block" id="vars-output"></div>
+        <button class="btn btn-outline btn-sm" onclick="copyText('vars-output', this)">複製</button>
+      </div>
+      <div class="form-label">手動測試參數</div>
+      <div class="cmd-row">
+        <div class="code-block" id="dispatch-output"></div>
+        <button class="btn btn-outline btn-sm" onclick="copyText('dispatch-output', this)">複製</button>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <button class="btn btn-gold" onclick="downloadConfig()">下載 clicks 設定 JSON</button>
+        <a class="btn btn-green" href="https://github.com/JLforAi/iflocus-website/actions/workflows/clicks-qa.yml" target="_blank" rel="noopener">開啟 GitHub Actions</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>📖</span>操作步驟</div>
+      <div class="guide-list">
+        <div class="guide-step">
+          <div class="guide-num">1</div>
+          <div>
+            <div class="guide-title">先在本頁填好測試設定</div>
+            <div class="guide-desc">填入要測試的網址、次數、可執行時段、每次間隔。若只是確認頁面有打開，不需要填 CSS selector。</div>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="guide-num">2</div>
+          <div>
+            <div class="guide-title">確認 allowlist 有包含目標網域</div>
+            <div class="guide-desc">例如網址是 <code>https://client.com/page</code>，allowlist 要有 <code>client.com</code>。多個網域用逗號分隔，例如 <code>iflocus.com,www.iflocus.com,client.com</code>。</div>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="guide-num">3</div>
+          <div>
+            <div class="guide-title">到 GitHub Settings 貼上 Secrets / Variables</div>
+            <div class="guide-desc">
+              開啟 <code>JLforAi/iflocus-website</code> repo，依序進入：
+              <br><code>Settings -> Secrets and variables -> Actions</code>
+              <ul>
+                <li>點 <code>Secrets</code> 分頁，新增一筆：Name 填 <code>CLICK_TARGET_URL</code>，Secret 填上方 Secrets 區塊產生的網址，例如 <code>https://iflocus.com/internal/clicks.html</code>。</li>
+                <li>點 <code>Variables</code> 分頁，照上方 Variables 區塊逐行新增。等號左邊填 Name，等號右邊填 Value。</li>
+                <li>範例：Name 填 <code>CLICK_QA_ENABLED</code>，Value 填 <code>false</code>；Name 填 <code>CLICK_COUNT_PER_RUN</code>，Value 填 <code>1</code>；Name 填 <code>CLICK_ALLOWED_HOSTS</code>，Value 填 <code>iflocus.com,www.iflocus.com</code>。</li>
+                <li>第一次測試建議先讓 <code>CLICK_QA_ENABLED=false</code>，用手動測試確認沒問題後，再回 Variables 把 Value 改成 <code>true</code>。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="guide-num">4</div>
+          <div>
+            <div class="guide-title">到 Actions 手動測試 count=1</div>
+            <div class="guide-desc">
+              開啟 <code>Actions -> iFLocus Clicks QA -> Run workflow</code>，照本頁「手動測試參數」填入。第一次請把 <code>count</code> 改成 <code>1</code>，並確認 <code>enabled=true</code>。
+            </div>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="guide-num">5</div>
+          <div>
+            <div class="guide-title">檢查執行結果與報告</div>
+            <div class="guide-desc">Workflow 跑完後，打開該次 run 的 <code>Artifacts</code>，下載 <code>clicks-qa-results</code>。裡面會有 CSV 報告、config JSON，若有實際執行也會有截圖。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const PASS='iflocus2025';
+function checkPassword(){
+  const v=document.getElementById('pw-input').value;
+  if(v===PASS){
+    sessionStorage.setItem('clicks-auth','1');
+    document.getElementById('pw-screen').style.display='none';
+    document.getElementById('app-header').style.display='flex';
+    document.getElementById('app-main').style.display='block';
+    updateOutput();
+  }else{
+    const input=document.getElementById('pw-input');
+    input.classList.add('error');
+    document.getElementById('pw-err').textContent='密碼錯誤';
+    setTimeout(()=>input.classList.remove('error'),300);
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkPassword()});
+if(sessionStorage.getItem('clicks-auth')==='1'){
+  document.getElementById('pw-screen').style.display='none';
+  document.getElementById('app-header').style.display='flex';
+  document.getElementById('app-main').style.display='block';
+  setTimeout(updateOutput,0);
+}
+function val(id){return document.getElementById(id).value.trim()}
+function num(id, fallback){const n=parseInt(val(id),10);return Number.isFinite(n)?n:fallback}
+function buildConfig(){
+  return {
+    url:val('target-url'),
+    count:num('click-count',1),
+    selector:val('click-selector'),
+    startHour:num('start-hour',9),
+    endHour:num('end-hour',22),
+    intervalMinSec:num('interval-min',30),
+    intervalMaxSec:num('interval-max',90),
+    allowedHosts:val('allowed-hosts') || 'iflocus.com,www.iflocus.com'
+  };
+}
+function updateOutput(){
+  const c=buildConfig();
+  const selectorLabel=c.selector || '不點擊元素，只做頁面訪問';
+  document.getElementById('summary-grid').innerHTML=`
+    <div class="summary-item"><div class="summary-item-label">目標 URL</div><div class="summary-item-value" style="font-size:13px;word-break:break-all">${escapeHtml(c.url||'尚未填寫')}</div></div>
+    <div class="summary-item"><div class="summary-item-label">執行次數</div><div class="summary-item-value">${c.count}</div></div>
+    <div class="summary-item"><div class="summary-item-label">時段</div><div class="summary-item-value">${c.startHour}:00-${c.endHour}:59</div></div>
+    <div class="summary-item"><div class="summary-item-label">間隔</div><div class="summary-item-value">${c.intervalMinSec}-${c.intervalMaxSec}s</div></div>
+    <div class="summary-item"><div class="summary-item-label">動作</div><div class="summary-item-value" style="font-size:13px">${escapeHtml(selectorLabel)}</div></div>`;
+  document.getElementById('secrets-output').textContent=`CLICK_TARGET_URL=${c.url || 'https://iflocus.com/'}`;
+  document.getElementById('vars-output').textContent=[
+    'CLICK_QA_ENABLED=false',
+    `CLICK_COUNT_PER_RUN=${c.count}`,
+    `CLICK_SELECTOR=${c.selector}`,
+    `CLICK_ALLOWED_HOSTS=${c.allowedHosts}`,
+    `CLICK_START_HOUR=${c.startHour}`,
+    `CLICK_END_HOUR=${c.endHour}`,
+    `CLICK_INTERVAL_MIN_SEC=${c.intervalMinSec}`,
+    `CLICK_INTERVAL_MAX_SEC=${c.intervalMaxSec}`
+  ].join('\n');
+  document.getElementById('dispatch-output').textContent=[
+    'enabled=true',
+    `url=${c.url || 'https://iflocus.com/'}`,
+    `count=${c.count}`,
+    `selector=${c.selector}`,
+    `start_hour=${c.startHour}`,
+    `end_hour=${c.endHour}`,
+    `interval_min_sec=${c.intervalMinSec}`,
+    `interval_max_sec=${c.intervalMaxSec}`
+  ].join('\n');
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+async function copyText(id, btn){
+  try{
+    await navigator.clipboard.writeText(document.getElementById(id).textContent);
+    const orig=btn.textContent;btn.textContent='已複製';
+    setTimeout(()=>btn.textContent=orig,1500);
+  }catch(e){alert('請手動複製')}
+}
+function downloadConfig(){
+  const blob=new Blob([JSON.stringify(buildConfig(),null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='clicks-qa-settings.json';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+</script>
+</body>
+</html>

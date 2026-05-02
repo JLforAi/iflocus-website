@@ -385,6 +385,30 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
   border-top:1px solid rgba(255,255,255,0.06);
 }
 
+/* ===== WORKER CARD ===== */
+.worker-card{
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:10px;padding:14px 16px;margin-bottom:12px;
+}
+.worker-card:last-child{margin-bottom:0}
+.worker-card-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;flex-wrap:wrap;gap:8px;
+}
+.worker-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(232,197,71,0.1);border:1px solid rgba(232,197,71,0.25);
+  color:var(--gold);font-size:12px;font-weight:600;
+  padding:4px 10px;border-radius:20px;
+}
+.worker-cmd-box{
+  background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;padding:10px 14px;font-size:12px;color:#b0c4de;
+  font-family:'Courier New',monospace;word-break:break-all;line-height:1.6;
+  margin-bottom:8px;
+}
+
 /* ===== ALWAYS-ON GREEN CARD ===== */
 .always-on-card{
   background:rgba(52,211,153,0.08);
@@ -671,10 +695,28 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
 
 <!-- ===== STEP 3 ===== -->
 <div class="step-page" id="step-3">
-  <div class="page-title">排程與份數設定</div>
-  <div class="page-subtitle">選擇模擬模式，設定份數與執行節奏</div>
+  <div class="page-title">執行方式與份數設定</div>
+  <div class="page-subtitle">先選執行方式，再設定份數與節奏</div>
 
+  <!-- 執行方式（提前到此選） -->
   <div class="card">
+    <div class="card-title"><span>🎯</span>執行方式</div>
+    <div class="mode-cards">
+      <button class="mode-card selected" id="execmethod-prompt" onclick="selectExecMethod('prompt')">
+        <div class="mode-card-icon">💬</div>
+        <div class="mode-card-title">AI 模擬回答</div>
+        <div class="mode-card-desc">複製 Prompt 貼到 Claude / ChatGPT，AI 產出模擬受訪者文字回答</div>
+      </button>
+      <button class="mode-card" id="execmethod-auto" onclick="selectExecMethod('auto')">
+        <div class="mode-card-icon">🖥️</div>
+        <div class="mode-card-title">自動填寫表單</div>
+        <div class="mode-card-desc">執行 Python 腳本，自動點擊填寫 Google Form，後台出現真實筆數</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- 模擬模式（僅 AI 路徑顯示） -->
+  <div class="card" id="sim-mode-card">
     <div class="card-title"><span>⚙️</span>模擬模式</div>
     <div class="mode-cards">
       <button class="mode-card selected" id="mode-ai" onclick="selectMode('ai')">
@@ -723,9 +765,10 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
         <span>份數低於 500 份，統計代表性可能不足，建議評估研究目的是否合適。</span>
       </div>
     </div>
-  </div>
+  </div><!-- end sim-mode-card -->
 
-  <div class="card">
+  <!-- 排程設定（僅自動填寫路徑顯示） -->
+  <div class="card hidden" id="schedule-card">
     <div class="card-title"><span>🕐</span>執行時間設定</div>
 
     <div class="toggle-row" style="padding-top:0">
@@ -783,30 +826,16 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
 
   <div class="step-nav">
     <button class="btn btn-outline" onclick="goToStep(2)">← 上一步</button>
-    <button class="btn btn-gold btn-lg" onclick="goToStep(4)">下一步：產生 Prompt →</button>
+    <button class="btn btn-gold btn-lg" id="step3-next-btn" onclick="goToStep(4)">下一步：產生 Prompt →</button>
   </div>
 </div>
 
 <!-- ===== STEP 4 ===== -->
 <div class="step-page" id="step-4">
-  <div class="page-title">選擇執行方式</div>
-  <div class="page-subtitle">根據你的需求選擇，兩種方式可同時使用</div>
+  <div class="page-title" id="step4-title">產生 Prompt</div>
+  <div class="page-subtitle" id="step4-subtitle">複製 Prompt 貼到 Claude 或 ChatGPT，AI 產出模擬回答</div>
 
   <div class="tag-row" id="summary-tags"></div>
-
-  <!-- 執行方式選擇卡片 -->
-  <div class="mode-cards" style="margin-bottom:28px">
-    <button class="mode-card selected" id="exec-mode-prompt" onclick="selectExecMode('prompt')">
-      <div class="mode-card-icon">💬</div>
-      <div class="mode-card-title">AI 模擬回答</div>
-      <div class="mode-card-desc">複製 Prompt 貼到 Claude / ChatGPT，AI 產出模擬受訪者的文字回答</div>
-    </button>
-    <button class="mode-card" id="exec-mode-auto" onclick="selectExecMode('auto')">
-      <div class="mode-card-icon">🖥️</div>
-      <div class="mode-card-title">自動填寫表單</div>
-      <div class="mode-card-desc">執行 Python 腳本，真的自動點擊填寫 Google Form，後台出現真實筆數</div>
-    </button>
-  </div>
 
   <!-- ── 路徑 A：AI 模擬回答 ── -->
   <div id="section-prompt">
@@ -890,7 +919,22 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
   <div id="section-auto" class="hidden">
     <div class="alert alert-success" style="margin-bottom:16px">
       <span class="alert-icon">🖥️</span>
-      <span>填入問卷網址 → 產生執行指令 → 同事各自在電腦貼上執行 → <strong>Google Form 後台出現真實筆數</strong></span>
+      <span>填入問卷網址 → 產生本機執行或排程指令 → 同事各自在電腦貼上執行 → <strong>Google Form / SurveyCake 後台出現真實筆數</strong></span>
+    </div>
+
+    <!-- 安裝環境（每台電腦只需做一次） -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title"><span>🔧</span>安裝執行環境（每台電腦只需做一次）</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px">
+        請同事在自己的電腦開啟 <strong>命令提示字元（cmd）</strong> 或 <strong>終端機</strong>，複製以下指令貼上並按 Enter，約 3–5 分鐘完成：
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px">
+        <code id="install-cmd-box" style="flex:1;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);
+          border-radius:8px;padding:10px 14px;font-size:12px;color:#b0c4de;
+          font-family:'Courier New',monospace;word-break:break-all;line-height:1.8">pip install playwright && python -m playwright install chromium</code>
+        <button class="btn btn-outline btn-sm" style="flex-shrink:0;margin-top:2px" onclick="copyInstallCmd()">📋 複製</button>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted)">⚠️ 需先安裝 Python 3.9+。若電腦從未安裝 Python，請至 <strong>python.org</strong> 下載並勾選「Add to PATH」後再執行上述指令。</div>
     </div>
 
     <div class="card">
@@ -919,7 +963,7 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
         <div id="exec-cmd-list"></div>
         <div class="alert alert-warning mt-12">
           <span class="alert-icon">📁</span>
-          <span>執行前請先下載設定檔，放到與 <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px">run_10_surveys.py</code> 同一個資料夾</span>
+          <span>執行前請先下載設定檔，放到與 <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px">survey_auto_runner.py</code> 同一個資料夾。若分天排程，執行端電腦必須開機、不睡眠、網路穩定。</span>
         </div>
         <div style="margin-top:12px">
           <button class="btn btn-green" onclick="exportJSON()">⬇ 下載設定檔 JSON</button>
@@ -953,6 +997,7 @@ const STATE = {
   },
   toggles: { personality:true, lifestyle:true, shopping:true, social:false },
   mode: 'ai',
+  execMethod: 'prompt',
   count: 500,
   realCount: 20,
   totalCountExpand: 300,
@@ -996,7 +1041,20 @@ function goToStep(n){
   updateStepIndicator();
   window.scrollTo(0,0);
   if(n===3)updateSummaryCard();
-  if(n===4)buildPrompts();
+  if(n===4){
+    // Apply exec method chosen in Step 3
+    const isAuto = STATE.execMethod === 'auto';
+    document.getElementById('section-prompt').classList.toggle('hidden', isAuto);
+    document.getElementById('section-auto').classList.toggle('hidden', !isAuto);
+    document.getElementById('step4-title').textContent =
+      isAuto ? '自動填寫設定' : '產生 Prompt';
+    document.getElementById('step4-subtitle').textContent =
+      isAuto
+        ? '下載設定檔與執行腳本，同事各自在電腦雙擊執行'
+        : '複製 Prompt 貼到 Claude 或 ChatGPT，AI 產出模擬回答';
+    if(isAuto) updateExecCmd();
+    else buildPrompts();
+  }
 }
 function jumpToStep(n){
   if(n<=STATE.maxUnlocked)goToStep(n);
@@ -1366,16 +1424,30 @@ ${STATE.schedule?`\n執行節奏：請在每份回答之間稍作停頓說明（
   // 自動填寫路徑的步驟說明
   const autoSteps = [
     {title:'安裝執行環境',desc:'電腦安裝 Python + Playwright（每人只需裝一次，約 15 分鐘）'},
-    {title:'下載設定檔',desc:'點「下載設定檔 JSON」，與 run_10_surveys.py 放在同一資料夾'},
+    {title:'下載設定檔',desc:'點「下載設定檔 JSON」，與 survey_auto_runner.py 放在同一資料夾'},
     {title:'填入問卷網址',desc:'在下方輸入真實 Google Form 或 SurveyCake 網址'},
-    {title:'複製指令並執行',desc:'將產生的指令貼到電腦終端機，瀏覽器自動開啟填寫，Google Form 後台即出現筆數'},
+    {title:'複製指令並執行',desc:'將產生的指令貼到電腦終端機，瀏覽器自動開啟填寫，表單後台即出現筆數'},
   ];
   document.getElementById('steps-guide-auto').innerHTML = stepHTML(autoSteps);
 }
 
+function selectExecMethod(method){
+  STATE.execMethod = method;
+  const isAuto = method === 'auto';
+  document.getElementById('execmethod-prompt').classList.toggle('selected', !isAuto);
+  document.getElementById('execmethod-auto').classList.toggle('selected', isAuto);
+  // 模擬模式卡片只在 AI 路徑顯示
+  document.getElementById('sim-mode-card').classList.toggle('hidden', isAuto);
+  // 排程設定卡片只在自動填寫路徑顯示
+  document.getElementById('schedule-card').classList.toggle('hidden', !isAuto);
+  // 更新 Step 3 下一步按鈕文字
+  document.getElementById('step3-next-btn').textContent =
+    isAuto ? '下一步：設定自動填寫 →' : '下一步：產生 Prompt →';
+  updateSummaryCard();
+}
+
 function selectExecMode(mode){
-  document.getElementById('exec-mode-prompt').classList.toggle('selected', mode==='prompt');
-  document.getElementById('exec-mode-auto').classList.toggle('selected', mode==='auto');
+  // 保留向下相容，Step 4 內部不再有切換卡片，此函式已不主動呼叫
   document.getElementById('section-prompt').classList.toggle('hidden', mode!=='prompt');
   document.getElementById('section-auto').classList.toggle('hidden', mode!=='auto');
   if(mode==='auto') updateExecCmd();
@@ -1854,6 +1926,9 @@ function clearAiOutputBox(){
   status.style.color='';
 }
 
+// Stores per-worker commands so buttons can reference them safely
+window._execCmds = {};
+
 function updateExecCmd(){
   const url = document.getElementById('exec-form-url').value.trim();
   const people = parseInt(document.getElementById('exec-people').value) || 1;
@@ -1874,25 +1949,71 @@ function updateExecCmd(){
 
   const caseId = STATE.data.caseNote || STATE.data.companyName || 'survey';
   const jsonName = caseId.replace(/[^a-zA-Z0-9一-鿿\-_]/g,'') + '-settings.json';
-
+  const scheduleDays = parseInt(document.getElementById('sch-days')?.value) || 7;
+  const intervalMin = (parseInt(document.getElementById('sch-min')?.value) || 3) * 60;
+  const intervalMax = (parseInt(document.getElementById('sch-max')?.value) || 15) * 60;
+  const startHour = parseInt(document.getElementById('sch-start')?.value) || 9;
   const labels = ['同事 A','同事 B','同事 C','同事 D','同事 E',
                   '同事 F','同事 G','同事 H','同事 I','同事 J'];
+
+  window._execCmds = {};
   let html = '';
+
   for(let i=0; i<people; i++){
     const cnt = (i === people-1) ? remainder : perPerson;
-    const cmd = `python -X utf8 run_10_surveys.py --form-url "${url}" --count ${cnt} --config "${jsonName}"`;
+    const label = labels[i] || ('同事'+(i+1));
+
+    // Immediate run: use worker-index/total so the runner splits the response pool
+    const baseCmd = `python -X utf8 survey_auto_runner.py`
+      + ` --form-url "${url}"`
+      + ` --count ${total}`
+      + ` --config "${jsonName}"`
+      + ` --worker-index ${i+1}`
+      + ` --worker-total ${people}`
+      + ` --interval-min-sec ${intervalMin}`
+      + ` --interval-max-sec ${intervalMax}`
+      + ` --headless`;
+
+    // Schedule mode: each worker pre-splits their count and prints schtasks
+    const schedBaseCmd = `python -X utf8 survey_auto_runner.py`
+      + ` --form-url "${url}"`
+      + ` --count ${cnt}`
+      + ` --config "${jsonName}"`
+      + ` --worker-index 1`
+      + ` --worker-total 1`
+      + ` --job-id "${caseId}-p${i+1}"`
+      + ` --interval-min-sec ${intervalMin}`
+      + ` --interval-max-sec ${intervalMax}`
+      + ` --headless`;
+    const schedCmd = schedBaseCmd
+      + ` --print-schedule`
+      + ` --daily-count ${Math.ceil(cnt/scheduleDays)}`
+      + ` --days ${scheduleDays}`
+      + ` --start-hour ${startHour}`;
+
+    const cmd = STATE.schedule ? schedCmd : baseCmd;
+    window._execCmds[i] = cmd;
+
+    const modeNote = STATE.schedule
+      ? `，執行後產生 ${scheduleDays} 天排程指令，貼到 cmd 登錄工作排程`
+      : '，一次執行完畢';
+
     html += `
-    <div style="margin-bottom:14px">
-      <div style="font-size:12px;color:var(--text-muted);margin-bottom:5px;font-weight:600">${labels[i] || '同事'+(i+1)}（${cnt} 份）</div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <code style="flex:1;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.08);
-          border-radius:8px;padding:10px 14px;font-size:12px;color:#b0c4de;
-          font-family:'Courier New',monospace;word-break:break-all;line-height:1.6">${cmd}</code>
-        <button class="btn btn-outline btn-sm" style="flex-shrink:0"
-          onclick="copyCmd(this,'${cmd.replace(/'/g,"\\'")}')">📋</button>
+    <div class="worker-card">
+      <div class="worker-card-header">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="worker-badge">👤 ${label}</span>
+          <span style="font-size:13px;color:var(--text-muted)">負責 <strong style="color:var(--text)">${cnt}</strong> 份${modeNote}</span>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-outline btn-sm" data-wi="${i}" onclick="copyWorkerCmd(this)">📋 複製指令</button>
+          <button class="btn btn-green btn-sm" data-wi="${i}" data-label="${label}" data-cnt="${cnt}" onclick="downloadWorkerBat(this)">⬇ 下載 .bat</button>
+        </div>
       </div>
+      <div class="worker-cmd-box">${escapeHtml(cmd)}</div>
     </div>`;
   }
+
   document.getElementById('exec-cmd-list').innerHTML = html;
 }
 
@@ -1904,6 +2025,69 @@ async function copyCmd(btn, text){
     btn.style.color = 'var(--green)';
     setTimeout(()=>{ btn.textContent=orig; btn.style.color=''; }, 2000);
   }catch(e){ alert('請手動複製'); }
+}
+
+async function copyWorkerCmd(btn){
+  const wi = parseInt(btn.dataset.wi);
+  const text = window._execCmds[wi] || '';
+  try{
+    await navigator.clipboard.writeText(text);
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ 已複製';
+    btn.style.color = 'var(--green)';
+    setTimeout(()=>{ btn.innerHTML=orig; btn.style.color=''; }, 2000);
+  }catch(e){ alert('請手動選取指令複製'); }
+}
+
+function downloadWorkerBat(btn){
+  const wi = parseInt(btn.dataset.wi);
+  const label = btn.dataset.label || ('同事'+(wi+1));
+  const cnt = btn.dataset.cnt || '?';
+  const cmd = window._execCmds[wi] || '';
+  const caseId = STATE.data.caseNote || STATE.data.companyName || 'survey';
+  const jsonName = caseId.replace(/[^a-zA-Z0-9一-鿿\-_]/g,'') + '-settings.json';
+
+  const bat = [
+    '@echo off',
+    'chcp 65001 >nul',
+    'echo ================================================',
+    `echo  SurveyAI 自動填寫 - ${label}（共 ${cnt} 份）`,
+    'echo ================================================',
+    'echo.',
+    `echo 使用設定檔：${jsonName}`,
+    'echo 正在執行，請勿關閉此視窗...',
+    'echo.',
+    'cd /d "%~dp0"',
+    cmd,
+    'echo.',
+    'echo ======== 執行完成 ========',
+    'echo 報告位於 survey_auto_results\\ 資料夾',
+    'echo ==========================',
+    'pause'
+  ].join('\r\n');
+
+  const blob = new Blob([bat], { type: 'application/octet-stream' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `run_survey_${label.replace(/\s/g,'')}.bat`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+async function copyInstallCmd(){
+  const text = 'pip install playwright && python -m playwright install chromium';
+  try{
+    await navigator.clipboard.writeText(text);
+    const btn = event.currentTarget;
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ 已複製';
+    btn.style.color = 'var(--green)';
+    setTimeout(()=>{ btn.innerHTML=orig; btn.style.color=''; }, 2000);
+  }catch(e){ alert('請手動複製'); }
+}
+
+function escapeHtml(str){
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function exportJSON(){
@@ -1943,7 +2127,7 @@ function resetAll(){
   Object.assign(STATE,{
     data:{},conditions:{gender:'random',age:'random',location:'random',occupation:'random',income:'random',education:'random',nameDisplay:'initial'},
     toggles:{personality:true,lifestyle:true,shopping:true,social:false},
-    mode:'ai',count:500,realCount:20,totalCountExpand:300,
+    mode:'ai',execMethod:'prompt',count:500,realCount:20,totalCountExpand:300,
     schedule:false,schDays:7,schStart:9,schEnd:22,schMin:3,schMax:15,
     currentStep:1,maxUnlocked:1
   });
@@ -1965,6 +2149,8 @@ function resetAll(){
   selectCount(500);
   document.getElementById('tog-schedule').checked=false;
   toggleSchedule();
+  // Reset exec method to prompt
+  selectExecMethod('prompt');
   document.getElementById('audience-hint').classList.add('hidden');
   goToStep(1);
 }
