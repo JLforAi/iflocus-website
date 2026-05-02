@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>SurveyAI 安裝與操作指南 | iFLocus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07080d;--card:rgba(255,255,255,0.035);--card-border:rgba(255,255,255,0.07);
+  --gold:#E8C547;--purple:#A78BFA;--green:#34D399;--red:#EF4444;--orange:#F59E0B;
+  --text:#E2E2E8;--text-muted:#6B7280;--text-dim:#9CA3AF;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:15px;line-height:1.7}
+
+/* PASSWORD */
+#pw-screen{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.pw-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:48px 40px;width:340px;text-align:center}
+.pw-logo{font-size:36px;margin-bottom:12px}
+.pw-title{font-size:18px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.pw-sub{font-size:13px;color:var(--text-muted);margin-bottom:24px}
+.pw-input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 16px;color:var(--text);font-size:15px;text-align:center;letter-spacing:3px;outline:none}
+.pw-input:focus{border-color:var(--gold)}
+.pw-btn{width:100%;margin-top:12px;background:var(--gold);color:#000;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:700;cursor:pointer}
+.pw-err{color:var(--red);font-size:13px;margin-top:8px;min-height:20px}
+
+/* LAYOUT */
+.page-wrap{max-width:800px;margin:0 auto;padding:40px 24px 80px}
+
+/* HEADER */
+.guide-header{text-align:center;margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.guide-header-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(232,197,71,0.1);border:1px solid rgba(232,197,71,0.2);color:var(--gold);font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:16px}
+.guide-header h1{font-size:28px;font-weight:700;color:var(--text);margin-bottom:8px}
+.guide-header p{font-size:15px;color:var(--text-muted)}
+
+/* SECTION */
+.guide-section{margin-bottom:40px}
+.guide-section-title{font-size:18px;font-weight:700;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.guide-section-title .num{width:28px;height:28px;background:rgba(232,197,71,0.15);border:1px solid rgba(232,197,71,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+
+/* CARD */
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:20px 24px;margin-bottom:16px}
+.card-title{font-size:14px;font-weight:600;color:var(--text-dim);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+
+/* STEP LIST */
+.step-list{list-style:none;counter-reset:step}
+.step-list li{counter-increment:step;display:flex;gap:14px;margin-bottom:16px;align-items:flex-start}
+.step-list li::before{content:counter(step);width:24px;height:24px;background:rgba(232,197,71,0.12);border:1px solid rgba(232,197,71,0.25);border-radius:50%;color:var(--gold);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-list li .step-body{flex:1}
+.step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.step-desc{font-size:13px;color:var(--text-muted);line-height:1.6}
+
+/* CODE */
+.code-block{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px 16px;font-family:'Courier New',monospace;font-size:13px;color:#b0c4de;line-height:1.8;margin:10px 0;word-break:break-all;position:relative}
+.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:6px;color:var(--text-muted);font-size:11px;padding:4px 10px;cursor:pointer;transition:all 0.2s}
+.copy-btn:hover{background:rgba(255,255,255,0.15);color:var(--text)}
+
+/* ALERT */
+.alert{display:flex;align-items:flex-start;gap:10px;border-radius:10px;padding:12px 16px;font-size:13px;margin:12px 0}
+.alert-warning{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:#FCD34D}
+.alert-info{background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);color:var(--purple)}
+.alert-success{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);color:var(--green)}
+
+/* TABLE */
+.guide-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+.guide-table th{background:rgba(255,255,255,0.04);color:var(--text-dim);font-weight:600;padding:10px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.07)}
+.guide-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--text-muted);vertical-align:top}
+.guide-table tr:last-child td{border-bottom:none}
+.guide-table td:first-child{color:var(--text);font-weight:500}
+
+/* TAG */
+.tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:500}
+.tag-gold{background:rgba(232,197,71,0.1);border:1px solid rgba(232,197,71,0.25);color:var(--gold)}
+.tag-green{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);color:var(--green)}
+.tag-purple{background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);color:var(--purple)}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid rgba(255,255,255,0.06);margin:32px 0}
+
+/* FLOW */
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0}
+.flow-step{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 14px;font-size:13px;color:var(--text)}
+.flow-arrow{color:var(--text-muted);font-size:16px}
+
+@media print{
+  #pw-screen{display:none!important}
+  body{background:#fff;color:#111}
+  .card{border:1px solid #ddd;background:#f9f9f9}
+  .code-block{background:#f4f4f4;color:#333;border:1px solid #ddd}
+  .alert-warning{background:#fffbeb;color:#92400e;border-color:#fcd34d}
+  .alert-info{background:#ede9fe;color:#4c1d95;border-color:#a78bfa}
+  .alert-success{background:#ecfdf5;color:#065f46;border-color:#34d399}
+  :root{--text:#111;--text-muted:#555;--gold:#b8860b;--green:#065f46;--purple:#4c1d95}
+}
+</style>
+</head>
+<body>
+
+<div id="pw-screen">
+  <div class="pw-box">
+    <div class="pw-logo">📋</div>
+    <div class="pw-title">SurveyAI 操作指南</div>
+    <div class="pw-sub">請輸入內部密碼</div>
+    <input class="pw-input" type="password" id="pw-input" placeholder="••••••••••••">
+    <button class="pw-btn" onclick="checkPw()">進入</button>
+    <div class="pw-err" id="pw-err"></div>
+  </div>
+</div>
+
+<div id="main" style="display:none">
+<div class="page-wrap">
+
+  <div class="guide-header">
+    <div class="guide-header-badge">🔒 iFLocus 內部文件</div>
+    <h1>SurveyAI 安裝與操作指南</h1>
+    <p>問卷模擬與自動填寫工具 · 適用 Google Forms / SurveyCake</p>
+  </div>
+
+  <!-- ===== 工具說明 ===== -->
+  <div class="guide-section">
+    <div class="guide-section-title">
+      <span class="num">0</span>這個工具是什麼
+    </div>
+    <div class="card">
+      <p style="color:var(--text-muted);font-size:14px;margin-bottom:16px">SurveyAI 是 iFLocus 的內部研究工具，支援兩種工作模式：</p>
+      <table class="guide-table">
+        <tr>
+          <th>模式</th><th>做什麼</th><th>適合情境</th>
+        </tr>
+        <tr>
+          <td><span class="tag tag-gold">💬 AI 模擬回答</span></td>
+          <td>產生 Prompt，貼到 Claude / ChatGPT，AI 輸出模擬問卷回答</td>
+          <td>快速產出分析資料、無需真實 IP</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">🖥️ 自動填寫表單</span></td>
+          <td>Python 腳本自動點擊填寫，Google Forms 後台出現真實筆數</td>
+          <td>需要真實送出紀錄、多人分工執行</td>
+        </tr>
+      </table>
+    </div>
+    <div class="alert alert-info">
+      <span>💡</span>
+      <span>工具網址：<strong>iflocus.com/internal/survey.html</strong>　·　密碼請洽主管</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== AI 模擬回答 ===== -->
+  <div class="guide-section">
+    <div class="guide-section-title">
+      <span class="num">1</span>AI 模擬回答（不需安裝任何東西）
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 操作流程</div>
+      <div class="flow">
+        <div class="flow-step">登入工具</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Step 1 匯入需求單</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Step 2 設定受訪者條件</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Step 3 選執行方式 + 份數</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Step 4 複製 Prompt</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">貼到 Claude / ChatGPT</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📝 各步驟說明</div>
+      <ul class="step-list">
+        <li>
+          <div class="step-body">
+            <div class="step-title">Step 1 — 匯入需求單</div>
+            <div class="step-desc">下載 Excel 範本，填入品牌名稱、產品名稱、問卷連結等基本資訊後上傳。或點「使用範例資料」快速體驗。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">Step 2 — 受訪者條件設定</div>
+            <div class="step-desc">設定性別、年齡、居住地、職業、收入等篩選條件。未指定的欄位由 AI 自由設定。「姓名顯示方式」可選完整姓名、姓氏縮寫（王OO）或不顯示。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">Step 3 — 選擇執行方式與份數</div>
+            <div class="step-desc">選「AI 模擬回答」，再選模擬模式（純AI 或 樣本擴增）與份數。排程設定在此模式下不需理會。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">Step 4 — 複製 Prompt 並執行</div>
+            <div class="step-desc">點金色按鈕「📋 複製完整 Prompt」，開啟 Claude.ai 或 ChatGPT，直接貼上送出。AI 會產出模擬問卷回答並附上可下載的 CSV 檔案。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">取得分析檔案</div>
+            <div class="step-desc">若 AI 平台有附檔功能，直接下載 CSV。若沒有，複製 AI 回覆貼入工具下方的「AI 回覆轉下載檔」區塊，點「產生下載檔與分析報表」即可下載。</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 自動填寫 ===== -->
+  <div class="guide-section">
+    <div class="guide-section-title">
+      <span class="num">2</span>自動填寫表單（需安裝 Python）
+    </div>
+
+    <div class="alert alert-warning">
+      <span>⚠️</span>
+      <span>每台電腦只需安裝一次，約 5–10 分鐘。安裝完成後，之後每次執行只需雙擊 .bat 檔即可。</span>
+    </div>
+
+    <!-- 安裝 -->
+    <div class="card">
+      <div class="card-title">🔧 第一步：安裝 Python</div>
+      <ul class="step-list">
+        <li>
+          <div class="step-body">
+            <div class="step-title">前往 python.org 下載</div>
+            <div class="step-desc">搜尋「python download」，進入官網下載 Python 3.11 或以上版本（Windows Installer）。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">安裝時勾選「Add Python to PATH」</div>
+            <div class="step-desc">這個選項在安裝畫面最下方，<strong style="color:var(--red)">一定要勾選</strong>，否則後續指令會找不到 Python。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">確認安裝成功</div>
+            <div class="step-desc">開啟命令提示字元（cmd），輸入以下指令，若出現版本號即成功：</div>
+            <div class="code-block">python --version<button class="copy-btn" onclick="copyCode(this)">複製</button></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔧 第二步：安裝 Playwright（瀏覽器自動化套件）</div>
+      <ul class="step-list">
+        <li>
+          <div class="step-body">
+            <div class="step-title">開啟命令提示字元（cmd）</div>
+            <div class="step-desc">按 Win + R，輸入 <code style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px">cmd</code>，按 Enter。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">貼上以下指令並按 Enter</div>
+            <div class="code-block">pip install playwright && python -m playwright install chromium<button class="copy-btn" onclick="copyCode(this)">複製</button></div>
+            <div class="step-desc">等待安裝完成（約 3–5 分鐘），看到沒有 Error 訊息即成功。</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 下載執行檔 -->
+    <div class="card">
+      <div class="card-title">📁 第三步：準備執行檔案</div>
+      <ul class="step-list">
+        <li>
+          <div class="step-body">
+            <div class="step-title">建立一個資料夾</div>
+            <div class="step-desc">在桌面或任意位置建立資料夾，例如 <code style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px">SurveyAI</code>。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">下載 survey_auto_runner.py</div>
+            <div class="step-desc">從主管取得 <strong>survey_auto_runner.py</strong>，放入剛才建立的資料夾。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">從工具下載設定檔 JSON</div>
+            <div class="step-desc">在 SurveyAI 工具的 Step 4 自動填寫區，點「⬇ 下載設定檔 JSON」，將檔案放到<strong>同一個資料夾</strong>。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">從工具下載 .bat 執行檔</div>
+            <div class="step-desc">工具會依人數產生對應的 .bat 檔（例如 run_survey_同事A.bat），點「⬇ 下載 .bat」，放到<strong>同一個資料夾</strong>。</div>
+          </div>
+        </li>
+      </ul>
+      <div class="alert alert-info">
+        <span>📁</span>
+        <span>最終資料夾內容應為：<br>
+        <code style="font-family:'Courier New',monospace">SurveyAI/<br>
+        ├── survey_auto_runner.py<br>
+        ├── 案件名稱-settings.json<br>
+        └── run_survey_同事A.bat</code></span>
+      </div>
+    </div>
+
+    <!-- 執行 -->
+    <div class="card">
+      <div class="card-title">▶ 第四步：執行</div>
+      <ul class="step-list">
+        <li>
+          <div class="step-body">
+            <div class="step-title">雙擊 .bat 檔</div>
+            <div class="step-desc">黑色視窗會自動開啟，顯示執行進度。瀏覽器會在背景自動填寫問卷（headless 模式，不會看到瀏覽器視窗）。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">等待完成</div>
+            <div class="step-desc">每份問卷間隔 30–90 秒（模擬真實填寫），完成時視窗顯示「執行完成」並自動停住。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">查看報告</div>
+            <div class="step-desc">執行完成後，資料夾內會自動產生 <code style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px">survey_auto_results/</code> 子資料夾，裡面有每次執行的 CSV 報告與截圖。</div>
+          </div>
+        </li>
+      </ul>
+      <div class="alert alert-warning">
+        <span>⚠️</span>
+        <span>執行期間電腦不可睡眠、不可斷網。執行完成後電腦可正常使用。</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 多人分工 ===== -->
+  <div class="guide-section">
+    <div class="guide-section-title">
+      <span class="num">3</span>多人分工執行（分散 IP）
+    </div>
+
+    <div class="card">
+      <div class="card-title">🗂 為什麼需要多人分工</div>
+      <p style="font-size:13px;color:var(--text-muted)">Google Forms 會偵測同一 IP 大量提交，建議每個 IP 不超過 30 份。三人各自在家使用不同網路執行，等同使用三個不同住宅 IP，可大幅降低被系統偵測的風險。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👥 分工流程</div>
+      <ul class="step-list">
+        <li>
+          <div class="step-body">
+            <div class="step-title">主管在工具設定人數</div>
+            <div class="step-desc">在 Step 4 自動填寫區填入問卷網址，「執行人數」填 3（或實際人數）。工具自動計算每人份數。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">下載各自的 .bat 檔</div>
+            <div class="step-desc">工具會產生「同事 A」「同事 B」「同事 C」各自的執行指令與 .bat 檔，每人的任務範圍自動切分、不重疊。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">傳給對應同事</div>
+            <div class="step-desc">將對應的 .bat 檔 + settings.json + survey_auto_runner.py 傳給各人（Line / Email 均可）。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">各自在家執行</div>
+            <div class="step-desc">各人把檔案放在同一個資料夾，雙擊自己的 .bat 執行。建議約好同一天晚上各自在家執行，約 30–50 分鐘完成。</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <div class="step-title">回傳 CSV 報告</div>
+            <div class="step-desc">執行完成後，將 survey_auto_results/ 內的 CSV 回傳給主管彙整。</div>
+          </div>
+        </li>
+      </ul>
+      <div class="alert alert-success">
+        <span>✅</span>
+        <span><strong>重複提交保護：</strong>就算不小心重複執行，系統會自動跳過已送出的份數（顯示 skipped_duplicate），不會重複計算。</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 常見問題 ===== -->
+  <div class="guide-section">
+    <div class="guide-section-title">
+      <span class="num">4</span>常見問題
+    </div>
+
+    <div class="card">
+      <table class="guide-table">
+        <tr>
+          <th style="width:40%">問題</th><th>解法</th>
+        </tr>
+        <tr>
+          <td>執行後出現「python 不是內部或外部命令」</td>
+          <td>Python 安裝時未勾選「Add to PATH」，重新安裝並勾選</td>
+        </tr>
+        <tr>
+          <td>出現「No module named playwright」</td>
+          <td>重新執行安裝指令：<code style="font-size:12px">pip install playwright && python -m playwright install chromium</code></td>
+        </tr>
+        <tr>
+          <td>執行後視窗閃一下就關掉</td>
+          <td>雙擊 .bat 前先確認三個檔案在同一個資料夾；檢查 settings.json 檔名是否正確</td>
+        </tr>
+        <tr>
+          <td>Google Forms 出現驗證碼（CAPTCHA）</td>
+          <td>停止執行，等隔天再繼續；或減少每人份數、拉長間隔時間</td>
+        </tr>
+        <tr>
+          <td>執行到一半電腦睡眠了</td>
+          <td>重新雙擊 .bat，系統會自動跳過已完成的部分，從中斷點繼續</td>
+        </tr>
+        <tr>
+          <td>CSV 報告在哪裡</td>
+          <td>執行資料夾內的 <code style="font-size:12px">survey_auto_results/</code> 子資料夾</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 聯絡 ===== -->
+  <div style="text-align:center;padding:16px 0 0">
+    <div style="font-size:13px;color:var(--text-muted)">問題請洽 iFLocus 內部研究團隊</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.2);margin-top:8px">iflocus.com/internal/guide.html · noindex</div>
+  </div>
+
+</div>
+</div>
+
+<script>
+const PASS = 'iflocus2025';
+function checkPw(){
+  const v = document.getElementById('pw-input').value;
+  if(v === PASS){
+    sessionStorage.setItem('guide-auth','1');
+    document.getElementById('pw-screen').style.display='none';
+    document.getElementById('main').style.display='block';
+  } else {
+    document.getElementById('pw-err').textContent='密碼錯誤，請再試一次';
+    const inp = document.getElementById('pw-input');
+    inp.style.borderColor='var(--red)';
+    setTimeout(()=>{ inp.style.borderColor=''; document.getElementById('pw-err').textContent=''; },1500);
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw()});
+if(sessionStorage.getItem('guide-auth')==='1'){
+  document.getElementById('pw-screen').style.display='none';
+  document.getElementById('main').style.display='block';
+}
+
+async function copyCode(btn){
+  const block = btn.parentElement;
+  const text = block.childNodes[0].textContent.trim();
+  try{
+    await navigator.clipboard.writeText(text);
+    const orig = btn.textContent;
+    btn.textContent='✓ 已複製';
+    btn.style.color='var(--green)';
+    setTimeout(()=>{ btn.textContent=orig; btn.style.color=''; },2000);
+  }catch(e){ alert('請手動選取複製'); }
+}
+</script>
+</body>
+</html>
