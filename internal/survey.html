@@ -8,7 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.7.0/dist/pptxgen.bundle.js"></script>
 <style>
 /* ===== RESET & BASE ===== */
@@ -1436,6 +1437,10 @@ function extractInlineCSV(text){
 function triggerDownload(filename, content, mime, addBom=false){
   const body = addBom ? '\ufeff' + content : content;
   const blob = new Blob([body], {type:mime});
+  triggerBlobDownload(filename, blob);
+}
+
+function triggerBlobDownload(filename, blob){
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = filename;
@@ -1670,22 +1675,77 @@ function buildExportReportHTML(data){
 async function downloadQuickReportPDF(){
   const data=STATE.latestReportData;
   if(!data){alert('請先產生快速分析報表');return;}
-  if(typeof html2pdf==='undefined'){alert('PDF 匯出工具尚未載入，請重新整理後再試');return;}
+  const JSPDF = window.jspdf?.jsPDF;
+  if(!JSPDF || typeof html2canvas==='undefined'){alert('PDF 匯出工具尚未載入，請重新整理後再試');return;}
+  const chartBlock=(title,counts)=>`
+    <section style="margin-top:18px;page-break-inside:avoid">
+      <h3 style="font-size:16px;margin:0 0 10px;color:#111827">${escapeHTML(title)}</h3>
+      ${chartEntries(counts).map(([label,count])=>{
+        const pct=data.total?Math.round(count/data.total*100):0;
+        return `<div style="margin:8px 0">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#374151">
+            <span>${escapeHTML(label)}</span><span>${count} (${pct}%)</span>
+          </div>
+          <div style="height:8px;background:#E5E7EB;border-radius:999px;margin-top:4px;overflow:hidden">
+            <div style="width:${pct}%;height:100%;background:#D4AF37;border-radius:999px"></div>
+          </div>
+        </div>`;
+      }).join('')}
+      <table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:11px;color:#374151">
+        <thead><tr style="background:#F3F4F6">
+          <th style="text-align:left;padding:6px;border:1px solid #E5E7EB">類別</th>
+          <th style="text-align:right;padding:6px;border:1px solid #E5E7EB">數量</th>
+          <th style="text-align:right;padding:6px;border:1px solid #E5E7EB">百分比</th>
+        </tr></thead>
+        <tbody>${chartEntries(counts).map(([label,count])=>{
+          const pct=data.total?Math.round(count/data.total*100):0;
+          return `<tr>
+            <td style="padding:6px;border:1px solid #E5E7EB">${escapeHTML(label)}</td>
+            <td style="padding:6px;border:1px solid #E5E7EB;text-align:right">${count}</td>
+            <td style="padding:6px;border:1px solid #E5E7EB;text-align:right">${pct}%</td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>
+    </section>`;
+  const pageShell=(body,withHeader=false)=>`
+    <div style="width:794px;height:1123px;background:#fff;color:#111827;font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;padding:28px 34px;box-sizing:border-box;overflow:hidden">
+      ${withHeader?`
+        <div style="border-bottom:3px solid #D4AF37;padding-bottom:10px;margin-bottom:16px">
+          <div style="font-size:12px;letter-spacing:.12em;color:#6B7280;font-weight:700">iFLocus SurveyAI</div>
+          <h1 style="font-size:28px;margin:6px 0 4px;color:#111827">${escapeHTML(data.title)}</h1>
+          <div style="font-size:13px;color:#6B7280">${escapeHTML(data.product)} · ${escapeHTML(data.generatedAt)}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px">
+          ${data.highlights.map(([label,value])=>`
+            <div style="border:1px solid #E5E7EB;border-radius:10px;padding:12px;background:#F9FAFB">
+              <div style="font-size:11px;color:#6B7280;margin-bottom:4px">${escapeHTML(label)}</div>
+              <div style="font-size:18px;font-weight:700;color:#111827">${escapeHTML(value)}</div>
+            </div>`).join('')}
+        </div>`:''}
+      ${body}
+    </div>`;
+  const pages=[
+    pageShell(`${chartBlock('性別分布',data.counts.gender)}${chartBlock('年齡分布',data.counts.age)}`,true),
+    pageShell(`${chartBlock('地區分布',data.counts.location)}${chartBlock('職業分布',data.counts.occupation)}${chartBlock('收入分布',data.counts.income)}`),
+    pageShell(`${chartBlock('教育分布',data.counts.education)}${chartBlock('社群平台',data.counts.social)}
+      <p style="margin-top:24px;font-size:12px;color:#6B7280">本報表為 SurveyAI 快速描述統計，適合初步溝通；正式結論仍建議搭配交叉分析與研究人員判讀。</p>`)
+  ];
+  const pdf=new JSPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const wrapper=document.createElement('div');
   wrapper.style.position='fixed';
   wrapper.style.left='-10000px';
   wrapper.style.top='0';
-  wrapper.innerHTML=buildExportReportHTML(data);
+  wrapper.style.background='#fff';
   document.body.appendChild(wrapper);
-  const opt={
-    margin:[3,5,5,5],
-    filename:safeFileBase()+'-quick-report.pdf',
-    image:{type:'jpeg',quality:0.98},
-    html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff'},
-    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
-  };
   try{
-    await html2pdf().set(opt).from(wrapper.firstElementChild).save();
+    for(let i=0;i<pages.length;i++){
+      wrapper.innerHTML=pages[i];
+      const canvas=await html2canvas(wrapper.firstElementChild,{scale:2,backgroundColor:'#ffffff',useCORS:true});
+      const img=canvas.toDataURL('image/jpeg',0.98);
+      if(i>0)pdf.addPage();
+      pdf.addImage(img,'JPEG',0,0,210,297);
+    }
+    triggerBlobDownload(safeFileBase()+'-quick-report.pdf', pdf.output('blob'));
   }finally{
     wrapper.remove();
   }
