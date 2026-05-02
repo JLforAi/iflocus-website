@@ -78,7 +78,7 @@ button{cursor:pointer}
       <div class="card-title"><span>🎯</span>目標與次數</div>
       <div class="form-row">
         <label class="form-label">要測試的網址</label>
-        <input id="target-url" class="form-input" type="url" placeholder="https://iflocus.com/internal/survey.html" oninput="updateOutput()">
+        <input id="target-url" class="form-input" type="url" placeholder="https://dailynowbuzz.com/" oninput="updateOutput()">
       </div>
       <div class="row">
         <div class="form-row">
@@ -120,7 +120,7 @@ button{cursor:pointer}
       </div>
       <div class="form-row">
         <label class="form-label">允許網域 allowlist</label>
-        <input id="allowed-hosts" class="form-input" value="iflocus.com,www.iflocus.com" oninput="updateOutput()">
+        <input id="allowed-hosts" class="form-input" value="iflocus.com,www.iflocus.com,dailynowbuzz.com,www.dailynowbuzz.com" oninput="updateOutput()">
       </div>
     </div>
 
@@ -170,7 +170,7 @@ button{cursor:pointer}
           <div class="guide-num">2</div>
           <div>
             <div class="guide-title">確認 allowlist 有包含目標網域</div>
-            <div class="guide-desc">例如網址是 <code>https://client.com/page</code>，allowlist 要有 <code>client.com</code>。多個網域用逗號分隔，例如 <code>iflocus.com,www.iflocus.com,client.com</code>。</div>
+            <div class="guide-desc">例如網址是 <code>https://dailynowbuzz.com/</code>，allowlist 要有 <code>dailynowbuzz.com</code>。多個網域用逗號分隔，例如 <code>iflocus.com,www.iflocus.com,dailynowbuzz.com,www.dailynowbuzz.com</code>。</div>
           </div>
         </div>
         <div class="guide-step">
@@ -183,7 +183,7 @@ button{cursor:pointer}
               <ul>
                 <li>點 <code>Secrets</code> 分頁，新增一筆：Name 填 <code>CLICK_TARGET_URL</code>，Secret 填上方 Secrets 區塊產生的網址，例如 <code>https://iflocus.com/internal/clicks.html</code>。</li>
                 <li>點 <code>Variables</code> 分頁，照上方 Variables 區塊逐行新增。等號左邊填 Name，等號右邊填 Value。</li>
-                <li>範例：Name 填 <code>CLICK_QA_ENABLED</code>，Value 填 <code>false</code>；Name 填 <code>CLICK_COUNT_PER_RUN</code>，Value 填 <code>1</code>；Name 填 <code>CLICK_ALLOWED_HOSTS</code>，Value 填 <code>iflocus.com,www.iflocus.com</code>。</li>
+                <li>範例：Name 填 <code>CLICK_QA_ENABLED</code>，Value 填 <code>false</code>；Name 填 <code>CLICK_COUNT_PER_RUN</code>，Value 填 <code>1</code>；Name 填 <code>CLICK_ALLOWED_HOSTS</code>，Value 填 <code>iflocus.com,www.iflocus.com,dailynowbuzz.com,www.dailynowbuzz.com</code>。</li>
                 <li>第一次測試建議先讓 <code>CLICK_QA_ENABLED=false</code>，用手動測試確認沒問題後，再回 Variables 把 Value 改成 <code>true</code>。</li>
               </ul>
             </div>
@@ -257,7 +257,7 @@ function updateOutput(){
     <div class="summary-item"><div class="summary-item-label">時段</div><div class="summary-item-value">${c.startHour}:00-${c.endHour}:59</div></div>
     <div class="summary-item"><div class="summary-item-label">間隔</div><div class="summary-item-value">${c.intervalMinSec}-${c.intervalMaxSec}s</div></div>
     <div class="summary-item"><div class="summary-item-label">動作</div><div class="summary-item-value" style="font-size:13px">${escapeHtml(selectorLabel)}</div></div>`;
-  document.getElementById('secrets-output').textContent=`CLICK_TARGET_URL=${c.url || 'https://iflocus.com/'}`;
+  document.getElementById('secrets-output').textContent=`CLICK_TARGET_URL=${c.url || 'https://dailynowbuzz.com/'}`;
   document.getElementById('vars-output').textContent=[
     'CLICK_QA_ENABLED=false',
     `CLICK_COUNT_PER_RUN=${c.count}`,
@@ -270,7 +270,7 @@ function updateOutput(){
   ].join('\n');
   document.getElementById('dispatch-output').textContent=[
     'enabled=true',
-    `url=${c.url || 'https://iflocus.com/'}`,
+    `url=${c.url || 'https://dailynowbuzz.com/'}`,
     `count=${c.count}`,
     `selector=${c.selector}`,
     `start_hour=${c.startHour}`,

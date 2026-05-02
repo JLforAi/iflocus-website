@@ -2,8 +2,8 @@ name: iFLocus Clicks QA
 
 on:
   schedule:
-    # UTC 01:23 = Taiwan 09:23. GitHub schedules may be delayed.
-    - cron: "23 1 * * *"
+    # Every 30 minutes. GitHub schedules may be delayed by a few minutes.
+    - cron: "*/30 * * * *"
   workflow_dispatch:
     inputs:
       enabled:
@@ -113,7 +113,7 @@ jobs:
           END_HOUR="${{ inputs.end_hour }}"
           INTERVAL_MIN="${{ inputs.interval_min_sec }}"
           INTERVAL_MAX="${{ inputs.interval_max_sec }}"
-          ALLOWED_HOSTS="${DEFAULT_ALLOWED_HOSTS:-iflocus.com,www.iflocus.com}"
+          ALLOWED_HOSTS="${DEFAULT_ALLOWED_HOSTS:-iflocus.com,www.iflocus.com,dailynowbuzz.com,www.dailynowbuzz.com}"
 
           if [ -z "$COUNT" ]; then COUNT="${DEFAULT_COUNT:-1}"; fi
           if [ -z "$SELECTOR" ]; then SELECTOR="${DEFAULT_SELECTOR:-}"; fi

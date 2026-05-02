@@ -30,7 +30,14 @@ from playwright.sync_api import TimeoutError as PlaywrightTimeout, sync_playwrig
 
 BASE_DIR = Path(__file__).parent
 DEFAULT_REPORT_DIR = BASE_DIR / "clicks_results"
-DEFAULT_ALLOWED_HOSTS = ["iflocus.com", "www.iflocus.com", "localhost", "127.0.0.1"]
+DEFAULT_ALLOWED_HOSTS = [
+    "iflocus.com",
+    "www.iflocus.com",
+    "dailynowbuzz.com",
+    "www.dailynowbuzz.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 @dataclass
