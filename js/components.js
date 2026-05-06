@@ -53,7 +53,7 @@ const FOOTER_HTML = `
   <div class="footer-inner">
     <div class="footer-brand">
       <img src="images/logos/locus-color-word.png" alt="LOCUS 絡客思行銷科技">
-      <p>iFLocus 絡客思以影響力營銷為主軸，整合 KOL/KOC、運動行銷、影音內容、OMO應援、數位媒體與 AiLocus 大數據服務，協助品牌提升聲量、信任與轉換。</p>
+      <p><strong>絡客思行銷科技</strong>旗下兩大主要服務：<strong>iFLocus</strong> 在地影響力營銷與 OMO 整合行銷，以及 <strong>AiLocus</strong> 位置大數據與 AI 智能洞察，協助品牌串連線上與線下，提升聲量、信任與實際轉換。</p>
       <a href="mailto:sales@iflocus.com" class="footer-email">sales@iflocus.com</a>
     </div>
     <div class="footer-col">
