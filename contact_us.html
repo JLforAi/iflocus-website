@@ -140,8 +140,32 @@
             <label>需求說明</label>
             <textarea placeholder="請簡述您的行銷需求、目標受眾、預算範圍等資訊，讓我們能為您提供最適切的建議…"></textarea>
           </div>
+          <div class="form-group" style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+            <input type="checkbox" id="privacyAgree" name="privacyAgree" required style="margin-top:4px;flex-shrink:0;width:auto">
+            <label for="privacyAgree" style="font-size:13px;color:var(--text-light);line-height:1.6;font-weight:400;margin:0">
+              我已閱讀並同意 <a href="privacy.html" target="_blank" style="color:var(--primary);text-decoration:underline">隱私權政策</a>，並同意 iFLocus 為回覆本諮詢之目的處理我所提供的個人資訊。
+            </label>
+          </div>
+          <div id="privacyErr" style="display:none;color:#c0392b;font-size:13px;margin-bottom:12px">請先勾選同意隱私權政策。</div>
           <button type="submit" class="btn btn-primary" style="width:100%;font-size:16px;padding:14px">送出需求表單</button>
         </form>
+        <script>
+          (function(){
+            var f = document.getElementById('contactForm');
+            if(!f) return;
+            f.addEventListener('submit', function(e){
+              var cb = document.getElementById('privacyAgree');
+              var err = document.getElementById('privacyErr');
+              if(cb && !cb.checked){
+                e.preventDefault();
+                if(err) err.style.display = 'block';
+                cb.focus();
+                return false;
+              }
+              if(err) err.style.display = 'none';
+            });
+          })();
+        </script>
       </div>
     </div>
   </div>
