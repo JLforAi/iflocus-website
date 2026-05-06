@@ -675,11 +675,23 @@ section { padding: 80px 0; }
   --hero-position: center right;
 }
 
-.hero-case-studies,
-.hero-news {
-  --hero-image: url("../images/page-assets/integrated-case-franchise.jpg");
-  --hero-tint: rgba(90,74,204,0.36);
-  --hero-position: center;
+/* case-studies / news: 使用乾淨漸層,避免與圖內既有文字衝突 */
+.page-hero.hero-scenic.hero-case-studies,
+.page-hero.hero-scenic.hero-news {
+  background-image:
+    radial-gradient(circle at 15% 25%, rgba(255,255,255,0.08), transparent 55%),
+    radial-gradient(circle at 85% 75%, rgba(0,188,212,0.20), transparent 55%),
+    linear-gradient(135deg, #0a1628 0%, #1a3a6e 45%, #5a4acc 100%);
+}
+.page-hero.hero-scenic.hero-case-studies::before,
+.page-hero.hero-scenic.hero-news::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .hero-branddrop {
