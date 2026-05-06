@@ -550,7 +550,6 @@ section { padding: 80px 0; }
   justify-content: flex-start;
 }
 
-.hero-brand-philosophy,
 .hero-about,
 .hero-iflocus {
   --hero-image: url("../images/iflocus-56.jpg");
@@ -562,6 +561,23 @@ section { padding: 80px 0; }
   --hero-image: url("../images/iflocus-58.jpg");
   --hero-tint: rgba(15,52,96,0.55);
   --hero-position: center right;
+}
+
+/* brand-philosophy: 使用乾淨漸層,避免與圖片內既有文字衝突 */
+.page-hero.hero-scenic.hero-brand-philosophy {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255,102,0,0.18), transparent 55%),
+    linear-gradient(135deg, #0a1628 0%, #0f3a6e 45%, #c0392b 100%);
+}
+.page-hero.hero-scenic.hero-brand-philosophy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .page-hero.hero-scenic.hero-home {
