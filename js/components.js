@@ -88,7 +88,7 @@ const FOOTER_HTML = `
     </div>
   </div>
   <div class="footer-bottom">
-    <p>Copyright © 2026 iFLocus Marketing Technology CO., LTD. All rights reserved.</p>
+    <p>Copyright © 2026 Locus Marketing Technology CO., LTD. All rights reserved.</p>
   </div>
 </footer>
 <button class="back-to-top" id="backToTop" title="回到頂部">↑</button>`;
