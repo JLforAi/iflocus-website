@@ -1,17 +1,17 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>絡客思行銷科技 | 影響力營銷與跨域整合行銷夥伴</title>
-  <meta name="description" content="絡客思行銷科技以影響力營銷為主軸，整合 KOL/KOC、運動行銷、影音內容、OMO應援、數位媒體投放與 AiLocus 大數據服務，協助品牌提升聲量與轉換。">
-  <meta name="keywords" content="iFLocus, 絡客思, 影響力營銷, 影響力行銷, KOL行銷, 運動行銷, OMO, 整合行銷, 影音行銷, AI行銷">
+  <meta name="description" content="絡客思行銷科技（Locus Marketing Technology）旗下提供 iFLocus 影響力營銷與 AiLocus 位置大數據兩大服務，整合 KOL/KOC、運動行銷、影音內容、OMO 應援與 AI 數據分析，協助品牌提升聲量、信任與實際轉換。">
+  <meta name="keywords" content="絡客思行銷科技, Locus Marketing Technology, iFLocus, AiLocus, 影響力營銷, KOL行銷, OMO, 整合行銷, 場域推播廣告, 位置大數據">
   <meta name="robots" content="index, follow">
   <meta name="author" content="絡客思行銷科技">
   <link rel="canonical" href="https://iflocus.com/">
   <!-- Open Graph -->
   <meta property="og:title" content="絡客思行銷科技 | 影響力營銷與跨域整合行銷夥伴">
-  <meta property="og:description" content="iFLocus 以影響力營銷為主軸，整合 KOL/KOC、運動行銷、影音內容、OMO應援、數位媒體投放與 AiLocus 大數據服務。">
+  <meta property="og:description" content="iFLocus 影響力營銷 × AiLocus 位置數據,從聲量到轉換,絡客思行銷科技一站式整合。">
   <meta property="og:image" content="https://iflocus.com/images/home-hero-iflocus-desktop.jpg">
   <meta property="og:url" content="https://iflocus.com/">
   <meta property="og:type" content="website">
@@ -20,7 +20,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="絡客思行銷科技 | 影響力營銷與跨域整合行銷夥伴">
-  <meta name="twitter:description" content="iFLocus 以影響力營銷為主軸，整合 KOL/KOC、運動行銷、影音內容、OMO應援與數位媒體服務。">
+  <meta name="twitter:description" content="iFLocus 影響力營銷 × AiLocus 位置數據,從聲量到轉換,絡客思行銷科技一站式整合。">
   <meta name="twitter:image" content="https://iflocus.com/images/home-hero-iflocus-desktop.jpg">
   <!-- Google Analytics GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
@@ -31,18 +31,49 @@
     gtag('config', 'GA_MEASUREMENT_ID');
   </script>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* 服務卡片統一風格 - 4 個都用 gradient banner + emoji */
+    .svc-banner { height:160px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; color:#fff; }
+    .svc-banner .svc-icon { font-size:48px; line-height:1; }
+    .svc-banner .svc-name { font-size:20px; font-weight:800; letter-spacing:-0.5px; }
+    .svc-banner-iflocus { background:linear-gradient(135deg,#0066cc 0%,#004a99 50%,#d8303a 100%); }
+    .svc-banner-branddrop { background:linear-gradient(135deg,#0d0d0d 0%,#1a1a1a 50%,#ff6600 100%); }
+    .svc-banner-locusad { background:linear-gradient(135deg,#0a1628 0%,#0f3a6e 50%,#00bcd4 100%); }
+    .svc-banner-ailocus { background:linear-gradient(135deg,#5e35b1 0%,#3949ab 50%,#1e88e5 100%); }
+    /* 產業 emoji card 變可點擊 */
+    .industry-card { display:block; text-decoration:none; color:inherit; transition:transform 0.2s,box-shadow 0.2s; padding:28px 16px; background:var(--bg-light); border-radius:14px; text-align:center; }
+    .industry-card:hover { transform:translateY(-4px); box-shadow:0 8px 20px rgba(0,0,0,0.08); }
+    .industry-card .industry-emoji { font-size:40px; margin-bottom:12px; }
+    .industry-card h4 { font-size:15px; font-weight:700; margin:0; }
+    /* mini about */
+    .about-mini { background:linear-gradient(135deg,#f7f9fc 0%,#fff 100%); border-radius:18px; padding:36px; display:grid; grid-template-columns:1fr auto; gap:24px; align-items:center; }
+    @media (max-width:768px){ .about-mini { grid-template-columns:1fr; text-align:center; } }
+    /* news preview */
+    .news-mini-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:32px; }
+    .news-mini-card { background:#fff; border-radius:14px; box-shadow:0 2px 14px rgba(0,0,0,0.06); padding:24px; transition:transform 0.2s,box-shadow 0.2s; text-decoration:none; color:inherit; display:block; }
+    .news-mini-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,0.10); }
+    .news-mini-card .news-date { color:var(--text-light); font-size:13px; margin-bottom:8px; }
+    .news-mini-card h3 { font-size:16px; font-weight:700; line-height:1.5; margin:0 0 10px; }
+    .news-mini-card p { color:var(--text-light); font-size:13px; line-height:1.7; margin:0; }
+    @media (max-width:768px){ .news-mini-grid { grid-template-columns:1fr; } }
+    /* trust line */
+    .trust-line { text-align:center; margin-bottom:32px; padding:18px 24px; background:rgba(0,102,204,0.06); border-radius:12px; font-size:15px; color:var(--text); font-weight:600; }
+    .trust-line strong { color:var(--primary); font-size:18px; margin:0 4px; }
+    /* counter animate */
+    .stat-number.counter { transition:none; }
+  </style>
 </head>
 <body>
 <script src="js/components.js"></script>
 
 <div class="page-hero hero-scenic hero-home home-image-hero">
-  <div class="tag" style="background:rgba(255,255,255,0.15);color:#fff;margin-bottom:16px">iFLocus 影響力營銷</div>
+  <div class="tag" style="background:rgba(255,255,255,0.15);color:#fff;margin-bottom:16px">絡客思行銷科技 · Locus Marketing Technology</div>
   <h1>讓品牌被看見<br>也被真正相信</h1>
-  <p>整合 KOL/KOC、運動行銷、影音內容、OMO 應援與 AiLocus 大數據<br>以影響力帶動品牌聲量、信任與實際轉換</p>
+  <p>iFLocus 影響力營銷 × AiLocus 位置數據<br>從聲量到轉換,絡客思一站式整合</p>
 </div>
 
 <div class="home-hero-actions">
-  <a href="iflocus.html" class="btn btn-primary">了解 iFLocus OMO</a>
+  <a href="about_us.html#services" class="btn btn-primary">查看全部服務</a>
   <a href="contact_us.html" class="btn btn-secondary">立即聯絡</a>
 </div>
 
@@ -51,21 +82,35 @@
   <div class="section-inner">
     <div class="stats-row">
       <div class="stat-item">
-        <div class="stat-number">5-15%</div>
+        <div class="stat-number counter" data-target="15" data-suffix="%" data-prefix="5%–">5%–15%</div>
         <div class="stat-label">業界領先 CTR 點擊率</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">10 億+</div>
+        <div class="stat-number counter" data-target="10" data-suffix=" 億+">10 億+</div>
         <div class="stat-label">可觸及行動裝置用戶</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">300 萬</div>
+        <div class="stat-number counter" data-target="300" data-suffix=" 萬">300 萬</div>
         <div class="stat-label">台灣單次最大推送量</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">30 秒</div>
-        <div class="stat-label">BrandDrop 平均生成時間</div>
+        <div class="stat-number counter" data-target="500" data-suffix="+">500+</div>
+        <div class="stat-label">累計合作品牌</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT MINI -->
+<section>
+  <div class="section-inner">
+    <div class="about-mini">
+      <div>
+        <div class="tag" style="margin-bottom:12px">關於絡客思行銷科技</div>
+        <h2 style="font-size:24px;margin-bottom:12px">絡客思行銷科技 — Locus Marketing Technology</h2>
+        <p style="color:var(--text-light);line-height:1.8;margin:0">以「影響力 × 數據」為核心,旗下提供 <strong>iFLocus</strong>(在地影響力營銷與 OMO 整合)與 <strong>AiLocus</strong>(位置大數據與 AI 智能洞察)兩大服務,從受眾洞察、內容企劃到媒體導流與成效優化,全流程陪伴品牌成長。</p>
+      </div>
+      <a href="about_us.html" class="btn btn-outline" style="white-space:nowrap">了解我們的故事 →</a>
     </div>
   </div>
 </section>
@@ -73,55 +118,60 @@
 <!-- SERVICES OVERVIEW -->
 <section class="bg-light">
   <div class="section-inner">
-    <h2 class="section-title">全方位 <span class="section-title-accent">影響力營銷服務</span></h2>
-    <p class="section-subtitle">從影響力應援、內容製作到數據投放，iFLocus 提供企業完整的整合行銷工具鏈</p>
+    <h2 class="section-title">主要 <span class="section-title-accent">服務</span></h2>
+    <p class="section-subtitle">iFLocus 影響力營銷、AiLocus 位置數據,加上 BrandDrop 獨立服務,打造完整行銷工具鏈</p>
     <div class="cards-grid">
       <div class="card">
-        <div class="service-logo-card service-logo-card-iflocus">
-          <img loading="lazy" src="images/logos/iflocus-color-word.png" alt="iFLocus 影響力營銷">
+        <div class="svc-banner svc-banner-iflocus">
+          <div class="svc-icon">🎯</div>
+          <div class="svc-name">iFLocus OMO</div>
         </div>
         <div class="card-body">
-          <div class="tag">OMO 整合行銷</div>
-          <h3 class="card-title mt-8">iFLocus OMO</h3>
-          <p class="card-text">微型商家的痛點解方，透過線上線下整合行銷策略，打造完整的顧客旅程體驗。</p>
+          <div class="tag">影響力營銷 / OMO 整合</div>
+          <h3 class="card-title mt-8">在地影響力人流引爆</h3>
+          <p class="card-text">整合 KOL/KOC、運動女力、影音內容、企業培訓與場域應援,打造完整顧客旅程。</p>
           <a href="iflocus.html" class="btn btn-primary mt-16" style="font-size:14px;padding:9px 20px">了解更多</a>
         </div>
       </div>
       <div class="card">
-        <div style="height:200px;background:linear-gradient(135deg,#0d0d0d 0%,#1a1a1a 50%,#ff6600 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
-          <div style="font-size:32px;font-weight:900;color:#fff;letter-spacing:-1px">Brand<span style="color:#ff6600;text-shadow:0 0 20px rgba(255,102,0,0.8)">Drop</span></div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.6);letter-spacing:2px">AI 品牌頁面生成</div>
+        <div class="svc-banner svc-banner-branddrop">
+          <div class="svc-icon">🚀</div>
+          <div class="svc-name">BrandDrop</div>
         </div>
         <div class="card-body">
-          <div class="tag">AI 驅動</div>
-          <h3 class="card-title mt-8">BrandDrop</h3>
-          <p class="card-text">AI 品牌頁面生成服務，不需設計師、不需工程師，輸入品牌名稱，30 秒生成專業網站。</p>
+          <div class="tag">獨立服務 · AI 驅動</div>
+          <h3 class="card-title mt-8">AI 品牌頁面生成</h3>
+          <p class="card-text">不需設計師、不需工程師,輸入品牌名稱,30 秒生成專業品牌網站。</p>
           <a href="branddrop.html" class="btn btn-primary mt-16" style="font-size:14px;padding:9px 20px">了解更多</a>
         </div>
       </div>
       <div class="card">
-        <img loading="lazy" class="card-img" src="images/external/2016/05/idx-1-01a.png" alt="場域推播廣告" onerror="this.src='https://via.placeholder.com/400x200/ff6600/ffffff?text=場域推播廣告'">
+        <div class="svc-banner svc-banner-locusad">
+          <div class="svc-icon">📍</div>
+          <div class="svc-name">場域手機推播</div>
+        </div>
         <div class="card-body">
-          <div class="tag">媒體導流工具</div>
-          <h3 class="card-title mt-8">場域手機推播廣告</h3>
-          <p class="card-text">AiLocus 旗下媒體導流工具，LBS+LBA 場域推播精準鎖定目標消費者，實測 CTR 5%–15%，台灣單次最大推送量 300 萬。</p>
+          <div class="tag">AiLocus · 媒體導流</div>
+          <h3 class="card-title mt-8">LBS+LBA 場域推播廣告</h3>
+          <p class="card-text">黃金地點＋關鍵時刻精準鎖定,實測 CTR 5%–15%,單次最大推送 300 萬。</p>
           <a href="locusad.html" class="btn btn-primary mt-16" style="font-size:14px;padding:9px 20px">了解更多</a>
         </div>
       </div>
       <div class="card">
-        <div class="service-logo-card service-logo-card-ailocus">
-          <img loading="lazy" src="images/logos/ailocus-color-word.png" alt="AiLocus 位置大數據">
+        <div class="svc-banner svc-banner-ailocus">
+          <div class="svc-icon">🧠</div>
+          <div class="svc-name">AiLocus</div>
         </div>
         <div class="card-body">
-          <div class="tag">數據分析</div>
-          <h3 class="card-title mt-8">AiLocus 位置大數據</h3>
-          <p class="card-text">結合大數據與 AI 運算，分析手機數據與線下場域軌跡，提供精準行銷決策分析建議。</p>
+          <div class="tag">數據洞察 · AI 分析</div>
+          <h3 class="card-title mt-8">位置大數據與 AI 智能洞察</h3>
+          <p class="card-text">分析手機數據與線下場域軌跡,提供消費者輪廓、場景洞察與行銷效益預測。</p>
           <a href="ailocus.html" class="btn btn-primary mt-16" style="font-size:14px;padding:9px 20px">了解更多</a>
         </div>
       </div>
     </div>
     <div class="flex-center" style="margin-top:48px">
-      <a href="about_us.html#services" class="btn btn-outline">查看全部服務</a>
+      <a href="about_us.html#services" class="btn btn-outline">查看全部 6 大服務</a>
     </div>
   </div>
 </section>
@@ -129,38 +179,38 @@
 <!-- FEATURES HIGHLIGHT -->
 <section>
   <div class="section-inner">
-    <h2 class="section-title">為什麼選擇 <span class="section-title-accent">iFLocus</span>？</h2>
-    <p class="section-subtitle">透過洞察行動網路客戶的思維動機與行為軌跡，建構數據與策略並行的品牌服務</p>
+    <h2 class="section-title">為什麼選擇 <span class="section-title-accent">絡客思</span>？</h2>
+    <p class="section-subtitle">影響力 × 數據雙引擎,從策略到執行一站式服務</p>
     <div class="features-grid">
       <div class="feature-item">
+        <span class="feature-icon">⭐</span>
+        <h3 class="feature-title">影響力資源整合</h3>
+        <p class="feature-text">KOL/KOC、運動女力、社群創作者一站到位,擁有信任感的代言人讓品牌真正被相信。</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">📊</span>
+        <h3 class="feature-title">數據驅動決策</h3>
+        <p class="feature-text">AiLocus 大數據與 AI 運算解析消費者輪廓、場景與意圖,確保每一分預算精準投入。</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">🔗</span>
+        <h3 class="feature-title">OMO 整合執行</h3>
+        <p class="feature-text">線上聲量、線下人流、媒體導流一條龍,串連虛實打造完整顧客旅程。</p>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">🎬</span>
+        <h3 class="feature-title">內容與媒體齊備</h3>
+        <p class="feature-text">影音拍攝、品牌頁面(BrandDrop)、APP 聯播網媒體導流,內容到曝光無縫接軌。</p>
+      </div>
+      <div class="feature-item">
         <span class="feature-icon">📍</span>
-        <h3 class="feature-title">黃金地點＋關鍵時刻</h3>
-        <p class="feature-text">LBS+LBA 技術，在消費者身處特定場域的關鍵時刻，精準推送相關廣告訊息。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">🎯</span>
-        <h3 class="feature-title">精準受眾鎖定</h3>
-        <p class="feature-text">條件數據、即時數據、學習數據三大維度，深度解析消費者輪廓，確保廣告觸及最精準受眾。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">📱</span>
-        <h3 class="feature-title">龐大媒體聯播網</h3>
-        <p class="feature-text">涵蓋主要合作 APP 聯播網，可觸及超過 10 億行動裝置用戶，覆蓋率業界領先。</p>
+        <h3 class="feature-title">在地深耕優勢</h3>
+        <p class="feature-text">深耕台灣場域數據,熟悉本地消費場景與業態,打造真正適合品牌的在地策略。</p>
       </div>
       <div class="feature-item">
         <span class="feature-icon">📈</span>
-        <h3 class="feature-title">業界領先 CTR</h3>
-        <p class="feature-text">平均點擊率 5%–15%，遠超業界一般水準，為您的行銷預算創造最大效益。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">🤝</span>
-        <h3 class="feature-title">OMO 整合顧問</h3>
-        <p class="feature-text">提供企業管理顧問、品牌營運、數位公關及運動行銷等多維支援，全方位陪伴品牌成長。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">🚀</span>
-        <h3 class="feature-title">快速部署執行</h3>
-        <p class="feature-text">從策略規劃到廣告投放，快速執行，即時優化，讓您的行銷效益最大化。</p>
+        <h3 class="feature-title">透明成效追蹤</h3>
+        <p class="feature-text">即時報表、可量化指標、明確 KPI,行銷成效隨時追蹤、隨時優化。</p>
       </div>
     </div>
   </div>
@@ -170,40 +220,43 @@
 <section class="bg-light">
   <div class="section-inner">
     <h2 class="section-title">聯播網 <span class="section-title-accent">主要合作 APP</span></h2>
-    <p class="section-subtitle">覆蓋台灣主流 APP，精準觸達各類消費族群</p>
+    <p class="section-subtitle">覆蓋台灣主流 APP,精準觸達各類消費族群</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:20px;margin-top:48px">
       <div style="text-align:center;padding:20px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07)">
-        <img loading="lazy" src="images/external/2022/12/image-1.png" alt="APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
+        <img loading="lazy" src="images/external/2022/12/image-1.png" alt="歡唱 K 歌王" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
         <p style="font-size:12px;color:#666">歡唱 K 歌王</p>
       </div>
       <div style="text-align:center;padding:20px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07)">
-        <img loading="lazy" src="images/external/2022/12/image-2.png" alt="APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
+        <img loading="lazy" src="images/external/2022/12/image-2.png" alt="有軌時刻表" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
         <p style="font-size:12px;color:#666">有軌時刻表</p>
       </div>
       <div style="text-align:center;padding:20px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07)">
-        <img loading="lazy" src="images/external/2022/12/image-3.png" alt="APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
+        <img loading="lazy" src="images/external/2022/12/image-3.png" alt="超速照相偵測" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
         <p style="font-size:12px;color:#666">超速照相偵測</p>
       </div>
       <div style="text-align:center;padding:20px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07)">
-        <img loading="lazy" src="images/external/2022/12/image-4.png" alt="APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
+        <img loading="lazy" src="images/external/2022/12/image-4.png" alt="美圖秀秀系列" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
         <p style="font-size:12px;color:#666">美圖秀秀系列</p>
       </div>
       <div style="text-align:center;padding:20px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07)">
-        <img loading="lazy" src="images/external/2022/12/image-5.png" alt="APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
+        <img loading="lazy" src="images/external/2022/12/image-5.png" alt="語言學習 APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
         <p style="font-size:12px;color:#666">語言學習 APP</p>
       </div>
       <div style="text-align:center;padding:20px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07)">
-        <img loading="lazy" src="images/external/2022/12/image-6.png" alt="APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
+        <img loading="lazy" src="images/external/2022/12/image-6.png" alt="娛樂媒體 APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
         <p style="font-size:12px;color:#666">娛樂媒體 APP</p>
       </div>
       <div style="text-align:center;padding:20px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07)">
-        <img loading="lazy" src="images/external/2022/12/image-7.png" alt="APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
+        <img loading="lazy" src="images/external/2022/12/image-7.png" alt="生活工具 APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
         <p style="font-size:12px;color:#666">生活工具 APP</p>
       </div>
       <div style="text-align:center;padding:20px 12px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.07)">
-        <img loading="lazy" src="images/external/2022/12/image-8.png" alt="APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
+        <img loading="lazy" src="images/external/2022/12/image-8.png" alt="新聞資訊 APP" style="height:64px;margin:0 auto 10px;object-fit:contain" onerror="this.style.display='none'">
         <p style="font-size:12px;color:#666">新聞資訊 APP</p>
       </div>
+    </div>
+    <div class="flex-center" style="margin-top:48px">
+      <a href="app_partners.html" class="btn btn-outline">成為聯播網夥伴</a>
     </div>
   </div>
 </section>
@@ -212,81 +265,74 @@
 <section>
   <div class="section-inner">
     <h2 class="section-title">服務 <span class="section-title-accent">跨產業品牌</span></h2>
-    <p class="section-subtitle">涵蓋各大產業，為不同領域的品牌提供量身定制的影響力營銷與整合行銷方案</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;margin-top:48px">
-      <div style="text-align:center;padding:28px 16px;background:var(--bg-light);border-radius:14px">
-        <div style="font-size:40px;margin-bottom:12px">👗</div>
-        <h4 style="font-size:15px;font-weight:700">女性時尚</h4>
-      </div>
-      <div style="text-align:center;padding:28px 16px;background:var(--bg-light);border-radius:14px">
-        <div style="font-size:40px;margin-bottom:12px">🏖️</div>
-        <h4 style="font-size:15px;font-weight:700">休閒生活</h4>
-      </div>
-      <div style="text-align:center;padding:28px 16px;background:var(--bg-light);border-radius:14px">
-        <div style="font-size:40px;margin-bottom:12px">🍜</div>
-        <h4 style="font-size:15px;font-weight:700">食品餐飲</h4>
-      </div>
-      <div style="text-align:center;padding:28px 16px;background:var(--bg-light);border-radius:14px">
-        <div style="font-size:40px;margin-bottom:12px">💰</div>
-        <h4 style="font-size:15px;font-weight:700">金融保險</h4>
-      </div>
-      <div style="text-align:center;padding:28px 16px;background:var(--bg-light);border-radius:14px">
-        <div style="font-size:40px;margin-bottom:12px">📡</div>
-        <h4 style="font-size:15px;font-weight:700">電信通訊</h4>
-      </div>
-      <div style="text-align:center;padding:28px 16px;background:var(--bg-light);border-radius:14px">
-        <div style="font-size:40px;margin-bottom:12px">💻</div>
-        <h4 style="font-size:15px;font-weight:700">3C 科技</h4>
-      </div>
-      <div style="text-align:center;padding:28px 16px;background:var(--bg-light);border-radius:14px">
-        <div style="font-size:40px;margin-bottom:12px">🏠</div>
-        <h4 style="font-size:15px;font-weight:700">房地產</h4>
-      </div>
-      <div style="text-align:center;padding:28px 16px;background:var(--bg-light);border-radius:14px">
-        <div style="font-size:40px;margin-bottom:12px">🎪</div>
-        <h4 style="font-size:15px;font-weight:700">實體活動</h4>
-      </div>
+    <p class="section-subtitle">涵蓋各大產業,為不同領域的品牌提供量身定制的影響力營銷與整合行銷方案</p>
+    <p class="trust-line">累計服務 <strong>500+</strong> 品牌,跨 <strong>11+</strong> 產業,從在地微型商家到國際連鎖品牌</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;margin-top:32px">
+      <a href="case-studies.html#fashion" class="industry-card"><div class="industry-emoji">👗</div><h4>女性時尚</h4></a>
+      <a href="case-studies.html#leisure" class="industry-card"><div class="industry-emoji">🏖️</div><h4>休閒生活</h4></a>
+      <a href="case-studies.html#food" class="industry-card"><div class="industry-emoji">🍜</div><h4>食品餐飲</h4></a>
+      <a href="case-studies.html#finance" class="industry-card"><div class="industry-emoji">💰</div><h4>金融保險</h4></a>
+      <a href="case-studies.html#telecom" class="industry-card"><div class="industry-emoji">📡</div><h4>電信通訊</h4></a>
+      <a href="case-studies.html#3c" class="industry-card"><div class="industry-emoji">💻</div><h4>3C 科技</h4></a>
+      <a href="case-studies.html#realestate" class="industry-card"><div class="industry-emoji">🏠</div><h4>房地產</h4></a>
+      <a href="case-studies.html#event" class="industry-card"><div class="industry-emoji">🎪</div><h4>實體活動</h4></a>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<div class="cta-section">
+<!-- NEWS PREVIEW -->
+<section class="bg-light">
   <div class="section-inner">
-    <h2>準備好提升您的行銷效益了嗎？</h2>
-    <p>立即聯絡我們的顧問團隊，了解最適合您品牌的影響力營銷方案</p>
-    <div class="flex-center">
-      <a href="contact_us.html" class="btn btn-outline" style="border-color:rgba(255,255,255,0.8)">立即來信洽詢</a>
-      <a href="case-studies.html" class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border-color:transparent">查看成功案例</a>
+    <h2 class="section-title">最新 <span class="section-title-accent">動態</span></h2>
+    <p class="section-subtitle">絡客思行銷科技近期發展與產業洞察</p>
+    <div class="news-mini-grid">
+      <a href="news.html" class="news-mini-card">
+        <div class="news-date">近年</div>
+        <h3>擴展運動行銷策略聯盟</h3>
+        <p>絡客思行銷科技與運動行銷夥伴締結策略合作,結合 MarTech 數據力與影響力營銷,共創品牌成長新格局。</p>
+      </a>
+      <a href="news.html" class="news-mini-card">
+        <div class="news-date">2021</div>
+        <h3>強強聯手 — 絡客思 × 威納科技</h3>
+        <p>數位行銷科技強強聯手,絡客思與威納科技締結深度策略夥伴關係,強化技術研發與市場拓展能力。</p>
+      </a>
+      <a href="news.html" class="news-mini-card">
+        <div class="news-date">2020</div>
+        <h3>入選微軟新創加速器第二期</h3>
+        <p>絡客思行銷科技入選 Microsoft for Startups 第二期,同年完成 AWS Innovate Demo Day 成果發表。</p>
+      </a>
+    </div>
+    <div class="flex-center" style="margin-top:32px">
+      <a href="news.html" class="btn btn-outline">查看更多動態</a>
     </div>
   </div>
-</div>
+</section>
 
 <!-- FAQ SECTION (GEO Optimization) -->
-<section class="bg-light">
+<section>
   <div class="section-inner" style="max-width:860px">
     <h2 class="section-title">常見 <span class="section-title-accent">問題</span></h2>
-    <p class="section-subtitle">關於絡客思行銷科技與旗下服務，您最想知道的答案</p>
+    <p class="section-subtitle">關於絡客思行銷科技與旗下服務,您最想知道的答案</p>
     <div style="margin-top:40px;display:flex;flex-direction:column;gap:16px">
       <div class="highlight-box">
-        <h3 style="font-size:16px;margin-bottom:8px">iFLocus 是什麼？</h3>
-        <p style="color:var(--text-light);font-size:14px">iFLocus（絡客思行銷科技）以影響力營銷為主軸，整合 KOL/KOC、運動行銷、影音內容、OMO 應援、數位媒體投放、AI 品牌頁面生成（BrandDrop）與位置大數據分析（AiLocus）等服務，協助品牌提升聲量、信任與實際轉換。</p>
+        <h3 style="font-size:16px;margin-bottom:8px">絡客思行銷科技是什麼？</h3>
+        <p style="color:var(--text-light);font-size:14px">絡客思行銷科技(Locus Marketing Technology CO., LTD.)為公司主體,以「影響力 × 數據」為核心,旗下提供 iFLocus 與 AiLocus 兩大主要服務,協助品牌從聲量、信任到實際轉換完整鏈路。總部位於台北市中山區。</p>
+      </div>
+      <div class="highlight-box">
+        <h3 style="font-size:16px;margin-bottom:8px">iFLocus 與 AiLocus 是什麼？兩者有什麼不同？</h3>
+        <p style="color:var(--text-light);font-size:14px"><strong>iFLocus</strong> 是影響力營銷與 OMO 整合服務品牌,提供 KOL/KOC、運動行銷、影音內容、企業培訓與場域應援等行銷執行服務。<strong>AiLocus</strong> 是位置大數據與 AI 智能洞察平台,負責消費者輪廓、場景分析、行銷效益預測,並提供場域手機推播廣告與 LocusPS 企業版等媒體導流工具。兩者互為支撐,構成「影響力 + 數據」的跨域行銷體系。</p>
       </div>
       <div class="highlight-box">
         <h3 style="font-size:16px;margin-bottom:8px">場域推播廣告的 CTR 為什麼這麼高？</h3>
-        <p style="color:var(--text-light);font-size:14px">iFLocus 的場域推播廣告結合 LBS（位置服務）與 LBA（位置行為分析），在消費者身處目標場域的「黃金地點＋關鍵時刻」推送廣告。相較於傳統數位廣告僅依靠人口統計鎖定，場域推播的高相關性讓 CTR 達到業界均值的 3–10 倍（5%–15% vs. 一般 0.5%–1%）。</p>
-      </div>
-      <div class="highlight-box">
-        <h3 style="font-size:16px;margin-bottom:8px">iFLocus 與 AiLocus 有什麼不同？</h3>
-        <p style="color:var(--text-light);font-size:14px">AiLocus 是數據技術平台，負責大數據收集、AI 分析、消費者輪廓建立與消費意圖預測；iFLocus 是影響力營銷與整合顧問服務品牌，提供 OMO 行銷策略、內容與活動執行、媒體導流與品牌顧問。兩者互為支撐，構成「影響力 + 數據」的跨域行銷體系。</p>
+        <p style="color:var(--text-light);font-size:14px">AiLocus 場域推播廣告結合 LBS(位置服務)與 LBA(位置行為分析),在消費者身處目標場域的「黃金地點＋關鍵時刻」推送廣告。相較於傳統數位廣告僅依靠人口統計鎖定,場域推播的高相關性讓 CTR 達到業界均值的 3–10 倍(5%–15% vs. 一般 0.5%–1%)。</p>
       </div>
       <div class="highlight-box">
         <h3 style="font-size:16px;margin-bottom:8px">BrandDrop 和請設計師做網頁有什麼差別？</h3>
-        <p style="color:var(--text-light);font-size:14px">傳統設計師製作品牌網頁需 1–3 週、費用 3–10 萬元。BrandDrop 由 AI 在 30 秒內自動生成文案、配圖與版型，費用僅市場均價的 1/5，適合需要快速上線品牌頁面的中小企業與電商賣家。</p>
+        <p style="color:var(--text-light);font-size:14px">傳統設計師製作品牌網頁需 1–3 週、費用 3–10 萬元。BrandDrop 由 AI 在 30 秒內自動生成文案、配圖與版型,費用僅市場均價的 1/5,適合需要快速上線品牌頁面的中小企業與電商賣家。</p>
       </div>
       <div class="highlight-box">
-        <h3 style="font-size:16px;margin-bottom:8px">如何開始使用 iFLocus 的服務？</h3>
-        <p style="color:var(--text-light);font-size:14px">請透過「聯絡我們」頁面填寫需求表單，或直接寄信至 <a href="mailto:sales@iflocus.com" style="color:var(--primary)">sales@iflocus.com</a>。我們的顧問團隊將於 1–2 個工作日內回覆，為您規劃最適合的影響力營銷與整合行銷方案。</p>
+        <h3 style="font-size:16px;margin-bottom:8px">如何開始合作？</h3>
+        <p style="color:var(--text-light);font-size:14px">請透過「聯絡我們」頁面填寫需求表單,或直接寄信至 <a href="mailto:sales@iflocus.com" style="color:var(--primary)">sales@iflocus.com</a>。我們的顧問團隊將於 1–2 個工作日內回覆,為您規劃最適合的影響力營銷與整合行銷方案。</p>
       </div>
     </div>
   </div>
@@ -296,7 +342,7 @@
 <div class="cta-section">
   <div class="section-inner">
     <h2>準備好提升您的行銷效益了嗎？</h2>
-    <p>立即聯絡我們的顧問團隊，了解最適合您品牌的影響力營銷方案</p>
+    <p>立即聯絡絡客思顧問團隊,了解最適合您品牌的影響力營銷方案</p>
     <div class="flex-center">
       <a href="contact_us.html" class="btn btn-outline" style="border-color:rgba(255,255,255,0.8)">立即來信洽詢</a>
       <a href="case-studies.html" class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border-color:transparent">查看成功案例</a>
@@ -310,10 +356,10 @@
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "絡客思行銷科技",
-  "alternateName": "絡客思行銷科技",
+  "alternateName": "Locus Marketing Technology",
   "url": "https://iflocus.com",
   "logo": "https://iflocus.com/images/logos/locus-color-word.png",
-  "description": "絡客思行銷科技以影響力營銷為主軸，整合 KOL/KOC、運動行銷、影音內容、OMO應援、數位媒體投放、AI 品牌頁面生成及位置大數據分析服務。",
+  "description": "絡客思行銷科技(Locus Marketing Technology)旗下提供 iFLocus 影響力營銷與 AiLocus 位置大數據兩大服務,整合 KOL/KOC、運動行銷、影音內容、OMO 應援、AI 品牌頁面生成與位置數據分析。",
   "foundingLocation": {
     "@type": "Place",
     "address": {
@@ -334,15 +380,14 @@
   ],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
-    "name": "iFLocus 服務項目",
+    "name": "絡客思行銷科技服務項目",
     "itemListElement": [
       {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "iFLocus OMO 整合行銷"}},
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "影響力營銷顧問"}},
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "運動行銷與KOL合作"}},
       {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "BrandDrop AI 品牌頁面"}},
       {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "場域手機推播廣告"}},
       {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "AiLocus 位置大數據"}},
-      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "LocusPS 企業版服務"}}
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "LocusPS 企業版"}},
+      {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "加入 APP 聯播網"}}
     ]
   }
 }
@@ -355,10 +400,18 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "iFLocus 是什麼？",
+      "name": "絡客思行銷科技是什麼？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "iFLocus（絡客思行銷科技）以影響力營銷為主軸，整合 KOL/KOC、運動行銷、影音內容、OMO應援、數位媒體投放、AI 品牌頁面生成（BrandDrop）與位置大數據分析（AiLocus）等服務，協助品牌提升聲量、信任與實際轉換。"
+        "text": "絡客思行銷科技(Locus Marketing Technology CO., LTD.)為公司主體,旗下提供 iFLocus(影響力營銷與 OMO 整合)與 AiLocus(位置大數據與 AI 智能洞察)兩大主要服務,協助品牌從聲量到轉換的完整鏈路。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "iFLocus 與 AiLocus 是什麼？兩者有什麼不同？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "iFLocus 是影響力營銷與 OMO 整合服務,提供 KOL/KOC、運動行銷、影音內容與場域應援。AiLocus 是位置大數據與 AI 智能洞察平台,提供消費者輪廓分析、場景洞察、場域手機推播廣告與 LocusPS 企業版等服務。"
       }
     },
     {
@@ -366,7 +419,7 @@
       "name": "場域推播廣告的 CTR 為什麼這麼高？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "iFLocus 場域推播廣告結合 LBS（位置服務）與 LBA（位置行為分析），在消費者身處目標場域的黃金地點＋關鍵時刻推送廣告。高相關性讓 CTR 達到業界均值的 3–10 倍（5%–15% vs. 一般 0.5%–1%）。"
+        "text": "AiLocus 場域推播廣告結合 LBS(位置服務)與 LBA(位置行為分析),在消費者身處目標場域的黃金地點＋關鍵時刻推送廣告。高相關性讓 CTR 達到業界均值的 3–10 倍(5%–15% vs. 一般 0.5%–1%)。"
       }
     },
     {
@@ -374,19 +427,52 @@
       "name": "BrandDrop 和請設計師做網頁有什麼差別？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "傳統設計師製作品牌網頁需 1–3 週、費用 3–10 萬元。BrandDrop 由 AI 在 30 秒內自動生成文案、配圖與版型，費用僅市場均價的 1/5。"
+        "text": "傳統設計師製作品牌網頁需 1–3 週、費用 3–10 萬元。BrandDrop 由 AI 在 30 秒內自動生成文案、配圖與版型,費用僅市場均價的 1/5。"
       }
     },
     {
       "@type": "Question",
-      "name": "如何開始使用 iFLocus 的服務？",
+      "name": "如何開始合作？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "請透過聯絡我們頁面填寫需求表單，或直接寄信至 sales@iflocus.com。顧問團隊將於 1–2 個工作日內回覆，為您規劃最適合的影響力營銷與整合行銷方案。"
+        "text": "請透過聯絡我們頁面填寫需求表單,或直接寄信至 sales@iflocus.com。顧問團隊將於 1–2 個工作日內回覆,為您規劃最適合的影響力營銷與整合行銷方案。"
       }
     }
   ]
 }
+</script>
+<script>
+// Stat counter animation - 進入畫面時數字從 0 跑到目標值
+(function(){
+  var counters = document.querySelectorAll('.stat-number.counter');
+  if (!counters.length || !window.IntersectionObserver) return;
+  function animate(el){
+    var target = parseInt(el.getAttribute('data-target'),10) || 0;
+    var suffix = el.getAttribute('data-suffix') || '';
+    var prefix = el.getAttribute('data-prefix') || '';
+    var duration = 1200;
+    var start = performance.now();
+    var initial = el.textContent;
+    function step(now){
+      var p = Math.min(1, (now - start) / duration);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var v = Math.round(eased * target);
+      el.textContent = prefix + v + suffix;
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = initial; // restore exact original (handles 5%–15%, etc.)
+    }
+    requestAnimationFrame(step);
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting){
+        animate(e.target);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(function(c){ io.observe(c); });
+})();
 </script>
 <script src="js/main.js"></script>
 </body>
