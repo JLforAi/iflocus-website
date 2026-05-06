@@ -581,30 +581,51 @@ section { padding: 80px 0; }
 }
 
 .page-hero.hero-scenic.hero-home {
-  --hero-image: url("../images/home-hero-iflocus-desktop.jpg");
-  min-height: 0;
-  height: 49.81vw;
+  --hero-image: url("../images/hero/home-hero-marketing.jpg");
+  min-height: 480px;
+  height: auto;
+  aspect-ratio: 16 / 7;
   max-height: calc(100vh - 72px);
-  aspect-ratio: 1337 / 666;
   margin-top: 72px;
-  padding: 0;
+  padding: 64px 24px;
   text-align: center;
-  background-image: var(--hero-image);
-  background-color: #d7e8f6;
-  background-size: contain;
-  background-position: center top;
+  align-items: center;
+  justify-content: center;
+  background-image:
+    linear-gradient(135deg, rgba(10,16,28,0.78) 0%, rgba(0,74,153,0.62) 50%, rgba(216,48,58,0.42) 100%),
+    var(--hero-image);
+  background-size: cover, cover;
+  background-position: center, center;
   background-repeat: no-repeat;
 }
 
-.page-hero.hero-home .tag,
-.page-hero.hero-home h1,
+/* hero-home 文字使用真實 HTML 顯示,不再做視覺隱藏 */
+.page-hero.hero-home .tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.18) !important;
+  backdrop-filter: blur(8px);
+  color: #fff;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.page-hero.hero-home h1 {
+  font-size: clamp(32px, 5vw, 56px);
+  color: #fff;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.45);
+  margin: 0 auto;
+  text-align: center;
+  max-width: 900px;
+}
 .page-hero.hero-home p {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
+  font-size: clamp(15px, 1.6vw, 19px);
+  color: rgba(255,255,255,0.94);
+  text-shadow: 0 2px 14px rgba(0,0,0,0.4);
+  margin: 16px auto 0;
+  max-width: 720px;
+  text-align: center;
 }
 
 .home-hero-actions {
@@ -612,8 +633,8 @@ section { padding: 80px 0; }
   justify-content: center;
   gap: 16px;
   flex-wrap: wrap;
-  padding: 20px 24px 28px;
-  background: #d7e8f6;
+  padding: 28px 24px 36px;
+  background: #fff;
 }
 
 .home-hero-actions .btn {
@@ -1156,13 +1177,15 @@ section { padding: 80px 0; }
   .page-hero.hero-scenic { padding-left: 24px; }
 
   .page-hero.hero-scenic.hero-home {
-    min-height: 0;
-    height: 49.81vw;
-    aspect-ratio: 1337 / 666;
-    background-image: var(--hero-image);
-    background-size: contain;
-    background-position: center top;
-    padding: 0;
+    min-height: 360px;
+    height: auto;
+    aspect-ratio: auto;
+    padding: 48px 20px;
+    background-image:
+      linear-gradient(135deg, rgba(10,16,28,0.82) 0%, rgba(0,74,153,0.66) 50%, rgba(216,48,58,0.5) 100%),
+      var(--hero-image);
+    background-size: cover, cover;
+    background-position: center, center;
   }
 
   .home-hero-actions .btn {
