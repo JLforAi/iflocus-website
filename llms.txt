@@ -1,8 +1,9 @@
-# iFLocus 絡客思行銷科技
-> iFLocus（絡客思行銷科技）是台灣領先的場域行銷科技公司，提供 LBS+LBA 手機推播廣告、OMO 整合行銷、AI 品牌頁面生成及位置大數據分析服務。業界最高 CTR 達 5%–15%，可觸及超過 10 億行動裝置用戶。
+# 絡客思行銷科技 (Locus Marketing Technology)
+> 絡客思行銷科技是台灣領先的場域行銷科技公司，旗下提供 iFLocus（影響力營銷與 OMO 整合）與 AiLocus（位置大數據與 AI 智能洞察）兩大主要服務，提供 LBS+LBA 手機推播廣告、OMO 整合行銷、AI 品牌頁面生成及位置大數據分析服務。實測 CTR 5%–15%，可觸及超過 10 億行動裝置用戶。
 
 ## 公司基本資訊
-- **公司名稱**：iFLocus 絡客思行銷科技（Locus Marketing Technology CO., LTD.）
+- **公司名稱**：絡客思行銷科技（Locus Marketing Technology CO., LTD.）
+- **主要服務**：iFLocus（影響力營銷與 OMO 整合）、AiLocus（位置大數據與 AI 智能洞察）
 - **網站**：https://iflocus.com
 - **聯絡信箱**：sales@iflocus.com
 - **地址**：台北市中山區松江路87號11樓

@@ -1,4 +1,4 @@
-# robots.txt — iFLocus 絡客思行銷科技
+# robots.txt — 絡客思行銷科技
 # https://iflocus.com
 
 User-agent: *
