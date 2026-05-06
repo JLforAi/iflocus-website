@@ -62,7 +62,7 @@ const FOOTER_HTML = `
         <li><a href="iflocus.html">OMO應援服務</a></li>
         <li><a href="ailocus.html">Ai大數據</a></li>
         <li><a href="locusad.html">場域手機推播廣告</a></li>
-        <li><a href="locusad.html">企業版APP場域推播服務</a></li>
+        <li><a href="locus_ps.html">LocusPS 企業版</a></li>
         <li><a href="app_partners.html">加入APP聯播網</a></li>
         <li><a href="branddrop.html">BrandDrop</a></li>
       </ul>
