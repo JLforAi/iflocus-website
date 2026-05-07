@@ -558,9 +558,9 @@ section { padding: 80px 0; }
 }
 
 .hero-locusps {
-  --hero-image: url("../images/iflocus-58.jpg");
+  --hero-image: url("../images/hero/hero-locusps-enterprise.jpg");
   --hero-tint: rgba(15,52,96,0.55);
-  --hero-position: center right;
+  --hero-position: center;
 }
 
 /* brand-philosophy: 使用乾淨漸層,避免與圖片內既有文字衝突 */
@@ -667,12 +667,22 @@ section { padding: 80px 0; }
   --hero-position: center right;
 }
 
-.hero-ailocus,
-.hero-locusad,
-.hero-app-partners {
+.hero-locusad {
   --hero-image: url("../images/iflocus-61.jpg");
   --hero-tint: rgba(0,129,204,0.44);
   --hero-position: center right;
+}
+
+.hero-ailocus {
+  --hero-image: url("../images/hero/hero-ailocus-data.jpg");
+  --hero-tint: rgba(0,102,204,0.50);
+  --hero-position: center;
+}
+
+.hero-app-partners {
+  --hero-image: url("../images/hero/hero-app-partners-mobile.jpg");
+  --hero-tint: rgba(255,102,0,0.45);
+  --hero-position: center;
 }
 
 /* case-studies / news: 使用乾淨漸層,避免與圖內既有文字衝突 */
