@@ -19,145 +19,14 @@
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','GA_MEASUREMENT_ID');</script>
   <link rel="stylesheet" href="css/style.css">
   <style>
-:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}
-:root{--black:#0f0f0f;--white:#fafaf8;--accent:#ff4500;--accent2:#ff8c00;--gray:#f4f3ef;--mid:#e0ddd6;--muted:#888}
 :root{--black:#0f0f0f;--white:#fafaf8;--accent:#ff4500;--accent2:#ff8c00;--gray:#f4f3ef;--mid:#e0ddd6;--text:#1a1a1a;--muted:#888;--radius:20px}
-#reviews ol.commentlist .comment_container .woocommerce-review__dash,.woocommerce .form-submit .dt-btn,.woocommerce-Reviews .comment-respond>h3:after{display:none}
-.fancy-title-head,.page-title-head{max-width:100%}
-#page .comment-respond .dt-btn,#page .comment-respond p.form-submit{margin-bottom:0}
-.nav-logo{font-size:22px;font-weight:900;letter-spacing:-.5px;color:var(--black)}
-.nav-logo span{color:var(--accent)}
-.nav-parent{font-size:12px;color:var(--muted);letter-spacing:1px}
-.nav-cta{background:var(--accent);color:#fff;border:none;padding:12px 28px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}
-.nav-cta:hover{background:var(--black);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,69,0,.3)}
-.hero{padding:120px 60px 100px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:#fff3ee;border:1px solid #ffd4c2;color:var(--accent);font-size:12px;font-weight:700;letter-spacing:1px;padding:6px 16px;border-radius:100px;margin-bottom:28px;animation:fadeUp .6s ease both}
-.hero-title{font-size:clamp(44px,5vw,68px);font-weight:900;line-height:1.1;letter-spacing:-2px;color:var(--black);margin-bottom:24px;animation:fadeUp .6s ease .1s both}
-.hero-title .highlight{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-desc{font-size:17px;color:#555;line-height:1.8;margin-bottom:40px;font-weight:300;animation:fadeUp .6s ease .2s both}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .6s ease .3s both}
-.btn-primary{background:var(--accent);color:#fff;border:none;padding:18px 40px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}
-.btn-primary:hover{background:var(--black);transform:translateY(-3px);box-shadow:0 12px 32px rgba(255,69,0,.3)}
-.btn-secondary{background:0 0;color:var(--black);border:2px solid var(--mid);padding:18px 36px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:16px;font-weight:500;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}
-.btn-secondary:hover{border-color:var(--black);transform:translateY(-2px)}
-.hero-visual{animation:fadeIn .8s ease .4s both;position:relative}
-.hero-card{background:var(--black);border-radius:var(--radius);padding:32px;color:#fff;position:relative;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.2)}
-.hero-card:before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,69,0,.3),transparent 70%);pointer-events:none}
-.card-label{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--accent);margin-bottom:16px}
-.card-input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 18px;margin-bottom:12px;font-size:14px;color:#ccc}
-.card-input strong{color:#fff;display:block;margin-bottom:4px;font-size:12px;letter-spacing:1px}
-.card-arrow{text-align:center;color:var(--accent);font-size:20px;margin:16px 0;animation:bounce 1.5s ease-in-out infinite}
-.card-output{background:linear-gradient(135deg,rgba(255,69,0,.15),rgba(255,140,0,.1));border:1px solid rgba(255,69,0,.3);border-radius:10px;padding:20px}
-.card-output-label{font-size:10px;letter-spacing:3px;color:var(--accent);margin-bottom:10px;font-weight:700}
-.card-output-title{font-size:20px;font-weight:900;margin-bottom:6px}
-.card-output-desc{font-size:12px;color:#999;line-height:1.6}
-.card-url{margin-top:16px;background:rgba(255,255,255,.04);border-radius:8px;padding:10px 14px;font-size:12px;color:#64b5f6;display:flex;align-items:center;gap:8px}
-.floating-badge{position:absolute;background:#fff;border-radius:12px;padding:10px 16px;box-shadow:0 8px 24px rgba(0,0,0,.12);font-size:13px;font-weight:700;color:var(--black);white-space:nowrap}
-.badge-1{top:-20px;right:-20px;animation:float 3s ease-in-out infinite}
-.badge-2{bottom:-16px;left:-20px;animation:float 3s ease-in-out 1s infinite}
-.stats{background:var(--black);padding:60px}
-.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center}
-.stat-num{font-size:48px;font-weight:900;color:var(--accent);letter-spacing:-2px;line-height:1}
-.stat-label{font-size:13px;color:#666;margin-top:8px;letter-spacing:1px}
-.section-tag{font-size:12px;font-weight:700;letter-spacing:3px;color:var(--accent);margin-bottom:12px}
-.section-title{font-size:clamp(32px,4vw,52px);font-weight:900;line-height:1.1;letter-spacing:-1.5px;color:var(--black);margin-bottom:16px}
-.section-sub{font-size:16px;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:60px}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative}
-.steps:before{content:'';position:absolute;top:36px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--mid),var(--mid),transparent)}
-.step-card{background:var(--gray);border-radius:var(--radius);padding:32px 24px;text-align:center;transition:all .3s;position:relative}
-.step-card:hover{background:var(--black);color:#fff;transform:translateY(-8px);box-shadow:0 24px 48px rgba(0,0,0,.15)}
-.step-card:hover .step-desc{color:#999}
-.step-num{width:48px;height:48px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;margin:0 auto 20px;position:relative;z-index:1}
-.step-icon{font-size:28px;margin-bottom:16px}
-.step-title{font-size:16px;font-weight:700;margin-bottom:8px}
-.step-desc{font-size:13px;color:var(--muted);line-height:1.6}
-.features-wrap{background:var(--gray);padding:100px 0}
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-.feat{background:#fff;padding:48px 40px;transition:background .2s}
-.feat:hover{background:var(--black);color:#fff}
-.feat:hover .feat-desc{color:#666}
-.feat-emoji{font-size:36px;margin-bottom:20px;display:block}
-.feat-title{font-size:20px;font-weight:700;margin-bottom:12px}
-.feat-desc{font-size:14px;color:var(--muted);line-height:1.7}
-.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px}
-.faq-item{border-bottom:1px solid var(--mid);padding:28px 0;cursor:pointer}
-.faq-q{font-size:17px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:16px;color:var(--black)}
-.faq-icon{font-size:20px;color:var(--accent);flex-shrink:0;transition:transform .3s}
-.faq-item.open .faq-icon{transform:rotate(45deg)}
-.faq-a{font-size:15px;color:#555;line-height:1.8;margin-top:0;max-height:0;overflow:hidden;transition:all .3s ease}
-.faq-item.open .faq-a{max-height:300px;margin-top:16px}
-.form-field{margin-bottom:20px}
-.form-label{display:block;font-size:12px;font-weight:700;letter-spacing:1px;color:#888;margin-bottom:8px}
-.form-input,.form-select,.form-textarea{width:100%;padding:14px 18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;font-family:'Noto Sans TC',sans-serif;font-size:14px;color:#fff;outline:none;transition:border-color .2s;appearance:none}
-.form-input::placeholder,.form-textarea::placeholder{color:#555}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
-.form-select option{background:#1a1a1a;color:#fff}
-.form-textarea{resize:vertical;min-height:90px;line-height:1.6}
-.form-submit{width:100%;padding:18px;background:var(--accent);color:#fff;border:none;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px}
-.form-submit:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,69,0,.4)}
-.hero{grid-template-columns:1fr;padding:80px 24px 60px;gap:48px}
-.hero-visual{display:none}
-.stats{padding:40px 24px}
-.stats-inner{grid-template-columns:repeat(2,1fr);gap:32px}
-.steps{grid-template-columns:repeat(2,1fr)}
-.steps:before{display:none}
-.features-grid{grid-template-columns:1fr}
-.pricing-grid{grid-template-columns:1fr}
-.page-id-62997 .pricing-grid{align-items:start;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.page-id-62997 .pricing-grid{display:grid !important;grid-template-columns:repeat(3,1fr) !important;align-items:start !important}
-.pricing-grid{display:grid !important;grid-template-columns:repeat(3,1fr) !important;gap:24px !important;align-items:start !important}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-
-
-@media (max-width:768px){
-  .hero{grid-template-columns:1fr;padding:80px 24px 60px;gap:48px}
-  .hero-visual{display:block}
-  .stats{padding:40px 24px}
-  .stats-inner{grid-template-columns:repeat(2,1fr);gap:32px}
-  .steps{grid-template-columns:repeat(2,1fr)}
-  .features-grid{grid-template-columns:1fr}
-  .pricing-grid{grid-template-columns:1fr}
-  .nav-cta{padding:10px 20px;font-size:13px}
-}
-
-
-/* BrandDrop page overrides - 解除我們的 page-hero 並讓 adlocus 樣式接管 */
-body { background:#fff; }
-.bd-nav { display:flex; justify-content:space-between; align-items:center; padding:24px 60px; max-width:1400px; margin:0 auto; flex-wrap:wrap; gap:16px; border-bottom:1px solid #f0ede5; }
-.bd-nav-brand { display:flex; flex-direction:column; gap:2px; }
-.bd-nav-brand .nav-logo { font-size:32px; letter-spacing:-1.5px; line-height:1; }
-.bd-page-title { background:#fafaf8; padding:32px 60px; }
-.bd-page-title h1 { font-size:14px; color:#888; font-weight:600; max-width:1400px; margin:0 auto; letter-spacing:0.5px; }
-.section { padding:100px 60px; }
-.section-inner { max-width:1200px; margin:0 auto; }
-.faq-wrap { background:#fafaf8; padding:100px 60px; }
-.faq-inner { max-width:800px; margin:0 auto; }
-.bd-final-cta { background:#0f0f0f; padding:80px 24px; }
-.bd-final-cta h2 { color:#fff; }
-@media (max-width:768px){
-  .bd-nav { padding:16px 24px; }
-  .bd-nav-brand .nav-logo { font-size:28px; }
-  .bd-page-title { padding:20px 24px; }
-  .section { padding:64px 24px; }
-  .features-wrap { padding:64px 0; }
-  .faq-wrap { padding:64px 24px; }
-}
-
+.bd-page *{margin:0;padding:0;box-sizing:border-box}.bd-page{background:var(--white);color:var(--text);font-family:'Noto Sans TC',sans-serif;line-height:1.6;overflow-x:hidden}.bd-page nav{padding:20px 60px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:rgba(250,250,248,.92);backdrop-filter:blur(12px);z-index:100;border-bottom:1px solid var(--mid)}.bd-page .nav-logo{font-size:22px;font-weight:900;letter-spacing:-.5px;color:var(--black)}.bd-page .nav-logo span{color:var(--accent)}.bd-page .nav-parent{font-size:12px;color:var(--muted);letter-spacing:1px}.bd-page .nav-cta{background:var(--accent);color:#fff;border:none;padding:12px 28px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}.bd-page .nav-cta:hover{background:var(--black);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,69,0,.3)}.bd-page .hero{padding:120px 60px 100px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}.bd-page .hero-badge{display:inline-flex;align-items:center;gap:8px;background:#fff3ee;border:1px solid #ffd4c2;color:var(--accent);font-size:12px;font-weight:700;letter-spacing:1px;padding:6px 16px;border-radius:100px;margin-bottom:28px;animation:fadeUp .6s ease both}.bd-page .hero-title{font-size:clamp(44px,5vw,68px);font-weight:900;line-height:1.1;letter-spacing:-2px;color:var(--black);margin-bottom:24px;animation:fadeUp .6s ease .1s both}.bd-page .hero-title .highlight{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.bd-page .hero-desc{font-size:17px;color:#555;line-height:1.8;margin-bottom:40px;font-weight:300;animation:fadeUp .6s ease .2s both}.bd-page .hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .6s ease .3s both}.bd-page .btn-primary{background:var(--accent);color:#fff;border:none;padding:18px 40px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}.bd-page .btn-primary:hover{background:var(--black);transform:translateY(-3px);box-shadow:0 12px 32px rgba(255,69,0,.3)}.bd-page .btn-secondary{background:0 0;color:var(--black);border:2px solid var(--mid);padding:18px 36px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:16px;font-weight:500;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}.bd-page .btn-secondary:hover{border-color:var(--black);transform:translateY(-2px)}.bd-page .hero-visual{animation:fadeIn .8s ease .4s both;position:relative}.bd-page .hero-card{background:var(--black);border-radius:var(--radius);padding:32px;color:#fff;position:relative;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.2)}.bd-page .hero-card:before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,69,0,.3),transparent 70%);pointer-events:none}.bd-page .card-label{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--accent);margin-bottom:16px}.bd-page .card-input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 18px;margin-bottom:12px;font-size:14px;color:#ccc}.bd-page .card-input strong{color:#fff;display:block;margin-bottom:4px;font-size:12px;letter-spacing:1px}.bd-page .card-arrow{text-align:center;color:var(--accent);font-size:20px;margin:16px 0;animation:bounce 1.5s ease-in-out infinite}.bd-page .card-output{background:linear-gradient(135deg,rgba(255,69,0,.15),rgba(255,140,0,.1));border:1px solid rgba(255,69,0,.3);border-radius:10px;padding:20px}.bd-page .card-output-label{font-size:10px;letter-spacing:3px;color:var(--accent);margin-bottom:10px;font-weight:700}.bd-page .card-output-title{font-size:20px;font-weight:900;margin-bottom:6px}.bd-page .card-output-desc{font-size:12px;color:#999;line-height:1.6}.bd-page .card-url{margin-top:16px;background:rgba(255,255,255,.04);border-radius:8px;padding:10px 14px;font-size:12px;color:#64b5f6;display:flex;align-items:center;gap:8px}.bd-page .floating-badge{position:absolute;background:#fff;border-radius:12px;padding:10px 16px;box-shadow:0 8px 24px rgba(0,0,0,.12);font-size:13px;font-weight:700;color:var(--black);white-space:nowrap}.bd-page .badge-1{top:-20px;right:-20px;animation:float 3s ease-in-out infinite}.bd-page .badge-2{bottom:-16px;left:-20px;animation:float 3s ease-in-out 1s infinite}.bd-page .stats{background:var(--black);padding:60px}.bd-page .stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center}.bd-page .stat-num{font-size:48px;font-weight:900;color:var(--accent);letter-spacing:-2px;line-height:1}.bd-page .stat-label{font-size:13px;color:#666;margin-top:8px;letter-spacing:1px}.bd-page .section{padding:100px 60px;max-width:1200px;margin:0 auto}.bd-page .section-tag{font-size:12px;font-weight:700;letter-spacing:3px;color:var(--accent);margin-bottom:12px}.bd-page .section-title{font-size:clamp(32px,4vw,52px);font-weight:900;line-height:1.1;letter-spacing:-1.5px;color:var(--black);margin-bottom:16px}.bd-page .section-sub{font-size:16px;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:60px}.bd-page .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative}.bd-page .steps:before{content:'';position:absolute;top:36px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--mid),var(--mid),transparent)}.bd-page .step-card{background:var(--gray);border-radius:var(--radius);padding:32px 24px;text-align:center;transition:all .3s;position:relative}.bd-page .step-card:hover{background:var(--black);color:#fff;transform:translateY(-8px);box-shadow:0 24px 48px rgba(0,0,0,.15)}.bd-page .step-card:hover .step-desc{color:#999}.bd-page .step-num{width:48px;height:48px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;margin:0 auto 20px;position:relative;z-index:1}.bd-page .step-icon{font-size:28px;margin-bottom:16px}.bd-page .step-title{font-size:16px;font-weight:700;margin-bottom:8px}.bd-page .step-desc{font-size:13px;color:var(--muted);line-height:1.6}.bd-page .features-wrap{background:var(--gray);padding:100px 0}.bd-page .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}.bd-page .feat{background:#fff;padding:48px 40px;transition:background .2s}.bd-page .feat:hover{background:var(--black);color:#fff}.bd-page .feat:hover .feat-desc{color:#666}.bd-page .feat-emoji{font-size:36px;margin-bottom:20px;display:block}.bd-page .feat-title{font-size:20px;font-weight:700;margin-bottom:12px}.bd-page .feat-desc{font-size:14px;color:var(--muted);line-height:1.7}.bd-page .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px}.bd-page .price-card{border:2px solid var(--mid);border-radius:var(--radius);padding:40px 32px;position:relative;transition:all .3s;background:#fff}.bd-page .price-card:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 24px 48px rgba(255,69,0,.12)}.bd-page .price-card.featured{border-color:var(--accent);background:var(--black);color:#fff;transform:scale(1.04)}.bd-page .price-card.featured:hover{transform:scale(1.04) translateY(-6px)}.bd-page .featured-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;padding:5px 18px;border-radius:100px;white-space:nowrap}.bd-page .price-name{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:16px}.bd-page .price-card.featured .price-name{color:#666}.bd-page .price-amount{font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1;color:var(--black);margin-bottom:4px}.bd-page .price-card.featured .price-amount{color:#fff}.bd-page .price-amount sup{font-size:20px;vertical-align:top;margin-top:12px;display:inline-block;font-weight:400}.bd-page .price-period{font-size:13px;color:var(--muted);margin-bottom:32px}.bd-page .price-list{list-style:none;margin-bottom:32px}.bd-page .price-list li{font-size:14px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:10px;color:var(--text)}.bd-page .price-card.featured .price-list li{border-bottom-color:rgba(255,255,255,.08);color:#ccc}.bd-page .price-list li:before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}.bd-page .price-btn{width:100%;padding:16px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;border:2px solid var(--black);background:0 0;color:var(--black);text-align:center;display:block;text-decoration:none}.bd-page .price-btn:hover{background:var(--black);color:#fff}.bd-page .price-card.featured .price-btn{background:var(--accent);border-color:var(--accent);color:#fff}.bd-page .price-card.featured .price-btn:hover{background:var(--accent2);border-color:var(--accent2)}.bd-page .faq-wrap{background:var(--gray);padding:100px 0}.bd-page .faq-inner{max-width:800px;margin:0 auto;padding:0 60px}.bd-page .faq-item{border-bottom:1px solid var(--mid);padding:28px 0;cursor:pointer}.bd-page .faq-q{font-size:17px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:16px;color:var(--black)}.bd-page .faq-icon{font-size:20px;color:var(--accent);flex-shrink:0;transition:transform .3s}.bd-page .faq-item.open .faq-icon{transform:rotate(45deg)}.bd-page .faq-a{font-size:15px;color:#555;line-height:1.8;margin-top:0;max-height:0;overflow:hidden;transition:all .3s ease}.bd-page .faq-item.open .faq-a{max-height:300px;margin-top:16px}.bd-page .contact-section{padding:100px 60px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}.bd-page .contact-title{font-size:clamp(36px,4vw,52px);font-weight:900;letter-spacing:-1.5px;line-height:1.1;color:var(--black);margin-bottom:20px}.bd-page .contact-title span{color:var(--accent)}.bd-page .contact-desc{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:32px}.bd-page .contact-info{display:flex;flex-direction:column;gap:16px}.bd-page .contact-row{display:flex;align-items:center;gap:14px;font-size:14px;color:#444}.bd-page .contact-icon{width:40px;height:40px;background:var(--gray);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}.bd-page .form-card{background:var(--black);border-radius:var(--radius);padding:48px 40px;color:#fff}.bd-page .form-title{font-size:22px;font-weight:900;margin-bottom:8px}.bd-page .form-sub{font-size:13px;color:#666;margin-bottom:32px}.bd-page .form-field{margin-bottom:20px}.bd-page .form-label{display:block;font-size:12px;font-weight:700;letter-spacing:1px;color:#888;margin-bottom:8px}.bd-page .form-input,.bd-page .form-select,.bd-page .form-textarea{width:100%;padding:14px 18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;font-family:'Noto Sans TC',sans-serif;font-size:14px;color:#fff;outline:none;transition:border-color .2s;appearance:none}.bd-page .form-input::placeholder,.bd-page .form-textarea::placeholder{color:#555}.bd-page .form-input:focus,.bd-page .form-select:focus,.bd-page .form-textarea:focus{border-color:var(--accent)}.bd-page .form-select option{background:#1a1a1a;color:#fff}.bd-page .form-textarea{resize:vertical;min-height:90px;line-height:1.6}.bd-page .form-submit{width:100%;padding:18px;background:var(--accent);color:#fff;border:none;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px}.bd-page .form-submit:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,69,0,.4)}.bd-page .form-note{font-size:11px;color:#555;text-align:center;margin-top:14px;line-height:1.6}.bd-page .footer-cta{background:linear-gradient(135deg,var(--black),#1a0a00);padding:100px 60px;text-align:center;position:relative;overflow:hidden}.bd-page .footer-cta:before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(255,69,0,.15),transparent 70%);pointer-events:none}.bd-page .footer-cta-title{font-size:clamp(40px,5vw,72px);font-weight:900;letter-spacing:-2px;line-height:1.1;color:#fff;margin-bottom:20px;position:relative;z-index:1}.bd-page .footer-cta-title span{color:var(--accent)}.bd-page .footer-cta-sub{font-size:16px;color:#666;margin-bottom:48px;position:relative;z-index:1}.bd-page footer{background:#080808;padding:40px 60px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #1a1a1a}.bd-page .footer-logo{font-size:18px;font-weight:900;color:#fff}.bd-page .footer-logo span{color:var(--accent)}.bd-page .footer-copy{font-size:12px;color:#444}@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}@media (max-width:900px){.bd-page nav{padding:16px 24px}.bd-page .hero{grid-template-columns:1fr;padding:80px 24px 60px;gap:48px}.bd-page .hero-visual{display:none}.bd-page .stats{padding:40px 24px}.bd-page .stats-inner{grid-template-columns:repeat(2,1fr);gap:32px}.bd-page .section{padding:60px 24px}.bd-page .steps{grid-template-columns:repeat(2,1fr)}.bd-page .steps:before{display:none}.bd-page .features-grid{grid-template-columns:1fr}.bd-page .pricing-grid{grid-template-columns:1fr}.bd-page .price-card.featured{transform:none}.bd-page .faq-inner{padding:0 24px}.bd-page .contact-section{grid-template-columns:1fr;padding:60px 24px;gap:48px}.bd-page .footer-cta{padding:60px 24px}.bd-page footer{flex-direction:column;gap:12px;text-align:center;padding:32px 24px}}
   </style>
 </head>
 <body>
 <script src="js/components.js"></script>
 
-<!-- 頁面標題列 -->
-<div class="bd-page-title">
-  <h1>BrandDrop — AI 品牌頁面生成服務</h1>
-</div>
-
-<!-- adlocus.com BrandDrop body content (重組以套用我們的 components.js header) -->
+<div class="bd-page">
 <nav><div><div
 class=nav-logo style=font-size:48px;letter-spacing:-2px;>Brand<span
 style=background:linear-gradient(135deg,#ff4500,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;>Drop</span></div><div
@@ -222,56 +91,56 @@ class=step-card><div
 class=step-num>1</div><div
 class=step-icon>&#x1f4dd;</div><div
 class=step-title>填寫需求表單</div><p
-class=step-desc>告訴我們你的品牌名稱、產品描述、目標客群，以及希望的頁面風格。</p></div><div
+class=step-desc>告訴我們你的品牌名稱、產品描述、目標客群，以及希望的頁面風格。</p></p></div><div
 class=step-card><div
 class=step-num>2</div><div
 class=step-icon>&#x1f3a8;</div><div
 class=step-title>選擇版型與口吻</div><p
-class=step-desc>從 4 種專業版型和 6 種 AI 文案口吻中選擇最符合品牌個性的組合。</p></div><div
+class=step-desc>從 4 種專業版型和 6 種 AI 文案口吻中選擇最符合品牌個性的組合。</p></p></div><div
 class=step-card><div
 class=step-num>3</div><div
 class=step-icon>&#x2728;</div><div
 class=step-title>AI 自動生成</div><p
-class=step-desc>AI 根據你的資訊自動生成文案、配圖、完整排版，30 秒內完成。</p></div><div
+class=step-desc>AI 根據你的資訊自動生成文案、配圖、完整排版，30 秒內完成。</p></p></div><div
 class=step-card><div
 class=step-num>4</div><div
 class=step-icon>&#x1f680;</div><div
 class=step-title>取得專屬網址</div><p
-class=step-desc>頁面上線後你會收到專屬網址，立即分享到社群、廣告或 LINE 開始宣傳。</p></div></div></section><div
+class=step-desc>頁面上線後你會收到專屬網址，立即分享到社群、廣告或 LINE 開始宣傳。</p></p></div></div></section><div
 class=features-wrap><div
 style="max-width:1200px;margin:0 auto;padding:0 60px;"><div
-class=section-tag>FEATURES</div><h2 class="section-title" style="margin-bottom:48px;">你得到的，<br>不只是一個網頁</h2></div><div
+class=section-tag>FEATURES</div><h2 class="section-title" style="margin-bottom:48px;">你得到的，<br>不只是一個網頁</h2></p></div><div
 class=features-grid style="max-width:1200px;margin:0 auto;"><div
 class=feat>
 <span
 class=feat-emoji>&#x1f916;</span></p><div
 class=feat-title>AI 文案自動生成</div><p
-class=feat-desc>6 種品牌口吻任你選——熱血教練、質感品牌、親切鄰居、專業達人、網紅種草、故事敘述，讓 AI 幫你說出最對的話。</p></div><div
+class=feat-desc>6 種品牌口吻任你選——熱血教練、質感品牌、親切鄰居、專業達人、網紅種草、故事敘述，讓 AI 幫你說出最對的話。</p></p></div><div
 class=feat>
 <span
 class=feat-emoji>&#x1f5bc;&#xfe0f;</span></p><div
 class=feat-title>AI 圖片配套生成</div><p
-class=feat-desc>不用另外找攝影師。AI 根據你的產品描述自動生成符合品牌風格的配圖，省去數千元的拍攝成本。</p></div><div
+class=feat-desc>不用另外找攝影師。AI 根據你的產品描述自動生成符合品牌風格的配圖，省去數千元的拍攝成本。</p></p></div><div
 class=feat>
 <span
 class=feat-emoji>&#x1f3a8;</span></p><div
 class=feat-title>4 種專業版型</div><p
-class=feat-desc>暗黑科技、活力彩色、極簡白底、深邃奢華，每一種都由專業設計師操刀，保證質感不輸萬元設計。</p></div><div
+class=feat-desc>暗黑科技、活力彩色、極簡白底、深邃奢華，每一種都由專業設計師操刀，保證質感不輸萬元設計。</p></p></div><div
 class=feat>
 <span
 class=feat-emoji>&#x1f517;</span></p><div
 class=feat-title>專屬網址即時上線</div><p
-class=feat-desc>每個頁面都有獨立網址，可直接分享到 Instagram、Facebook、LINE 或投放廣告，不需要額外設定。</p></div><div
+class=feat-desc>每個頁面都有獨立網址，可直接分享到 Instagram、Facebook、LINE 或投放廣告，不需要額外設定。</p></p></div><div
 class=feat>
 <span
 class=feat-emoji>&#x1f4f1;</span></p><div
 class=feat-title>手機完全相容</div><p
-class=feat-desc>所有頁面皆針對手機瀏覽優化，70% 的消費者用手機瀏覽，你的頁面在任何裝置上都完美呈現。</p></div><div
+class=feat-desc>所有頁面皆針對手機瀏覽優化，70% 的消費者用手機瀏覽，你的頁面在任何裝置上都完美呈現。</p></p></div><div
 class=feat>
 <span
 class=feat-emoji>&#x26a1;</span></p><div
 class=feat-title>30 秒極速交付</div><p
-class=feat-desc>傳統網站設計需要 2～4 週，BrandDrop 最快 30 秒完成。產品上市的黃金時機，我們不讓你等。</p></div></div></div><section
+class=feat-desc>傳統網站設計需要 2～4 週，BrandDrop 最快 30 秒完成。產品上市的黃金時機，我們不讓你等。</p></p></div></div></div><section
 class=section id=pricing><div
 class=section-tag>PRICING</div><h2 class="section-title">透明定價，<br>沒有隱藏費用</h2><p
 class=section-sub>市場均價的五分之一，從今天開始就擁有專業品牌頁面。</p><div
@@ -433,12 +302,119 @@ style=text-align:center;margin-top:16px;font-size:13px;color:#666;>或直接寄�
 class=footer-cta><h2 class="footer-cta-title">你的品牌，<br>值得被<span>看見</span></h2><p
 class=footer-cta-sub>現在開始，NT$6,900 擁有你的第一個專業品牌頁面</p><p>  <a
 href=branddrop-start.html class=btn-primary style="font-size:18px;padding:20px 56px;">立即開始 →</a></div>
+</div>
 
 <script>
-function toggleFaq(el){
-  var item = el.closest('.faq-item');
-  if(item) item.classList.toggle('open');
+var curStep=1,selPlan='成長方案',selStyle='暗黑科技';
+function validate(step){
+  if(step===1){
+    var name=document.getElementById('f-name').value.trim();
+    var email=document.getElementById('f-email').value.trim();
+    if(!name){alert('請填寫姓名');document.getElementById('f-name').focus();return false;}
+    if(!email||email.indexOf('@')===-1){alert('請填寫正確的 Email');document.getElementById('f-email').focus();return false;}
+  }
+  if(step===2){
+    var product=document.getElementById('f-product').value.trim();
+    var industry=document.getElementById('f-industry').value;
+    var brief=document.getElementById('f-brief').value.trim();
+    if(!product){alert('請填寫產品／服務名稱');document.getElementById('f-product').focus();return false;}
+    if(!industry){alert('請選擇產業類別');document.getElementById('f-industry').focus();return false;}
+    if(!brief){alert('請填寫產品描述');document.getElementById('f-brief').focus();return false;}
+  }
+  return true;
 }
+function goStep(n){
+  if(n>curStep&&!validate(curStep))return;
+  document.getElementById('s'+curStep).classList.remove('active');
+  document.getElementById('tab'+curStep).classList.remove('active');
+  if(n>curStep)document.getElementById('tab'+curStep).classList.add('done');
+  curStep=n;
+  document.getElementById('s'+n).classList.add('active');
+  document.getElementById('tab'+n).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function selectOpt(el,g){
+  el.closest('.bd-opt-grid').querySelectorAll('.bd-opt').forEach(function(c){c.classList.remove('selected');});
+  el.classList.add('selected');
+}
+function selectStyle(el,n){
+  document.querySelectorAll('.bd-style').forEach(function(c){c.classList.remove('selected');});
+  el.classList.add('selected');selStyle=n;
+}
+function selectPlan(el,n){
+  document.querySelectorAll('.bd-plan').forEach(function(c){c.classList.remove('selected');});
+  el.classList.add('selected');selPlan=n;
+}
+function submitForm(){
+  var name=document.getElementById('f-name').value||'未填';
+  var company=document.getElementById('f-company').value||'未填';
+  var email=document.getElementById('f-email').value||'未填';
+  var phone=document.getElementById('f-phone').value||'未填';
+  var product=document.getElementById('f-product').value||'未填';
+  var industry=document.getElementById('f-industry').value||'未填';
+  var brief=document.getElementById('f-brief').value||'未填';
+  var note=document.getElementById('f-note').value||'無';
+  var buy=document.getElementById('f-buy').value||'未填';
+  var msg=document.getElementById('f-msg').value||'未填';
+  var ig=document.getElementById('f-ig').value||'未填';
+
+  var selAudience=document.querySelector('#s2 .bd-opt-grid .bd-opt.selected');
+  var audience=selAudience?selAudience.querySelector('.bd-opt-name').textContent:'未選';
+  var selToneEl=document.querySelectorAll('#s3 .bd-opt-grid')[0];
+  var toneEl=selToneEl?selToneEl.querySelector('.bd-opt.selected'):null;
+  var tone=toneEl?toneEl.querySelector('.bd-opt-name').textContent:'未選';
+
+  var planDesc={
+    '單次體驗':'1個品牌頁面，含2次免費修改，NT$6,900單次',
+    '成長方案':'每月5個品牌頁面，每頁含2次修改，NT$2,999/月',
+    '品牌方案':'每月15個品牌頁面，每頁含3次修改，NT$5,999/月',
+    '企業授權合作':'代理商/品牌授權，客製報價'
+  };
+
+  var subject=encodeURIComponent('【BrandDrop 新諮詢】'+company+' - '+product);
+  var body=encodeURIComponent(
+    '您好，我想申請 BrandDrop 品牌頁面服務。\n\n'+
+    '=== 聯絡資訊 ===\n'+
+    '姓名：'+name+'\n'+
+    '品牌／公司：'+company+'\n'+
+    '聯絡 Email：'+email+'\n'+
+    '電話／Line ID：'+phone+'\n\n'+
+    '=== 品牌資訊 ===\n'+
+    '產品／服務：'+product+'\n'+
+    '產業類別：'+industry+'\n'+
+    '產品描述：'+brief+'\n'+
+    '目標客群：'+audience+'\n\n'+
+    '=== 頁面設定 ===\n'+
+    '選擇版型：'+selStyle+'\n'+
+    '文案口吻：'+tone+'\n'+
+    '購買連結：'+buy+'\n'+
+    'FB Messenger：'+msg+'\n'+
+    'Instagram：'+ig+'\n\n'+
+    '=== 選擇方案 ===\n'+
+    '方案：'+selPlan+'\n'+
+    '內容：'+(planDesc[selPlan]||selPlan)+'\n\n'+
+    '=== 補充說明 ===\n'+
+    note+'\n\n'+
+    '---\n'+
+    '此信由 BrandDrop 填單頁自動生成\n'+
+    'branddrop-start.html'
+  );
+
+  document.getElementById('r-company').textContent=company;
+  document.getElementById('r-product').textContent=product;
+  document.getElementById('r-plan').textContent=selPlan;
+  document.getElementById('s4').classList.remove('active');
+  document.getElementById('s-success').classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  window.location.href='mailto:sales@iflocus.com?subject='+subject+'&body='+body;
+}
+
+function toggleFaq(el) {
+    const item = el.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
 </script>
 <script src="js/main.js"></script>
 </body>
