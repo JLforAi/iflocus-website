@@ -4,1047 +4,420 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BrandDrop 開始旅程 | 絡客思行銷科技</title>
-  <meta name="description" content="開始打造你的 BrandDrop 專屬品牌頁面。只需要 3 分鐘，告訴我們你的品牌故事，我們將協助規劃 AI 品牌頁面服務。">
+  <meta name="description" content="開始打造你的專屬 BrandDrop 品牌頁面 — 只需要 3 分鐘填寫需求,30 秒內 AI 為你生成專業一頁式品牌網站。輸入品牌資訊、選擇風格與方案,即可開始。">
+  <meta name="keywords" content="BrandDrop 開始, AI 品牌頁面表單, 品牌諮詢, 品牌頁面生成">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="絡客思行銷科技">
   <link rel="canonical" href="https://iflocus.com/branddrop-start.html">
-  <link rel="stylesheet" href="css/style.css">
+  <meta property="og:title" content="BrandDrop 開始旅程 | 絡客思行銷科技">
+  <meta property="og:description" content="開始打造你的專屬 BrandDrop 品牌頁面,3 分鐘填寫需求,30 秒生成。">
+  <meta property="og:url" content="https://iflocus.com/branddrop-start.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_TW">
+  <meta property="og:site_name" content="絡客思行銷科技">
   <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','GA_MEASUREMENT_ID');</script>
+  <link rel="stylesheet" href="css/style.css">
   <style>
-    * { box-sizing: border-box; }
+:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}
+:root{--black:#0f0f0f;--white:#fafaf8;--accent:#ff4500;--accent2:#ff8c00;--gray:#f4f3ef;--mid:#e0ddd6;--muted:#888}
+:root{--black:#0f0f0f;--white:#fafaf8;--accent:#ff4500;--accent2:#ff8c00;--gray:#f4f3ef;--mid:#e0ddd6;--text:#1a1a1a;--muted:#888;--radius:20px}
+.bd-header{background:var(--black);padding:20px 48px;display:flex;justify-content:space-between;align-items:center}
+.bd-logo{font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px}
+.bd-logo span{background:linear-gradient(135deg,#ff4500,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.bd-logo-sub{font-size:11px;color:#555;letter-spacing:1px;margin-top:2px}
+.bd-back{font-size:13px;color:#666;text-decoration:none}
+.bd-back:hover{color:var(--accent)}
+.bd-hero{background:linear-gradient(135deg,var(--black),#1a0800);padding:48px;text-align:center}
+.bd-hero-title{font-size:clamp(28px,4vw,44px);font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.1;margin-bottom:10px}
+.bd-hero-title span{background:linear-gradient(135deg,#ff4500,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.bd-hero-sub{font-size:14px;color:#666}
+.bd-steps{background:var(--gray);border-bottom:1px solid var(--mid);padding:0 48px;display:flex;overflow-x:auto}
+.bd-step{padding:18px 20px;font-size:13px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.bd-step.active{color:var(--accent);border-bottom-color:var(--accent)}
+.bd-step.done{color:var(--black)}
+.bd-step-num{width:22px;height:22px;border-radius:50%;background:var(--mid);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900}
+.bd-step.active .bd-step-num{background:var(--accent);color:#fff}
+.bd-step.done .bd-step-num{background:var(--black);color:#fff}
+.bd-body{max-width:860px;margin:0 auto;padding:48px}
+.bd-form-step{display:none}
+.bd-form-step.active{display:block}
+.bd-step-label{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--accent);margin-bottom:8px}
+.bd-step-title{font-size:28px;font-weight:900;letter-spacing:-1px;margin-bottom:8px}
+.bd-step-sub{font-size:14px;color:var(--muted);margin-bottom:36px;line-height:1.6}
+.bd-field{margin-bottom:22px}
+.bd-field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.bd-opt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:4px}
+.bd-opt{border:2px solid var(--mid);border-radius:12px;padding:16px;cursor:pointer;background:#fff;text-align:left;transition:all .2s}
+.bd-opt:hover{border-color:#ccc}
+.bd-opt.selected{border-color:var(--accent);background:#fff8f5}
+.bd-opt-emoji{font-size:22px;margin-bottom:6px;display:block}
+.bd-opt-name{font-size:14px;font-weight:700;margin-bottom:3px}
+.bd-opt-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.bd-style-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.bd-style{border:2px solid var(--mid);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .2s}
+.bd-style:hover{transform:translateY(-2px)}
+.bd-style.selected{border-color:var(--accent)}
+.bd-style-thumb{height:72px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px}
+.bd-style-info{padding:10px 14px;background:#fff}
+.bd-style-name{font-size:13px;font-weight:700}
+.bd-style-tag{font-size:11px;color:var(--muted)}
+.bd-plan-grid{display:flex;flex-direction:column;gap:10px}
+.bd-plan{border:2px solid var(--mid);border-radius:12px;padding:18px 20px;cursor:pointer;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:all .2s}
+.bd-plan:hover{border-color:#ccc}
+.bd-plan.selected{border-color:var(--accent);background:#fff8f5}
+.bd-plan.featured{border-color:var(--accent)}
+.bd-plan-left{display:flex;align-items:center;gap:14px}
+.bd-plan-emoji{font-size:26px}
+.bd-plan-name{font-size:15px;font-weight:700}
+.bd-plan-desc{font-size:12px;color:var(--muted);margin-top:2px}
+.bd-plan-badge{font-size:10px;font-weight:700;letter-spacing:1px;background:var(--accent);color:#fff;padding:3px 8px;border-radius:100px;margin-left:8px}
+.bd-plan-price{font-size:18px;font-weight:900;color:var(--accent);white-space:nowrap;text-align:right}
+.bd-plan-period{font-size:11px;color:var(--muted);font-weight:400}
+.bd-btn-row{display:flex;gap:12px;margin-top:40px}
+.bd-btn-next{flex:1;padding:18px;background:var(--black);color:#fff;border:none;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s}
+.bd-btn-next:hover{background:var(--accent)}
+.bd-btn-back{padding:18px 24px;background:0 0;color:var(--muted);border:2px solid var(--mid);border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.bd-btn-back:hover{border-color:var(--black);color:var(--black)}
+.bd-btn-submit{width:100%;padding:20px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:17px;font-weight:800;cursor:pointer;margin-top:8px;transition:all .2s}
+.bd-btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,69,0,.4)}
+.bd-submit-note{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6}
+.bd-success{display:none;text-align:center;padding:60px 40px}
+.bd-success.active{display:block}
+.bd-success-icon{width:72px;height:72px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 24px;box-shadow:0 16px 40px rgba(255,69,0,.3)}
+.bd-success-title{font-size:28px;font-weight:900;letter-spacing:-1px;margin-bottom:12px}
+.bd-success-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:440px;margin:0 auto 32px}
+.bd-success-box{background:var(--gray);border-radius:12px;padding:20px;max-width:440px;margin:0 auto 24px;text-align:left}
+.bd-success-row{display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid var(--mid)}
+.bd-success-row:last-child{border-bottom:none}
+.bd-success-row span{font-weight:700;color:var(--accent)}
+.bd-home-btn{display:inline-block;background:var(--black);color:#fff;padding:16px 40px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:15px;font-weight:700;text-decoration:none;cursor:pointer;border:none;transition:all .2s}
+.bd-home-btn:hover{background:var(--accent)}
+.bd-hero{padding:40px 24px}
+.bd-steps{padding:0 16px}
+.bd-body{padding:32px 24px}
+.bd-field-row{grid-template-columns:1fr}
+.bd-opt-grid{grid-template-columns:1fr}
+.bd-style-grid{grid-template-columns:1fr}
+
+@media (max-width:768px){
+  .bd-header{padding:16px 24px;flex-wrap:wrap;gap:12px}
+  .bd-hero{padding:36px 20px}
+  .bd-body{padding:32px 20px}
+  .bd-steps{flex-wrap:wrap;gap:8px}
+  .bd-step{font-size:11px;padding:8px 12px}
+  .bd-opt-grid,.bd-style-grid,.bd-plan-grid{grid-template-columns:1fr}
+  .bd-field-row{grid-template-columns:1fr}
+  .bd-btn-row{flex-direction:column;gap:12px}
+}
+
+
+body{background:#fafaf8;}
+/* hide our default page-hero so adlocus bd- styles take over fully */
+.bd-page-wrap{padding-top:72px;}
 
-    body {
-      background: #f6f6f6;
-      color: #161616;
-    }
-
-    .bd-page {
-      background: #f6f6f6;
-      min-height: 100vh;
-      padding: 40px 16px 80px;
-    }
-
-    .bd-shell {
-      width: min(100%, 980px);
-      margin: 0 auto;
-    }
-
-    .bd-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 34px;
-    }
-
-    .bd-logo {
-      font-size: clamp(30px, 5vw, 46px);
-      font-weight: 900;
-      line-height: 1;
-      color: #111;
-      letter-spacing: 0;
-    }
-
-    .bd-logo span { color: #ff5a00; }
-
-    .bd-logo-sub {
-      margin-top: 7px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #777;
-      letter-spacing: 0;
-    }
-
-    .bd-back {
-      display: inline-flex;
-      align-items: center;
-      min-height: 40px;
-      padding: 0 18px;
-      border-radius: 999px;
-      background: #fff;
-      color: #333;
-      border: 1px solid #e5e5e5;
-      font-size: 14px;
-      font-weight: 700;
-      text-decoration: none;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-    }
-
-    .bd-hero {
-      background-image:
-        linear-gradient(90deg, rgba(13,13,13,0.88) 0%, rgba(13,13,13,0.70) 48%, rgba(13,13,13,0.22) 100%),
-        linear-gradient(135deg, rgba(255,90,0,0.45), rgba(255,255,255,0.05)),
-        url("images/page-assets/integrated-workflow.jpg");
-      background-size: cover;
-      background-position: center;
-      color: #fff;
-      text-align: left;
-      border-radius: 24px;
-      padding: clamp(46px, 8vw, 74px) 24px;
-      margin-bottom: 28px;
-      box-shadow: 0 24px 60px rgba(18,18,18,0.18);
-    }
-
-    .bd-hero-title {
-      margin: 0 auto;
-      font-size: clamp(36px, 7vw, 68px);
-      font-weight: 900;
-      line-height: 1.08;
-      letter-spacing: 0;
-      width: min(100%, 860px);
-    }
-
-    .bd-hero-title span { color: #ffb07c; }
-
-    .bd-hero-sub {
-      margin: 18px auto 0;
-      color: rgba(255,255,255,0.78);
-      font-size: clamp(15px, 2vw, 18px);
-      line-height: 1.8;
-      width: min(100%, 860px);
-    }
-
-    .bd-steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .bd-step {
-      background: #fff;
-      border: 1px solid #e7e7e7;
-      border-radius: 14px;
-      padding: 14px 10px;
-      text-align: center;
-      color: #999;
-      transition: border-color .2s, color .2s, background .2s;
-    }
-
-    .bd-step.active,
-    .bd-step.done {
-      border-color: #ff5a00;
-      color: #ff5a00;
-      background: #fff8f3;
-    }
-
-    .bd-step-num {
-      width: 28px;
-      height: 28px;
-      margin: 0 auto 6px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #eee;
-      color: #888;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .bd-step.active .bd-step-num,
-    .bd-step.done .bd-step-num {
-      background: #ff5a00;
-      color: #fff;
-    }
-
-    .bd-step p {
-      margin: 0;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .bd-body {
-      background: #fff;
-      border: 1px solid #e8e8e8;
-      border-radius: 24px;
-      padding: clamp(24px, 4vw, 42px);
-      box-shadow: 0 20px 55px rgba(0,0,0,0.08);
-    }
-
-    .bd-form-step { display: none; }
-    .bd-form-step.active { display: block; animation: bdFade .25s ease; }
-    @keyframes bdFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-    .bd-step-label {
-      display: inline-block;
-      margin-bottom: 10px;
-      color: #ff5a00;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: .04em;
-    }
-
-    .bd-step-title {
-      margin: 0 0 8px;
-      font-size: clamp(25px, 4vw, 34px);
-      font-weight: 900;
-      color: #111;
-      letter-spacing: 0;
-    }
-
-    .bd-step-sub {
-      margin: 0 0 30px;
-      color: #777;
-      line-height: 1.8;
-      font-size: 15px;
-    }
-
-    .bd-field-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .bd-field { margin-bottom: 22px; }
-
-    .bd-field label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
-      color: #222;
-      font-size: 14px;
-      font-weight: 900;
-    }
-
-    .bd-req {
-      color: #ff3b30;
-      font-weight: 900;
-    }
-
-    .bd-optional {
-      color: #aaa;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .bd-field input,
-    .bd-field textarea,
-    .bd-field select {
-      width: 100%;
-      border: 1px solid #dcdcdc;
-      border-radius: 12px;
-      background: #fafafa;
-      color: #1a1a1a;
-      font-size: 15px;
-      line-height: 1.6;
-      padding: 13px 15px;
-      outline: none;
-      transition: border-color .2s, box-shadow .2s, background .2s;
-      font-family: inherit;
-    }
-
-    .bd-field textarea {
-      min-height: 112px;
-      resize: vertical;
-    }
-
-    .bd-field select {
-      appearance: none;
-      cursor: pointer;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 15px center;
-      padding-right: 38px;
-    }
-
-    .bd-field input:focus,
-    .bd-field textarea:focus,
-    .bd-field select:focus {
-      border-color: #ff5a00;
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(255,90,0,0.12);
-    }
-
-    .bd-field input.error,
-    .bd-field textarea.error,
-    .bd-field select.error {
-      border-color: #ff3b30;
-      box-shadow: 0 0 0 4px rgba(255,59,48,0.10);
-    }
-
-    .bd-hint {
-      margin-top: 6px;
-      color: #969696;
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .bd-error {
-      display: none;
-      margin-top: 6px;
-      color: #ff3b30;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .bd-error.show { display: block; }
-
-    .bd-note {
-      margin: 4px 0 22px;
-      padding: 14px 16px;
-      border: 1px solid #ffcdb8;
-      border-radius: 10px;
-      background: #fff8f5;
-      color: #777;
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    .bd-note strong { color: #ff4500; }
-
-    .bd-opt-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .bd-opt,
-    .bd-style,
-    .bd-plan {
-      cursor: pointer;
-      border: 2px solid #e9e9e9;
-      background: #fff;
-      transition: border-color .2s, background .2s, transform .2s;
-    }
-
-    .bd-opt:hover,
-    .bd-style:hover,
-    .bd-plan:hover {
-      border-color: #ff5a00;
-      transform: translateY(-1px);
-    }
-
-    .bd-opt.selected,
-    .bd-style.selected,
-    .bd-plan.selected {
-      border-color: #ff5a00;
-      background: #fff8f3;
-    }
-
-    .bd-opt {
-      min-height: 132px;
-      border-radius: 16px;
-      padding: 18px 14px;
-      text-align: center;
-    }
-
-    .bd-opt-icon {
-      width: 42px;
-      height: 42px;
-      margin: 0 auto 10px;
-      border-radius: 50%;
-      background: #111;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .bd-opt.selected .bd-opt-icon { background: #ff5a00; }
-
-    .bd-opt-name {
-      color: #111;
-      font-size: 15px;
-      font-weight: 900;
-      margin-bottom: 4px;
-    }
-
-    .bd-opt-desc {
-      color: #888;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .bd-style-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .bd-style {
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .bd-style-thumb {
-      height: 92px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: 900;
-      font-size: 19px;
-    }
-
-    .t-dark { background: linear-gradient(135deg, #050505, #393939); }
-    .t-vibrant { background: linear-gradient(135deg, #ff5a00, #ffcb3d); }
-    .t-clean { background: linear-gradient(135deg, #f7f7f7, #d7d7d7); color: #111; }
-    .t-ai { background: linear-gradient(135deg, #5627ff, #ff5a00); }
-
-    .bd-style-info { padding: 14px; }
-    .bd-style-name { color: #111; font-size: 15px; font-weight: 900; }
-    .bd-style-tag { margin-top: 4px; color: #888; font-size: 12px; }
-
-    .bd-link-row {
-      display: grid;
-      grid-template-columns: 34px 1fr;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .bd-link-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: #f2f2f2;
-      color: #555;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 900;
-    }
-
-    .bd-plan-grid {
-      display: grid;
-      gap: 14px;
-    }
-
-    .bd-plan {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 16px;
-      align-items: center;
-      border-radius: 18px;
-      padding: 20px;
-    }
-
-    .bd-plan.featured { position: relative; }
-
-    .bd-plan-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      min-width: 0;
-    }
-
-    .bd-plan-emoji {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: #111;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 900;
-      flex: 0 0 auto;
-    }
-
-    .bd-plan.selected .bd-plan-emoji { background: #ff5a00; }
-
-    .bd-plan-name {
-      color: #111;
-      font-size: 17px;
-      font-weight: 900;
-      line-height: 1.4;
-    }
-
-    .bd-plan-badge {
-      display: inline-block;
-      margin-left: 8px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: #ff5a00;
-      color: #fff;
-      font-size: 11px;
-      vertical-align: middle;
-    }
-
-    .bd-plan-desc {
-      margin-top: 5px;
-      color: #777;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .bd-plan-price {
-      color: #ff5a00;
-      font-size: 23px;
-      font-weight: 900;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .bd-plan-period {
-      margin-top: 4px;
-      color: #888;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .bd-btn-row {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      margin-top: 30px;
-    }
-
-    .bd-btn-next,
-    .bd-btn-back,
-    .bd-btn-submit,
-    .bd-home-btn {
-      min-height: 46px;
-      border: none;
-      border-radius: 12px;
-      padding: 0 22px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: 900;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform .15s, background .2s;
-      font-family: inherit;
-    }
-
-    .bd-btn-next,
-    .bd-btn-submit,
-    .bd-home-btn {
-      background: #ff5a00;
-      color: #fff;
-    }
-
-    .bd-btn-next:hover,
-    .bd-btn-submit:hover,
-    .bd-home-btn:hover { background: #e65100; color: #fff; }
-
-    .bd-btn-back {
-      background: #f0f0f0;
-      color: #555;
-    }
-
-    .bd-btn-submit {
-      width: 100%;
-      margin-top: 10px;
-      min-height: 54px;
-      font-size: 16px;
-    }
-
-    .bd-submit-note {
-      margin-top: 14px;
-      text-align: center;
-      color: #888;
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    .bd-success {
-      display: none;
-      text-align: center;
-      padding: 24px 0 10px;
-    }
-
-    .bd-success.active { display: block; }
-
-    .bd-success-icon {
-      width: 76px;
-      height: 76px;
-      margin: 0 auto 22px;
-      border-radius: 50%;
-      background: #fff8f3;
-      color: #ff5a00;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      font-weight: 900;
-    }
-
-    .bd-success-title {
-      margin: 0 0 10px;
-      color: #111;
-      font-size: 34px;
-      font-weight: 900;
-    }
-
-    .bd-success-sub {
-      margin: 0 auto 24px;
-      max-width: 560px;
-      color: #666;
-      font-size: 15px;
-      line-height: 1.9;
-    }
-
-    .bd-success-box {
-      width: min(100%, 520px);
-      margin: 0 auto 24px;
-      border: 1px solid #e9e9e9;
-      border-radius: 16px;
-      overflow: hidden;
-      text-align: left;
-    }
-
-    .bd-success-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 14px 16px;
-      border-bottom: 1px solid #eee;
-      color: #777;
-      font-size: 14px;
-    }
-
-    .bd-success-row:last-child { border-bottom: none; }
-    .bd-success-row span { color: #111; font-weight: 900; text-align: right; }
-
-    @media (max-width: 760px) {
-      .bd-page { padding-top: 24px; }
-      .bd-header { align-items: flex-start; flex-direction: column; }
-      .bd-steps { grid-template-columns: repeat(2, 1fr); }
-      .bd-field-row,
-      .bd-opt-grid,
-      .bd-style-grid {
-        grid-template-columns: 1fr;
-      }
-      .bd-plan {
-        grid-template-columns: 1fr;
-      }
-      .bd-plan-price {
-        text-align: left;
-      }
-      .bd-btn-row {
-        flex-direction: column-reverse;
-      }
-      .bd-btn-next,
-      .bd-btn-back {
-        width: 100%;
-      }
-    }
   </style>
 </head>
 <body>
 <script src="js/components.js"></script>
 
-<main class="bd-page">
-  <div class="bd-shell">
-    <header class="bd-header">
-      <div>
-        <div class="bd-logo">Brand<span>Drop</span></div>
-        <div class="bd-logo-sub">BY LOCUS 絡客思行銷科技</div>
-      </div>
-      <a href="branddrop.html" class="bd-back">← 返回服務介紹</a>
-    </header>
-
-    <section class="bd-hero" aria-label="BrandDrop 開始旅程">
-      <h1 class="bd-hero-title">開始打造你的<br><span>專屬品牌頁面</span></h1>
-      <p class="bd-hero-sub">只需要 3 分鐘，告訴我們你的品牌故事。</p>
-    </section>
-
-    <nav class="bd-steps" aria-label="填寫進度">
-      <div class="bd-step active" id="tab1"><div class="bd-step-num">1</div><p>聯絡資訊</p></div>
-      <div class="bd-step" id="tab2"><div class="bd-step-num">2</div><p>品牌資訊</p></div>
-      <div class="bd-step" id="tab3"><div class="bd-step-num">3</div><p>頁面設定</p></div>
-      <div class="bd-step" id="tab4"><div class="bd-step-num">4</div><p>選擇方案</p></div>
-    </nav>
-
-    <section class="bd-body">
-      <div class="bd-form-step active" id="s1">
-        <div class="bd-step-label">STEP 01 / 04</div>
-        <h2 class="bd-step-title">您的聯絡資訊</h2>
-        <p class="bd-step-sub">讓我們知道怎麼聯絡到你。</p>
-
-        <div class="bd-field-row">
-          <div class="bd-field">
-            <label for="f-name">姓名 <span class="bd-req">*</span></label>
-            <input type="text" id="f-name" placeholder="例：王小明" required>
-            <div class="bd-error" id="err-name">請填寫姓名</div>
-          </div>
-          <div class="bd-field">
-            <label for="f-company">品牌 / 公司名稱 <span class="bd-optional">選填</span></label>
-            <input type="text" id="f-company" placeholder="例：你的品牌">
-          </div>
-        </div>
-
-        <div class="bd-field">
-          <label for="f-email">聯絡 Email <span class="bd-req">*</span></label>
-          <input type="email" id="f-email" placeholder="例：hello@yourbrand.com" required>
-          <div class="bd-error" id="err-email">請填寫正確的 Email</div>
-        </div>
-
-        <div class="bd-field">
-          <label for="f-phone">手機 / Line ID <span class="bd-optional">選填</span></label>
-          <input type="text" id="f-phone" placeholder="例：0912-345-678 或 @yourbrand">
-        </div>
-
-        <div class="bd-btn-row">
-          <button class="bd-btn-next" type="button" onclick="goStep(2)">下一步：品牌資訊 →</button>
-        </div>
-      </div>
-
-      <div class="bd-form-step" id="s2">
-        <div class="bd-step-label">STEP 02 / 04</div>
-        <h2 class="bd-step-title">告訴我們你的品牌</h2>
-        <p class="bd-step-sub">這些資訊會直接影響 AI 生成的文案品質，越詳細越好。</p>
-
-        <div class="bd-field">
-          <label for="f-product">產品 / 服務名稱 <span class="bd-req">*</span></label>
-          <input type="text" id="f-product" placeholder="例：手工餅乾禮盒、運動水壺" required>
-          <div class="bd-error" id="err-product">請填寫產品 / 服務名稱</div>
-        </div>
-
-        <div class="bd-field">
-          <label for="f-industry">產業類別 <span class="bd-req">*</span></label>
-          <select id="f-industry" required>
-            <option value="">點此選擇產業類別 ↓</option>
-            <option>運動 / 戶外</option>
-            <option>食品 / 飲料</option>
-            <option>美妝 / 保養</option>
-            <option>服飾 / 配件</option>
-            <option>3C / 工具</option>
-            <option>居家 / 生活</option>
-            <option>寵物</option>
-            <option>教育 / 課程</option>
-            <option>其他</option>
-          </select>
-          <div class="bd-error" id="err-industry">請選擇產業類別</div>
-        </div>
-
-        <div class="bd-field">
-          <label for="f-brief">用一句話描述你的產品 <span class="bd-req">*</span></label>
-          <textarea id="f-brief" placeholder="例：用台灣在地小農食材製作的手工餅乾禮盒，不添加人工色素" required></textarea>
-          <div class="bd-hint">請簡單說明產品特色、適合對象或主要賣點。</div>
-          <div class="bd-error" id="err-brief">請填寫產品描述</div>
-        </div>
-
-        <div class="bd-note">
-          <strong>如有產品照片</strong>，請在送出後回覆 Email 將照片附上，或提供 Google Drive 共享連結，我們會整合到你的品牌頁面中。
-        </div>
-
-        <div class="bd-field">
-          <label>目標客群 <span class="bd-optional">選填</span></label>
-          <div class="bd-opt-grid">
-            <div class="bd-opt" onclick="selectOpt(this)">
-              <div class="bd-opt-icon">B2B</div>
-              <div class="bd-opt-name">中小企業主</div>
-              <div class="bd-opt-desc">老闆 / 創業者</div>
-            </div>
-            <div class="bd-opt" onclick="selectOpt(this)">
-              <div class="bd-opt-icon">KOL</div>
-              <div class="bd-opt-name">個人品牌</div>
-              <div class="bd-opt-desc">KOL / 網紅</div>
-            </div>
-            <div class="bd-opt" onclick="selectOpt(this)">
-              <div class="bd-opt-icon">EC</div>
-              <div class="bd-opt-name">電商賣家</div>
-              <div class="bd-opt-desc">蝦皮 / 官網</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bd-btn-row">
-          <button class="bd-btn-back" type="button" onclick="goStep(1)">← 返回</button>
-          <button class="bd-btn-next" type="button" onclick="goStep(3)">下一步：頁面設定 →</button>
-        </div>
-      </div>
-
-      <div class="bd-form-step" id="s3">
-        <div class="bd-step-label">STEP 03 / 04</div>
-        <h2 class="bd-step-title">頁面風格與連結</h2>
-        <p class="bd-step-sub">選擇最符合你品牌個性的視覺風格與文案口吻。</p>
-
-        <div class="bd-field">
-          <label>選擇版型</label>
-          <div class="bd-style-grid">
-            <div class="bd-style selected" onclick="selectStyle(this,'暗黑科技')">
-              <div class="bd-style-thumb t-dark">DARK</div>
-              <div class="bd-style-info"><div class="bd-style-name">暗黑科技</div><div class="bd-style-tag">高端 · 科技感</div></div>
-            </div>
-            <div class="bd-style" onclick="selectStyle(this,'活力彩色')">
-              <div class="bd-style-thumb t-vibrant">VIBE</div>
-              <div class="bd-style-info"><div class="bd-style-name">活力彩色</div><div class="bd-style-tag">年輕 · 運動風</div></div>
-            </div>
-            <div class="bd-style" onclick="selectStyle(this,'極簡白底')">
-              <div class="bd-style-thumb t-clean">CLEAN</div>
-              <div class="bd-style-info"><div class="bd-style-name">極簡白底</div><div class="bd-style-tag">質感 · 高端</div></div>
-            </div>
-            <div class="bd-style" onclick="selectStyle(this,'讓 AI 決定')">
-              <div class="bd-style-thumb t-ai">AI</div>
-              <div class="bd-style-info"><div class="bd-style-name">讓 AI 決定</div><div class="bd-style-tag">最適合你的品牌</div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bd-field" style="margin-top:24px">
-          <label>文案口吻</label>
-          <div class="bd-opt-grid" id="tone-grid">
-            <div class="bd-opt selected" onclick="selectTone(this)">
-              <div class="bd-opt-icon">HOT</div>
-              <div class="bd-opt-name">熱血教練</div>
-              <div class="bd-opt-desc">激勵有力，適合運動健身</div>
-            </div>
-            <div class="bd-opt" onclick="selectTone(this)">
-              <div class="bd-opt-icon">LUX</div>
-              <div class="bd-opt-name">質感品牌</div>
-              <div class="bd-opt-desc">精緻高端，適合精品類</div>
-            </div>
-            <div class="bd-opt" onclick="selectTone(this)">
-              <div class="bd-opt-icon">WARM</div>
-              <div class="bd-opt-name">親切鄰居</div>
-              <div class="bd-opt-desc">溫暖口語，適合食品</div>
-            </div>
-            <div class="bd-opt" onclick="selectTone(this)">
-              <div class="bd-opt-icon">PRO</div>
-              <div class="bd-opt-name">專業達人</div>
-              <div class="bd-opt-desc">數據理性，適合 3C</div>
-            </div>
-            <div class="bd-opt" onclick="selectTone(this)">
-              <div class="bd-opt-icon">POP</div>
-              <div class="bd-opt-name">網紅種草</div>
-              <div class="bd-opt-desc">活潑有趣，適合年輕族群</div>
-            </div>
-            <div class="bd-opt" onclick="selectTone(this)">
-              <div class="bd-opt-icon">AI</div>
-              <div class="bd-opt-name">讓 AI 決定</div>
-              <div class="bd-opt-desc">根據品牌自動選擇</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bd-field" style="margin-top:24px">
-          <label>按鈕連結設定 <span class="bd-optional">選填</span></label>
-          <div class="bd-link-row">
-            <div class="bd-link-icon">BUY</div>
-            <input type="url" id="f-buy" placeholder="購買連結（例：https://shopee.tw/yourbrand 或品牌官網）">
-          </div>
-          <div class="bd-link-row">
-            <div class="bd-link-icon">MSG</div>
-            <input type="url" id="f-msg" placeholder="FB Messenger 或聯絡連結（例：https://m.me/yourbrand）">
-          </div>
-          <div class="bd-link-row">
-            <div class="bd-link-icon">IG</div>
-            <input type="url" id="f-ig" placeholder="Instagram 帳號連結（例：https://instagram.com/yourbrand）">
-          </div>
-        </div>
-
-        <div class="bd-btn-row">
-          <button class="bd-btn-back" type="button" onclick="goStep(2)">← 返回</button>
-          <button class="bd-btn-next" type="button" onclick="goStep(4)">下一步：選擇方案 →</button>
-        </div>
-      </div>
-
-      <div class="bd-form-step" id="s4">
-        <div class="bd-step-label">STEP 04 / 04</div>
-        <h2 class="bd-step-title">選擇你的方案</h2>
-        <p class="bd-step-sub">選好方案後我們會在 1 個工作天內與你確認細節。</p>
-
-        <div class="bd-plan-grid">
-          <div class="bd-plan" onclick="selectPlan(this,'單次體驗')">
-            <div class="bd-plan-left">
-              <div class="bd-plan-emoji">1X</div>
-              <div><div class="bd-plan-name">單次體驗</div><div class="bd-plan-desc">1 個品牌頁面 · 含 2 次修改</div></div>
-            </div>
-            <div class="bd-plan-price">NT$6,900<div class="bd-plan-period">單次</div></div>
-          </div>
-          <div class="bd-plan featured selected" onclick="selectPlan(this,'成長方案')">
-            <div class="bd-plan-left">
-              <div class="bd-plan-emoji">UP</div>
-              <div><div class="bd-plan-name">成長方案 <span class="bd-plan-badge">最多人選</span></div><div class="bd-plan-desc">每月 5 頁 · 每頁含 2 次修改</div></div>
-            </div>
-            <div class="bd-plan-price">NT$2,999<div class="bd-plan-period">每月</div></div>
-          </div>
-          <div class="bd-plan" onclick="selectPlan(this,'品牌方案')">
-            <div class="bd-plan-left">
-              <div class="bd-plan-emoji">BR</div>
-              <div><div class="bd-plan-name">品牌方案</div><div class="bd-plan-desc">每月 15 頁 · 每頁含 3 次修改</div></div>
-            </div>
-            <div class="bd-plan-price">NT$5,999<div class="bd-plan-period">每月</div></div>
-          </div>
-          <div class="bd-plan" onclick="selectPlan(this,'企業授權合作')">
-            <div class="bd-plan-left">
-              <div class="bd-plan-emoji">CO</div>
-              <div><div class="bd-plan-name">企業授權合作</div><div class="bd-plan-desc">代理商 / 品牌授權 · 客製報價</div></div>
-            </div>
-            <div class="bd-plan-price" style="color:#111">聯絡<div class="bd-plan-period">洽談</div></div>
-          </div>
-        </div>
-
-        <div class="bd-field" style="margin-top:24px">
-          <label for="f-note">補充說明 <span class="bd-optional">選填</span></label>
-          <textarea id="f-note" placeholder="例：希望兩週內上線、需要搭配母親節活動、已有品牌照片與商品介紹可提供。"></textarea>
-        </div>
-
-        <button class="bd-btn-submit" type="button" onclick="submitForm()">送出需求，開始製作</button>
-        <div class="bd-submit-note">送出後我們將在 1 個工作天內與您聯繫確認細節<br>您的資料僅用於服務聯絡，不做其他用途</div>
-      </div>
-
-      <div class="bd-success" id="s-success">
-        <div class="bd-success-icon">OK</div>
-        <h2 class="bd-success-title">收到了！</h2>
-        <p class="bd-success-sub">感謝你選擇 BrandDrop。我們已收到你的需求，將在 <strong>1 個工作天內</strong>透過 Email 與你聯繫。</p>
-        <div class="bd-success-box">
-          <div class="bd-success-row">品牌名稱 <span id="r-company">-</span></div>
-          <div class="bd-success-row">產品 <span id="r-product">-</span></div>
-          <div class="bd-success-row">選擇方案 <span id="r-plan">成長方案</span></div>
-          <div class="bd-success-row">預計回覆 <span>1 個工作天內</span></div>
-        </div>
-        <a href="mailto:sales@iflocus.com" class="bd-home-btn">同時寄信確認</a>
-      </div>
-    </section>
-  </div>
-</main>
+<div class="bd-page-wrap">
+<div
+class=bd-header><div><div
+class=bd-logo>Brand<span>Drop</span></div><div
+class=bd-logo-sub>BY LOCUS 絡客思行銷科技</div></div><p>  <a
+href=/branddrop class=bd-back>← 返回服務介紹</a></div><div
+class=bd-hero><h1 class="bd-hero-title">開始打造你的<br><span>專屬品牌頁面</span></h1><p
+class=bd-hero-sub>只需要 3 分鐘，告訴我們你的品牌故事</p></div><div
+class=bd-steps><div
+class="bd-step active" id=tab1><div
+class=bd-step-num>1</div><p>聯絡資訊</p></div><div
+class=bd-step id=tab2><div
+class=bd-step-num>2</div><p>品牌資訊</p></div><div
+class=bd-step id=tab3><div
+class=bd-step-num>3</div><p>頁面設定</p></div><div
+class=bd-step id=tab4><div
+class=bd-step-num>4</div><p>選擇方案</p></div></div><div
+class=bd-body><div
+class="bd-form-step active" id=s1><div
+class=bd-step-label>STEP 01 / 04</div><h2 class="bd-step-title">您的聯絡資訊</h2><p
+class=bd-step-sub>讓我們知道怎麼聯絡到你。</p><div
+style=display:flex;flex-direction:column;gap:0;><div
+class=bd-field-row><div
+class=bd-field><label>姓名</label><input
+type=text id=f-name placeholder=王小明></div><div
+class=bd-field><label>品牌 / 公司名稱</label><input
+type=text id=f-company placeholder=你的品牌></div></div><div
+class=bd-field><label>聯絡 Email</label><input
+type=email id=f-email placeholder=hello@yourbrand.com></div><div
+class=bd-field><label>手機 / Line ID（選填）</label><input
+type=text id=f-phone placeholder=0912-345-678></div></div><div
+class=bd-btn-row><button
+class=bd-btn-next onclick=goStep(2)>下一步：品牌資訊 →</button></div></div><div
+class=bd-form-step id=s2><div
+class=bd-step-label>STEP 02 / 04</div><h2 class="bd-step-title">告訴我們你的品牌</h2><p
+class=bd-step-sub>這些資訊會直接影響 AI 生成的文案品質，越詳細越好。</p><div
+class=bd-field><label>產品 / 服務名稱</label><input
+type=text id=f-product placeholder=例：手工餅乾禮盒、運動水壺></div><div
+class=bd-field><label>產業類別</label><br>
+<select
+id=f-industry style=color:#1a1a1a;><option
+value style=color:#888;>點此選擇產業類別 ↓</option><option
+style=color:#1a1a1a;>運動 / 戶外</option><option
+style=color:#1a1a1a;>食品 / 飲料</option><option
+style=color:#1a1a1a;>美妝 / 保養</option><option
+style=color:#1a1a1a;>服飾 / 配件</option><option
+style=color:#1a1a1a;>3C / 工具</option><option
+style=color:#1a1a1a;>居家 / 生活</option><option
+style=color:#1a1a1a;>寵物</option><option
+style=color:#1a1a1a;>教育 / 課程</option><option
+style=color:#1a1a1a;>其他</option></select></div><div
+class=bd-field><label>用一句話描述你的產品</label><textarea id=f-brief placeholder=例：用台灣在地小農食材製作的手工餅乾禮盒，不添加人工色素></textarea></div><div
+style="background:#fff8f5;border:1px solid #ffcdb8;border-radius:10px;padding:14px 16px;font-size:13px;color:#888;line-height:1.7;margin-bottom:22px;">&#x1f4ce; <strong
+style=color:#ff4500;>如有產品照片</strong>，請在送出後回覆 Email 將照片附上，或提供 Google Drive 共享連結，我們會整合到你的品牌頁面中。</div><div
+class=bd-field><label>目標客群</label></p><div
+class=bd-opt-grid style=grid-template-columns:repeat(3,1fr);><div
+class=bd-opt onclick="selectOpt(this,'audience')"><span
+class=bd-opt-emoji>&#x1f3ea;</span></p><div
+class=bd-opt-name>中小企業主</div><div
+class=bd-opt-desc>老闆 / 創業者</div></div><div
+class=bd-opt onclick="selectOpt(this,'audience')"><span
+class=bd-opt-emoji>&#x2728;</span></p><div
+class=bd-opt-name>個人品牌</div><div
+class=bd-opt-desc>KOL / 網紅</div></div><div
+class=bd-opt onclick="selectOpt(this,'audience')"><span
+class=bd-opt-emoji>&#x1f6cd;&#xfe0f;</span></p><div
+class=bd-opt-name>電商賣家</div><div
+class=bd-opt-desc>蝦皮 / 官網</div></div></div></div><div
+class=bd-btn-row>
+<button
+class=bd-btn-back onclick=goStep(1)>← 返回</button><br>
+<button
+class=bd-btn-next onclick=goStep(3)>下一步：頁面設定 →</button></div></div><div
+class=bd-form-step id=s3><div
+class=bd-step-label>STEP 03 / 04</div><h2 class="bd-step-title">頁面風格與連結</h2><p
+class=bd-step-sub>選擇最符合你品牌個性的視覺風格與文案口吻。</p><div
+class=bd-field><label
+style=margin-bottom:12px;>選擇版型</label></p><div
+class=bd-style-grid><div
+class="bd-style selected" onclick="selectStyle(this,'暗黑科技')"><div
+class="bd-style-thumb t-dark">DARK</div><div
+class=bd-style-info><div
+class=bd-style-name>暗黑科技</div><div
+class=bd-style-tag>高端 · 科技感</div></div></div><div
+class=bd-style onclick="selectStyle(this,'活力彩色')"><div
+class="bd-style-thumb t-vibrant">VIBE</div><div
+class=bd-style-info><div
+class=bd-style-name>活力彩色</div><div
+class=bd-style-tag>年輕 · 運動風</div></div></div><div
+class=bd-style onclick="selectStyle(this,'極簡白底')"><div
+class="bd-style-thumb t-clean">CLEAN</div><div
+class=bd-style-info><div
+class=bd-style-name>極簡白底</div><div
+class=bd-style-tag>質感 · 高端</div></div></div><div
+class=bd-style onclick="selectStyle(this,'讓 AI 決定')"><div
+class="bd-style-thumb t-ai">AI ✦</div><div
+class=bd-style-info><div
+class=bd-style-name>讓 AI 決定</div><div
+class=bd-style-tag>最適合你的品牌</div></div></div></div></div><div
+class=bd-field style=margin-top:24px;><label>文案口吻</label></p><div
+class=bd-opt-grid><div
+class="bd-opt selected" onclick="selectOpt(this,'tone')"><span
+class=bd-opt-emoji>&#x1f525;</span></p><div
+class=bd-opt-name>熱血教練</div><div
+class=bd-opt-desc>激勵有力，適合運動健身</div></div><div
+class=bd-opt onclick="selectOpt(this,'tone')"><span
+class=bd-opt-emoji>&#x1f48e;</span></p><div
+class=bd-opt-name>質感品牌</div><div
+class=bd-opt-desc>精緻高端，適合精品類</div></div><div
+class=bd-opt onclick="selectOpt(this,'tone')"><span
+class=bd-opt-emoji>&#x1f60a;</span></p><div
+class=bd-opt-name>親切鄰居</div><div
+class=bd-opt-desc>溫暖口語，適合食品</div></div><div
+class=bd-opt onclick="selectOpt(this,'tone')"><span
+class=bd-opt-emoji>&#x1f3af;</span></p><div
+class=bd-opt-name>專業達人</div><div
+class=bd-opt-desc>數據理性，適合 3C</div></div><div
+class=bd-opt onclick="selectOpt(this,'tone')"><span
+class=bd-opt-emoji>&#x2728;</span></p><div
+class=bd-opt-name>網紅種草</div><div
+class=bd-opt-desc>活潑有趣，適合年輕族群</div></div><div
+class=bd-opt onclick="selectOpt(this,'tone')"><span
+class=bd-opt-emoji>&#x1f916;</span></p><div
+class=bd-opt-name>讓 AI 決定</div><div
+class=bd-opt-desc>根據品牌自動選擇</div></div></div></div><div
+class=bd-field style=margin-top:24px;><label>按鈕連結設定</label></p><div
+style=display:flex;flex-direction:column;gap:12px;><div
+style=display:flex;align-items:center;gap:12px;><span
+style=font-size:20px;width:32px;text-align:center;>&#x1f6d2;</span><input
+type=url id=f-buy placeholder="購買連結（蝦皮 / 官網 / LINE 購物）"></div><div
+style=display:flex;align-items:center;gap:12px;><span
+style=font-size:20px;width:32px;text-align:center;>&#x1f4ac;</span><input
+type=url id=f-msg placeholder="FB Messenger 或聯絡連結"></div><div
+style=display:flex;align-items:center;gap:12px;><span
+style=font-size:20px;width:32px;text-align:center;>&#x1f4f8;</span><input
+type=url id=f-ig placeholder="Instagram 帳號連結（選填）"></div></div></div><div
+class=bd-btn-row>
+<button
+class=bd-btn-back onclick=goStep(2)>← 返回</button><br>
+<button
+class=bd-btn-next onclick=goStep(4)>下一步：選擇方案 →</button></div></div><div
+class=bd-form-step id=s4><div
+class=bd-step-label>STEP 04 / 04</div><h2 class="bd-step-title">選擇你的方案</h2><p
+class=bd-step-sub>選好方案後我們會在 1 個工作天內與你確認細節。</p><div
+class=bd-plan-grid><div
+class=bd-plan onclick="selectPlan(this,'單次體驗')"><div
+class=bd-plan-left><div
+class=bd-plan-emoji>&#x1f3af;</div><div><div
+class=bd-plan-name>單次體驗</div><div
+class=bd-plan-desc>1 個品牌頁面 · 含 2 次修改</div></div></div><div
+class=bd-plan-price>NT$6,900</p><div
+class=bd-plan-period>單次</div></div></div><div
+class="bd-plan featured selected" onclick="selectPlan(this,'成長方案')"><div
+class=bd-plan-left><div
+class=bd-plan-emoji>&#x1f680;</div><div><div
+class=bd-plan-name>成長方案 <span
+class=bd-plan-badge>最多人選</span></div><div
+class=bd-plan-desc>每月 5 頁 · 每頁含 2 次修改</div></div></div><div
+class=bd-plan-price>NT$2,999</p><div
+class=bd-plan-period>每月</div></div></div><div
+class=bd-plan onclick="selectPlan(this,'品牌方案')"><div
+class=bd-plan-left><div
+class=bd-plan-emoji>&#x1f48e;</div><div><div
+class=bd-plan-name>品牌方案</div><div
+class=bd-plan-desc>每月 15 頁 · 每頁含 3 次修改</div></div></div><div
+class=bd-plan-price>NT$5,999</p><div
+class=bd-plan-period>每月</div></div></div><div
+class=bd-plan onclick="selectPlan(this,'企業授權合作')"><div
+class=bd-plan-left><div
+class=bd-plan-emoji>&#x1f3e2;</div><div><div
+class=bd-plan-name>企業授權合作</div><div
+class=bd-plan-desc>代理商 / 品牌授權 · 客製報價</div></div></div><div
+class=bd-plan-price style=color:var(--black);>聯絡</p><div
+class=bd-plan-period>洽談</div></div></div></div><div
+class=bd-field style=margin-top:24px;><label>補充說明（選填）</label><textarea id=f-note placeholder=還有什麼想讓我們知道的？截止日期、特殊需求...></textarea></div><p>  <button
+class=bd-btn-submit onclick=submitForm()>&#x2728; 送出需求，開始製作</button></p><div
+class=bd-submit-note>送出後我們將在 1 個工作天內與您聯繫確認細節<br>您的資料僅用於服務聯絡，不做其他用途</div></div><div
+class=bd-success id=s-success><div
+class=bd-success-icon>&#x1f389;</div><h2 class="bd-success-title">收到了！</h2><p
+class=bd-success-sub>感謝你選擇 BrandDrop。我們已收到你的需求，將在 <strong>1 個工作天內</strong>透過 Email 與你聯繫。</p><div
+class=bd-success-box><div
+class=bd-success-row>品牌名稱 <span
+id=r-company>—</span></div><div
+class=bd-success-row>產品 <span
+id=r-product>—</span></div><div
+class=bd-success-row>選擇方案 <span
+id=r-plan>—</span></div><div
+class=bd-success-row>預計回覆 <span>1 個工作天內</span></div></div><p>  <a
+href=mailto:sales@iflocus.com class=bd-home-btn>&#x2709;&#xfe0f; 同時寄信確認</a></div></div></div></div></div></div>
+<a
+href=# class=scroll-top><span
+class=screen-reader-text>Go to Top</span></a></div> 
+</div>
 
 <script>
-var curStep = 1;
-var selPlan = '成長方案';
-var selStyle = '暗黑科技';
-
-function valueOf(id) {
-  var el = document.getElementById(id);
-  return el ? el.value.trim() : '';
-}
-
-function mark(id, show) {
-  var input = document.getElementById(id);
-  var err = document.getElementById('err-' + id.replace('f-', ''));
-  if (input) input.classList.toggle('error', show);
-  if (err) err.classList.toggle('show', show);
-}
-
-function validate(step) {
-  var ok = true;
-
-  if (step === 1) {
-    var name = valueOf('f-name');
-    var email = valueOf('f-email');
-    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    mark('f-name', !name);
-    mark('f-email', !emailOk);
-    if (!name || !emailOk) ok = false;
+var curStep=1,selPlan='成長方案',selStyle='暗黑科技';
+function validate(step){
+  if(step===1){
+    var name=document.getElementById('f-name').value.trim();
+    var email=document.getElementById('f-email').value.trim();
+    if(!name){alert('請填寫姓名');document.getElementById('f-name').focus();return false;}
+    if(!email||email.indexOf('@')===-1){alert('請填寫正確的 Email');document.getElementById('f-email').focus();return false;}
   }
-
-  if (step === 2) {
-    var product = valueOf('f-product');
-    var industry = valueOf('f-industry');
-    var brief = valueOf('f-brief');
-    mark('f-product', !product);
-    mark('f-industry', !industry);
-    mark('f-brief', !brief);
-    if (!product || !industry || !brief) ok = false;
+  if(step===2){
+    var product=document.getElementById('f-product').value.trim();
+    var industry=document.getElementById('f-industry').value;
+    var brief=document.getElementById('f-brief').value.trim();
+    if(!product){alert('請填寫產品／服務名稱');document.getElementById('f-product').focus();return false;}
+    if(!industry){alert('請選擇產業類別');document.getElementById('f-industry').focus();return false;}
+    if(!brief){alert('請填寫產品描述');document.getElementById('f-brief').focus();return false;}
   }
-
-  return ok;
+  return true;
 }
-
-function goStep(n) {
-  if (n > curStep && !validate(curStep)) return;
-
-  document.getElementById('s' + curStep).classList.remove('active');
-  document.getElementById('tab' + curStep).classList.remove('active');
-  if (n > curStep) document.getElementById('tab' + curStep).classList.add('done');
-
-  curStep = n;
-  document.getElementById('s' + n).classList.add('active');
-  document.getElementById('tab' + n).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function goStep(n){
+  if(n>curStep&&!validate(curStep))return;
+  document.getElementById('s'+curStep).classList.remove('active');
+  document.getElementById('tab'+curStep).classList.remove('active');
+  if(n>curStep)document.getElementById('tab'+curStep).classList.add('done');
+  curStep=n;
+  document.getElementById('s'+n).classList.add('active');
+  document.getElementById('tab'+n).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-
-function selectOpt(el) {
-  var grid = el.closest('.bd-opt-grid');
-  grid.querySelectorAll('.bd-opt').forEach(function(card) { card.classList.remove('selected'); });
+function selectOpt(el,g){
+  el.closest('.bd-opt-grid').querySelectorAll('.bd-opt').forEach(function(c){c.classList.remove('selected');});
   el.classList.add('selected');
 }
-
-function selectTone(el) {
-  selectOpt(el);
+function selectStyle(el,n){
+  document.querySelectorAll('.bd-style').forEach(function(c){c.classList.remove('selected');});
+  el.classList.add('selected');selStyle=n;
 }
-
-function selectStyle(el, name) {
-  document.querySelectorAll('.bd-style').forEach(function(card) { card.classList.remove('selected'); });
-  el.classList.add('selected');
-  selStyle = name;
+function selectPlan(el,n){
+  document.querySelectorAll('.bd-plan').forEach(function(c){c.classList.remove('selected');});
+  el.classList.add('selected');selPlan=n;
 }
+function submitForm(){
+  var name=document.getElementById('f-name').value||'未填';
+  var company=document.getElementById('f-company').value||'未填';
+  var email=document.getElementById('f-email').value||'未填';
+  var phone=document.getElementById('f-phone').value||'未填';
+  var product=document.getElementById('f-product').value||'未填';
+  var industry=document.getElementById('f-industry').value||'未填';
+  var brief=document.getElementById('f-brief').value||'未填';
+  var note=document.getElementById('f-note').value||'無';
+  var buy=document.getElementById('f-buy').value||'未填';
+  var msg=document.getElementById('f-msg').value||'未填';
+  var ig=document.getElementById('f-ig').value||'未填';
 
-function selectPlan(el, name) {
-  document.querySelectorAll('.bd-plan').forEach(function(card) { card.classList.remove('selected'); });
-  el.classList.add('selected');
-  selPlan = name;
-}
+  var selAudience=document.querySelector('#s2 .bd-opt-grid .bd-opt.selected');
+  var audience=selAudience?selAudience.querySelector('.bd-opt-name').textContent:'未選';
+  var selToneEl=document.querySelectorAll('#s3 .bd-opt-grid')[0];
+  var toneEl=selToneEl?selToneEl.querySelector('.bd-opt.selected'):null;
+  var tone=toneEl?toneEl.querySelector('.bd-opt-name').textContent:'未選';
 
-function submitForm() {
-  if (!validate(1) || !validate(2)) {
-    goStep(!validate(1) ? 1 : 2);
-    return;
-  }
-
-  var name = valueOf('f-name') || '未填';
-  var company = valueOf('f-company') || '未填';
-  var email = valueOf('f-email') || '未填';
-  var phone = valueOf('f-phone') || '未填';
-  var product = valueOf('f-product') || '未填';
-  var industry = valueOf('f-industry') || '未填';
-  var brief = valueOf('f-brief') || '未填';
-  var note = valueOf('f-note') || '無';
-  var buy = valueOf('f-buy') || '未填';
-  var msg = valueOf('f-msg') || '未填';
-  var ig = valueOf('f-ig') || '未填';
-
-  var audienceEl = document.querySelector('#s2 .bd-opt-grid .bd-opt.selected');
-  var audience = audienceEl ? audienceEl.querySelector('.bd-opt-name').textContent : '未選';
-  var toneEl = document.querySelector('#tone-grid .bd-opt.selected');
-  var tone = toneEl ? toneEl.querySelector('.bd-opt-name').textContent : '未選';
-
-  var planDesc = {
-    '單次體驗': '1 個品牌頁面，含 2 次免費修改，NT$6,900 單次',
-    '成長方案': '每月 5 個品牌頁面，每頁含 2 次修改，NT$2,999/月',
-    '品牌方案': '每月 15 個品牌頁面，每頁含 3 次修改，NT$5,999/月',
-    '企業授權合作': '代理商 / 品牌授權，客製報價'
+  var planDesc={
+    '單次體驗':'1個品牌頁面，含2次免費修改，NT$6,900單次',
+    '成長方案':'每月5個品牌頁面，每頁含2次修改，NT$2,999/月',
+    '品牌方案':'每月15個品牌頁面，每頁含3次修改，NT$5,999/月',
+    '企業授權合作':'代理商/品牌授權，客製報價'
   };
 
-  var subject = encodeURIComponent('【BrandDrop 新諮詢】' + company + ' - ' + product);
-  var body = encodeURIComponent(
-    '您好，我想申請 BrandDrop 品牌頁面服務。\n\n' +
-    '=== 聯絡資訊 ===\n' +
-    '姓名：' + name + '\n' +
-    '品牌／公司：' + company + '\n' +
-    '聯絡 Email：' + email + '\n' +
-    '電話／Line ID：' + phone + '\n\n' +
-    '=== 品牌資訊 ===\n' +
-    '產品／服務：' + product + '\n' +
-    '產業類別：' + industry + '\n' +
-    '產品描述：' + brief + '\n' +
-    '目標客群：' + audience + '\n\n' +
-    '=== 頁面設定 ===\n' +
-    '選擇版型：' + selStyle + '\n' +
-    '文案口吻：' + tone + '\n' +
-    '購買連結：' + buy + '\n' +
-    'FB Messenger：' + msg + '\n' +
-    'Instagram：' + ig + '\n\n' +
-    '=== 選擇方案 ===\n' +
-    '方案：' + selPlan + '\n' +
-    '內容：' + (planDesc[selPlan] || selPlan) + '\n\n' +
-    '=== 補充說明 ===\n' +
-    note + '\n\n' +
-    '---\n' +
-    '此信由 BrandDrop 填單頁自動生成\n' +
-    'https://iflocus.com/branddrop-start.html'
+  var subject=encodeURIComponent('【BrandDrop 新諮詢】'+company+' - '+product);
+  var body=encodeURIComponent(
+    '您好，我想申請 BrandDrop 品牌頁面服務。\n\n'+
+    '=== 聯絡資訊 ===\n'+
+    '姓名：'+name+'\n'+
+    '品牌／公司：'+company+'\n'+
+    '聯絡 Email：'+email+'\n'+
+    '電話／Line ID：'+phone+'\n\n'+
+    '=== 品牌資訊 ===\n'+
+    '產品／服務：'+product+'\n'+
+    '產業類別：'+industry+'\n'+
+    '產品描述：'+brief+'\n'+
+    '目標客群：'+audience+'\n\n'+
+    '=== 頁面設定 ===\n'+
+    '選擇版型：'+selStyle+'\n'+
+    '文案口吻：'+tone+'\n'+
+    '購買連結：'+buy+'\n'+
+    'FB Messenger：'+msg+'\n'+
+    'Instagram：'+ig+'\n\n'+
+    '=== 選擇方案 ===\n'+
+    '方案：'+selPlan+'\n'+
+    '內容：'+(planDesc[selPlan]||selPlan)+'\n\n'+
+    '=== 補充說明 ===\n'+
+    note+'\n\n'+
+    '---\n'+
+    '此信由 BrandDrop 填單頁自動生成\n'+
+    'branddrop-start.html'
   );
 
-  document.getElementById('r-company').textContent = company;
-  document.getElementById('r-product').textContent = product;
-  document.getElementById('r-plan').textContent = selPlan;
-  document.querySelectorAll('.bd-form-step').forEach(function(step) { step.classList.remove('active'); });
-  document.querySelector('.bd-steps').style.display = 'none';
+  document.getElementById('r-company').textContent=company;
+  document.getElementById('r-product').textContent=product;
+  document.getElementById('r-plan').textContent=selPlan;
+  document.getElementById('s4').classList.remove('active');
   document.getElementById('s-success').classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  window.location.href = 'mailto:sales@iflocus.com?subject=' + subject + '&body=' + body;
+  window.scrollTo({top:0,behavior:'smooth'});
+  window.location.href='mailto:sales@iflocus.com?subject='+subject+'&body='+body;
 }
 </script>
 <script src="js/main.js"></script>

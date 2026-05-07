@@ -3,384 +3,441 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BrandDrop AI 品牌頁面生成 | 絡客思行銷科技</title>
-  <meta name="description" content="BrandDrop — AI 驅動品牌頁面生成服務。只要一個想法，30 秒內生成專業一頁式品牌網站，費用僅市場均價1/5，不需設計師，不需工程師。">
+  <title>BrandDrop — AI 品牌頁面生成服務 | 絡客思行銷科技</title>
+  <meta name="description" content="BrandDrop by Locus 絡客思行銷科技 ─ 只要一個想法,30 秒內 AI 完成品牌頁面。不需要設計師,不需要工程師,輸入產品名稱即可生成專業一頁式品牌網站,費用僅市場均價 1/5。">
   <meta name="keywords" content="BrandDrop, AI品牌頁面, 品牌網站生成, AI網站, 一頁式網站, 品牌行銷, AI文案, 快速建站">
   <meta name="robots" content="index, follow">
   <meta name="author" content="絡客思行銷科技">
   <link rel="canonical" href="https://iflocus.com/branddrop.html">
-  <!-- Open Graph -->
-  <meta property="og:title" content="BrandDrop AI 品牌頁面生成 | 絡客思行銷科技">
-  <meta property="og:description" content="只要一個想法，AI 幫你完成品牌頁面。30 秒內生成專業一頁式品牌網站，費用僅市場均價1/5。">
-  <meta property="og:image" content="https://iflocus.com/images/og-image.jpg">
+  <meta property="og:title" content="BrandDrop — AI 品牌頁面生成服務 | 絡客思行銷科技">
+  <meta property="og:description" content="只要一個想法,AI 幫你完成品牌頁面。30 秒內生成專業一頁式品牌網站,費用僅市場均價 1/5。">
   <meta property="og:url" content="https://iflocus.com/branddrop.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="zh_TW">
   <meta property="og:site_name" content="絡客思行銷科技">
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="BrandDrop AI 品牌頁面生成 | 絡客思行銷科技">
-  <meta name="twitter:description" content="30 秒內 AI 生成專業品牌頁面，費用僅市場均價1/5，6種文案口吻，4款專業版型。">
-  <meta name="twitter:image" content="https://iflocus.com/images/og-image.jpg">
-  <!-- Google Analytics GA4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'GA_MEASUREMENT_ID');
-  </script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','GA_MEASUREMENT_ID');</script>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}
+:root{--black:#0f0f0f;--white:#fafaf8;--accent:#ff4500;--accent2:#ff8c00;--gray:#f4f3ef;--mid:#e0ddd6;--muted:#888}
+:root{--black:#0f0f0f;--white:#fafaf8;--accent:#ff4500;--accent2:#ff8c00;--gray:#f4f3ef;--mid:#e0ddd6;--text:#1a1a1a;--muted:#888;--radius:20px}
+#reviews ol.commentlist .comment_container .woocommerce-review__dash,.woocommerce .form-submit .dt-btn,.woocommerce-Reviews .comment-respond>h3:after{display:none}
+.fancy-title-head,.page-title-head{max-width:100%}
+#page .comment-respond .dt-btn,#page .comment-respond p.form-submit{margin-bottom:0}
+.nav-logo{font-size:22px;font-weight:900;letter-spacing:-.5px;color:var(--black)}
+.nav-logo span{color:var(--accent)}
+.nav-parent{font-size:12px;color:var(--muted);letter-spacing:1px}
+.nav-cta{background:var(--accent);color:#fff;border:none;padding:12px 28px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}
+.nav-cta:hover{background:var(--black);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,69,0,.3)}
+.hero{padding:120px 60px 100px;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:#fff3ee;border:1px solid #ffd4c2;color:var(--accent);font-size:12px;font-weight:700;letter-spacing:1px;padding:6px 16px;border-radius:100px;margin-bottom:28px;animation:fadeUp .6s ease both}
+.hero-title{font-size:clamp(44px,5vw,68px);font-weight:900;line-height:1.1;letter-spacing:-2px;color:var(--black);margin-bottom:24px;animation:fadeUp .6s ease .1s both}
+.hero-title .highlight{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{font-size:17px;color:#555;line-height:1.8;margin-bottom:40px;font-weight:300;animation:fadeUp .6s ease .2s both}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .6s ease .3s both}
+.btn-primary{background:var(--accent);color:#fff;border:none;padding:18px 40px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}
+.btn-primary:hover{background:var(--black);transform:translateY(-3px);box-shadow:0 12px 32px rgba(255,69,0,.3)}
+.btn-secondary{background:0 0;color:var(--black);border:2px solid var(--mid);padding:18px 36px;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:16px;font-weight:500;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}
+.btn-secondary:hover{border-color:var(--black);transform:translateY(-2px)}
+.hero-visual{animation:fadeIn .8s ease .4s both;position:relative}
+.hero-card{background:var(--black);border-radius:var(--radius);padding:32px;color:#fff;position:relative;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.2)}
+.hero-card:before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,69,0,.3),transparent 70%);pointer-events:none}
+.card-label{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--accent);margin-bottom:16px}
+.card-input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 18px;margin-bottom:12px;font-size:14px;color:#ccc}
+.card-input strong{color:#fff;display:block;margin-bottom:4px;font-size:12px;letter-spacing:1px}
+.card-arrow{text-align:center;color:var(--accent);font-size:20px;margin:16px 0;animation:bounce 1.5s ease-in-out infinite}
+.card-output{background:linear-gradient(135deg,rgba(255,69,0,.15),rgba(255,140,0,.1));border:1px solid rgba(255,69,0,.3);border-radius:10px;padding:20px}
+.card-output-label{font-size:10px;letter-spacing:3px;color:var(--accent);margin-bottom:10px;font-weight:700}
+.card-output-title{font-size:20px;font-weight:900;margin-bottom:6px}
+.card-output-desc{font-size:12px;color:#999;line-height:1.6}
+.card-url{margin-top:16px;background:rgba(255,255,255,.04);border-radius:8px;padding:10px 14px;font-size:12px;color:#64b5f6;display:flex;align-items:center;gap:8px}
+.floating-badge{position:absolute;background:#fff;border-radius:12px;padding:10px 16px;box-shadow:0 8px 24px rgba(0,0,0,.12);font-size:13px;font-weight:700;color:var(--black);white-space:nowrap}
+.badge-1{top:-20px;right:-20px;animation:float 3s ease-in-out infinite}
+.badge-2{bottom:-16px;left:-20px;animation:float 3s ease-in-out 1s infinite}
+.stats{background:var(--black);padding:60px}
+.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center}
+.stat-num{font-size:48px;font-weight:900;color:var(--accent);letter-spacing:-2px;line-height:1}
+.stat-label{font-size:13px;color:#666;margin-top:8px;letter-spacing:1px}
+.section-tag{font-size:12px;font-weight:700;letter-spacing:3px;color:var(--accent);margin-bottom:12px}
+.section-title{font-size:clamp(32px,4vw,52px);font-weight:900;line-height:1.1;letter-spacing:-1.5px;color:var(--black);margin-bottom:16px}
+.section-sub{font-size:16px;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:60px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative}
+.steps:before{content:'';position:absolute;top:36px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--mid),var(--mid),transparent)}
+.step-card{background:var(--gray);border-radius:var(--radius);padding:32px 24px;text-align:center;transition:all .3s;position:relative}
+.step-card:hover{background:var(--black);color:#fff;transform:translateY(-8px);box-shadow:0 24px 48px rgba(0,0,0,.15)}
+.step-card:hover .step-desc{color:#999}
+.step-num{width:48px;height:48px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;margin:0 auto 20px;position:relative;z-index:1}
+.step-icon{font-size:28px;margin-bottom:16px}
+.step-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.step-desc{font-size:13px;color:var(--muted);line-height:1.6}
+.features-wrap{background:var(--gray);padding:100px 0}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.feat{background:#fff;padding:48px 40px;transition:background .2s}
+.feat:hover{background:var(--black);color:#fff}
+.feat:hover .feat-desc{color:#666}
+.feat-emoji{font-size:36px;margin-bottom:20px;display:block}
+.feat-title{font-size:20px;font-weight:700;margin-bottom:12px}
+.feat-desc{font-size:14px;color:var(--muted);line-height:1.7}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px}
+.faq-item{border-bottom:1px solid var(--mid);padding:28px 0;cursor:pointer}
+.faq-q{font-size:17px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:16px;color:var(--black)}
+.faq-icon{font-size:20px;color:var(--accent);flex-shrink:0;transition:transform .3s}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-a{font-size:15px;color:#555;line-height:1.8;margin-top:0;max-height:0;overflow:hidden;transition:all .3s ease}
+.faq-item.open .faq-a{max-height:300px;margin-top:16px}
+.form-field{margin-bottom:20px}
+.form-label{display:block;font-size:12px;font-weight:700;letter-spacing:1px;color:#888;margin-bottom:8px}
+.form-input,.form-select,.form-textarea{width:100%;padding:14px 18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;font-family:'Noto Sans TC',sans-serif;font-size:14px;color:#fff;outline:none;transition:border-color .2s;appearance:none}
+.form-input::placeholder,.form-textarea::placeholder{color:#555}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-select option{background:#1a1a1a;color:#fff}
+.form-textarea{resize:vertical;min-height:90px;line-height:1.6}
+.form-submit{width:100%;padding:18px;background:var(--accent);color:#fff;border:none;border-radius:100px;font-family:'Noto Sans TC',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px}
+.form-submit:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,69,0,.4)}
+.hero{grid-template-columns:1fr;padding:80px 24px 60px;gap:48px}
+.hero-visual{display:none}
+.stats{padding:40px 24px}
+.stats-inner{grid-template-columns:repeat(2,1fr);gap:32px}
+.steps{grid-template-columns:repeat(2,1fr)}
+.steps:before{display:none}
+.features-grid{grid-template-columns:1fr}
+.pricing-grid{grid-template-columns:1fr}
+.page-id-62997 .pricing-grid{align-items:start;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.page-id-62997 .pricing-grid{display:grid !important;grid-template-columns:repeat(3,1fr) !important;align-items:start !important}
+.pricing-grid{display:grid !important;grid-template-columns:repeat(3,1fr) !important;gap:24px !important;align-items:start !important}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+
+@media (max-width:768px){
+  .hero{grid-template-columns:1fr;padding:80px 24px 60px;gap:48px}
+  .hero-visual{display:block}
+  .stats{padding:40px 24px}
+  .stats-inner{grid-template-columns:repeat(2,1fr);gap:32px}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .features-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .nav-cta{padding:10px 20px;font-size:13px}
+}
+
+
+/* BrandDrop page overrides - 解除我們的 page-hero 並讓 adlocus 樣式接管 */
+body { background:#fff; }
+.bd-nav { display:flex; justify-content:space-between; align-items:center; padding:24px 60px; max-width:1400px; margin:0 auto; flex-wrap:wrap; gap:16px; border-bottom:1px solid #f0ede5; }
+.bd-nav-brand { display:flex; flex-direction:column; gap:2px; }
+.bd-nav-brand .nav-logo { font-size:32px; letter-spacing:-1.5px; line-height:1; }
+.bd-page-title { background:#fafaf8; padding:32px 60px; }
+.bd-page-title h1 { font-size:14px; color:#888; font-weight:600; max-width:1400px; margin:0 auto; letter-spacing:0.5px; }
+.section { padding:100px 60px; }
+.section-inner { max-width:1200px; margin:0 auto; }
+.faq-wrap { background:#fafaf8; padding:100px 60px; }
+.faq-inner { max-width:800px; margin:0 auto; }
+.bd-final-cta { background:#0f0f0f; padding:80px 24px; }
+.bd-final-cta h2 { color:#fff; }
+@media (max-width:768px){
+  .bd-nav { padding:16px 24px; }
+  .bd-nav-brand .nav-logo { font-size:28px; }
+  .bd-page-title { padding:20px 24px; }
+  .section { padding:64px 24px; }
+  .features-wrap { padding:64px 0; }
+  .faq-wrap { padding:64px 24px; }
+}
+
+  </style>
 </head>
 <body>
 <script src="js/components.js"></script>
 
-<style>
-  .bd-pre-hero { background:#f8f5f0; padding:80px 24px 32px; }
-  .bd-pre-hero h1 { font-size:18px; color:#666; font-weight:600; max-width:1180px; margin:0 auto; }
-  .bd-logo-bar { background:linear-gradient(180deg,#fbf8f3 0%,#f5f0e8 100%); padding:36px 24px; }
-  .bd-logo-inner { max-width:1180px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
-  .bd-logo-text { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; }
-  .bd-logo-text .bd-brand { font-size:clamp(48px,7vw,84px); font-weight:900; letter-spacing:-3px; line-height:1; color:#0a0a0a; }
-  .bd-logo-text .bd-brand .drop { color:#ff6600; }
-  .bd-logo-text .bd-by { font-size:14px; color:#666; font-weight:500; }
-  .bd-logo-bar .btn-orange { background:#ff6600; color:#fff; padding:14px 32px; border-radius:32px; font-weight:700; font-size:15px; text-decoration:none; box-shadow:0 8px 24px rgba(255,102,0,0.32); transition:transform 0.2s,box-shadow 0.2s; }
-  .bd-logo-bar .btn-orange:hover { transform:translateY(-2px); box-shadow:0 12px 28px rgba(255,102,0,0.4); }
-
-  .bd-hero { background:#fff; padding:80px 24px; position:relative; overflow:hidden; }
-  .bd-hero-inner { max-width:1180px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
-  .bd-pill { display:inline-block; background:rgba(255,102,0,0.10); color:#ff6600; padding:8px 20px; border-radius:30px; font-size:13px; font-weight:700; margin-bottom:24px; }
-  .bd-hero h2 { font-size:clamp(40px,5.6vw,72px); font-weight:900; line-height:1.15; letter-spacing:-2px; color:#0a0a0a; margin:0 0 24px; }
-  .bd-hero h2 .accent { color:#ff6600; }
-  .bd-hero .lead { font-size:17px; color:#444; line-height:1.85; margin:0 0 32px; }
-  .bd-hero .ctas { display:flex; gap:14px; flex-wrap:wrap; }
-  .bd-hero .ctas .btn-primary-orange { background:#ff6600; color:#fff; padding:14px 32px; border-radius:32px; font-weight:700; font-size:15px; text-decoration:none; box-shadow:0 8px 24px rgba(255,102,0,0.32); }
-  .bd-hero .ctas .btn-outline-dark { background:transparent; color:#0a0a0a; padding:14px 32px; border-radius:32px; font-weight:700; font-size:15px; text-decoration:none; border:2px solid #0a0a0a; }
-
-  .bd-mockup { position:relative; }
-  .bd-mockup-card { background:#0a0a0a; border-radius:24px; padding:32px; color:#fff; box-shadow:0 30px 60px rgba(0,0,0,0.25); position:relative; }
-  .bd-mockup-label { color:#ff6600; font-size:14px; font-weight:700; margin-bottom:24px; }
-  .bd-mockup-field { background:#1a1a1a; border-radius:14px; padding:20px 22px; margin-bottom:14px; }
-  .bd-mockup-field .lbl { font-size:13px; font-weight:700; color:#fff; margin-bottom:6px; }
-  .bd-mockup-field .val { font-size:14px; color:rgba(255,255,255,0.78); }
-  .bd-mockup-glow { position:absolute; right:-40px; bottom:-30px; width:200px; height:200px; background:radial-gradient(circle, rgba(255,102,0,0.45), transparent 70%); pointer-events:none; z-index:0; }
-  .bd-mockup-badge { position:absolute; top:-18px; right:-18px; background:#fff; padding:12px 18px; border-radius:32px; box-shadow:0 8px 24px rgba(0,0,0,0.12); font-weight:700; font-size:14px; display:flex; align-items:center; gap:8px; z-index:2; }
-  .bd-mockup-badge .bolt { color:#ff6600; font-size:16px; }
-
-  @media (max-width:768px){
-    .bd-hero { padding:48px 20px; }
-    .bd-hero-inner { grid-template-columns:1fr; gap:40px; }
-    .bd-mockup-badge { right:0; top:-14px; }
-    .bd-logo-inner { justify-content:center; text-align:center; }
-  }
-</style>
-
-<!-- PRE-HERO TITLE BAR -->
-<section class="bd-pre-hero">
+<!-- 頁面標題列 -->
+<div class="bd-page-title">
   <h1>BrandDrop — AI 品牌頁面生成服務</h1>
-</section>
-
-<!-- LOGO BANNER -->
-<section class="bd-logo-bar">
-  <div class="bd-logo-inner">
-    <div class="bd-logo-text">
-      <span class="bd-brand">Brand<span class="drop">Drop</span></span>
-      <span class="bd-by">by Locus 絡客思行銷科技</span>
-    </div>
-    <a href="#contact" class="btn-orange">免費諮詢 →</a>
-  </div>
-</section>
-
-<!-- MAIN HERO -->
-<section class="bd-hero">
-  <div class="bd-hero-inner">
-    <div>
-      <div class="bd-pill">✦ AI 驅動品牌頁面服務</div>
-      <h2>只要一個想法,<br><span class="accent">AI</span> 幫你完成<br>品牌頁面</h2>
-      <p class="lead">不需要設計師,不需要工程師。輸入產品名稱,30 秒內生成專業的一頁式品牌網站。</p>
-      <div class="ctas">
-        <a href="branddrop-start.html" class="btn-primary-orange">立即開始 →</a>
-        <a href="#how" class="btn-outline-dark">了解流程</a>
-      </div>
-    </div>
-    <div class="bd-mockup">
-      <div class="bd-mockup-badge"><span class="bolt">⚡</span> 30 秒完成</div>
-      <div class="bd-mockup-card">
-        <div class="bd-mockup-label">✦ 客戶輸入</div>
-        <div class="bd-mockup-field">
-          <div class="lbl">品牌名稱</div>
-          <div class="val">好味手工餅乾</div>
-        </div>
-        <div class="bd-mockup-field">
-          <div class="lbl">一句話描述</div>
-          <div class="val">用台灣在地食材製作的手工餅乾禮盒</div>
-        </div>
-        <div class="bd-mockup-field">
-          <div class="lbl">風格偏好</div>
-          <div class="val">CLEAN · 極簡白底</div>
-        </div>
-        <div class="bd-mockup-glow"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- KEY STATS -->
-<section style="background:#fff;padding:48px 0;border-top:1px solid #f0e8db">
-  <div class="section-inner">
-    <div class="stats-row">
-      <div class="stat-item">
-        <div class="stat-number">30 秒</div>
-        <div class="stat-label">平均生成時間</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">6 種</div>
-        <div class="stat-label">AI 文案口吻</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">4 款</div>
-        <div class="stat-label">專業版型設計</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">1/5</div>
-        <div class="stat-label">市場均價</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section id="how">
-  <div class="section-inner">
-    <h2 class="section-title">How It <span class="section-title-accent">Works</span></h2>
-    <p class="section-subtitle">四個簡單步驟，從無到有生成專業品牌頁面</p>
-    <div class="features-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
-      <div class="feature-item">
-        <span class="feature-icon">📝</span>
-        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">STEP 01</div>
-        <h3 class="feature-title">填寫需求表單</h3>
-        <p class="feature-text">輸入品牌名稱、產品描述、目標客群等基本資訊，讓 AI 了解你的品牌。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">🎨</span>
-        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">STEP 02</div>
-        <h3 class="feature-title">選擇版型與口吻</h3>
-        <p class="feature-text">從 4 款專業版型與 6 種文案口吻中選擇最符合品牌調性的組合。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">⚡</span>
-        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">STEP 03</div>
-        <h3 class="feature-title">AI 自動生成</h3>
-        <p class="feature-text">AI 在 30 秒內自動生成文案、配套圖片與完整頁面設計，無需人工介入。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">🌐</span>
-        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">STEP 04</div>
-        <h3 class="feature-title">取得專屬網址</h3>
-        <p class="feature-text">立即取得品牌專屬網址，可直接分享至社群媒體或搭配廣告投放使用。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section class="bg-light">
-  <div class="section-inner">
-    <h2 class="section-title">功能 <span class="section-title-accent">特色</span></h2>
-    <p class="section-subtitle">完整的 AI 品牌頁面生成功能，一站式解決所有需求</p>
-    <div class="features-grid">
-      <div class="feature-item">
-        <span class="feature-icon">✍️</span>
-        <h3 class="feature-title">AI 文案自動生成</h3>
-        <p class="feature-text">根據品牌資訊自動撰寫專業行銷文案，6 種口吻任選。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">🖼️</span>
-        <h3 class="feature-title">AI 圖片配套生成</h3>
-        <p class="feature-text">自動生成與品牌調性匹配的配套圖片，視覺設計一次到位。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">📐</span>
-        <h3 class="feature-title">4 種專業版型</h3>
-        <p class="feature-text">精心設計的 4 款版型，適合不同產業與品牌風格。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">🔗</span>
-        <h3 class="feature-title">專屬網址即時上線</h3>
-        <p class="feature-text">生成後即可取得專屬網址，立即對外分享或廣告投放。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">📱</span>
-        <h3 class="feature-title">手機完全相容</h3>
-        <p class="feature-text">所有頁面自動適配手機版面，確保最佳行動裝置瀏覽體驗。</p>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">⚡</span>
-        <h3 class="feature-title">30 秒極速交付</h3>
-        <p class="feature-text">從提交需求到頁面上線，全程不超過 30 秒，超高效率。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing">
-  <div class="section-inner">
-    <h2 class="section-title">方案 <span class="section-title-accent">定價</span></h2>
-    <p class="section-subtitle">透明定價，選擇最適合您需求的方案</p>
-    <div class="pricing-grid">
-      <!-- Starter -->
-      <div class="pricing-card">
-        <div class="pricing-plan">STARTER · 單次體驗</div>
-        <div class="pricing-price">NT$6,900<span>／單次，永久有效</span></div>
-        <div class="pricing-desc">適合初次體驗或單一活動需求</div>
-        <ul class="pricing-features">
-          <li>1 個品牌頁面</li>
-          <li>4 種版型全選</li>
-          <li>6 種文案口吻</li>
-          <li>AI 配圖服務</li>
-          <li>專屬網址</li>
-          <li>免費修改 2 次</li>
-        </ul>
-        <a href="#contact" class="btn btn-primary" style="width:100%;text-align:center">立即開始</a>
-      </div>
-      <!-- Growth -->
-      <div class="pricing-card featured">
-        <div class="pricing-badge">最多人選擇</div>
-        <div class="pricing-plan">GROWTH · 成長方案</div>
-        <div class="pricing-price">NT$2,999<span>／月，每月最多 5 頁</span></div>
-        <div class="pricing-desc">適合持續經營品牌與定期活動</div>
-        <ul class="pricing-features">
-          <li>每月 5 個頁面</li>
-          <li>所有版型與口吻</li>
-          <li>管理後台</li>
-          <li>優先處理（24H 內）</li>
-          <li>免費修改 2 次／頁</li>
-          <li>月報數據分析</li>
-        </ul>
-        <a href="#contact" class="btn btn-primary" style="width:100%;text-align:center">立即訂閱</a>
-      </div>
-      <!-- Brand -->
-      <div class="pricing-card">
-        <div class="pricing-plan">BRAND · 品牌方案</div>
-        <div class="pricing-price">NT$5,999<span>／月，每月最多 15 頁</span></div>
-        <div class="pricing-desc">適合代理商或品牌多產品線需求</div>
-        <ul class="pricing-features">
-          <li>每月 15 個頁面</li>
-          <li>專屬客服顧問</li>
-          <li>可掛自有網域</li>
-          <li>客製化調整</li>
-          <li>優先處理（4H 內）</li>
-          <li>免費修改 3 次／頁</li>
-        </ul>
-        <a href="#contact" class="btn btn-primary" style="width:100%;text-align:center">聯絡我們</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- WHAT'S NEXT -->
-<section class="bg-light">
-  <div class="section-inner">
-    <h2 class="section-title">品牌頁面上線後 <span class="section-title-accent">下一步</span></h2>
-    <p class="section-subtitle">BrandDrop 只是起點，絡客思行銷科技提供完整的後續行銷服務</p>
-    <div class="cards-grid">
-      <div class="card">
-        <div class="card-body">
-          <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px">STEP 02</div>
-          <h3 class="card-title">手機推播廣告</h3>
-          <p class="card-text">搭配場域手機推播廣告，精準觸達周邊消費者，CTR 高達 5%–15%，為品牌頁面帶來精準流量。</p>
-          <a href="locusad.html" class="btn btn-primary mt-16" style="font-size:14px;padding:9px 20px">了解手機推播</a>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px">STEP 03</div>
-          <h3 class="card-title">數位廣告投放</h3>
-          <p class="card-text">整合 Facebook、Google、LINE 等主流數位廣告平台，擴大品牌觸及範圍。</p>
-          <a href="contact_us.html" class="btn btn-primary mt-16" style="font-size:14px;padding:9px 20px">立即諮詢</a>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:8px">STEP 04</div>
-          <h3 class="card-title">OMO 整合行銷</h3>
-          <p class="card-text">整合線上與線下行銷資源，打造完整的顧客旅程，實現 OMO 整合行銷最大效益。</p>
-          <a href="iflocus.html" class="btn btn-primary mt-16" style="font-size:14px;padding:9px 20px">了解 OMO 行銷</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section>
-  <div class="section-inner" style="max-width:800px">
-    <h2 class="section-title">常見 <span class="section-title-accent">問題</span></h2>
-    <div style="margin-top:40px">
-      <div class="highlight-box">
-        <h4 style="margin-bottom:8px">頁面可以修改嗎？</h4>
-        <p style="color:var(--text-light);font-size:14px">每個頁面提供 2–3 次免費修改機會（依方案而定），修改範圍包括文案調整、圖片更換與版面微調。</p>
-      </div>
-      <div class="highlight-box">
-        <h4 style="margin-bottom:8px">需要自己準備圖片嗎？</h4>
-        <p style="color:var(--text-light);font-size:14px">不需要！AI 會自動生成配套圖片。您也可以提供自有品牌圖片，我們會協助整合至頁面設計中。</p>
-      </div>
-      <div class="highlight-box">
-        <h4 style="margin-bottom:8px">可以使用自己的網域嗎？</h4>
-        <p style="color:var(--text-light);font-size:14px">BRAND 品牌方案支援掛載自有網域。STARTER 與 GROWTH 方案提供品牌專屬子網址。</p>
-      </div>
-      <div class="highlight-box">
-        <h4 style="margin-bottom:8px">頁面會永久保存嗎？</h4>
-        <p style="color:var(--text-light);font-size:14px">STARTER 單次方案購買後永久有效；訂閱方案在訂閱期間持續有效，取消訂閱後頁面將於 30 天後下架。</p>
-      </div>
-      <div class="highlight-box">
-        <h4 style="margin-bottom:8px">跟請設計師做網頁有什麼差異？</h4>
-        <p style="color:var(--text-light);font-size:14px">傳統設計師製作品牌網頁需要 1–3 週時間與 3–10 萬元費用。BrandDrop 30 秒完成，費用僅市場均價的 1/5，且已涵蓋文案、圖片與版型設計。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT CTA -->
-<div class="cta-section" id="contact">
-  <div class="section-inner">
-    <h2>準備好建立您的品牌頁面了嗎？</h2>
-    <p>立即聯絡 iFLocus 顧問團隊，開始您的 BrandDrop 旅程</p>
-    <div class="flex-center">
-      <a href="mailto:sales@iflocus.com" class="btn btn-outline">立即寄信諮詢</a>
-      <a href="https://www.facebook.com/LOCUS.iFLocus" target="_blank" class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border-color:transparent">FB Messenger 聯絡</a>
-    </div>
-    <p style="margin-top:20px;font-size:14px;opacity:0.7">服務時間：週一至週五 09:00–18:00</p>
-  </div>
 </div>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  "name": "如何使用 BrandDrop 生成品牌頁面",
-  "description": "透過 BrandDrop AI 品牌頁面生成服務，30 秒內生成專業一頁式品牌網站",
-  "totalTime": "PT1M",
-  "step": [
-    {"@type":"HowToStep","position":1,"name":"填寫需求表單","text":"輸入品牌名稱、產品描述、目標客群等基本資訊，讓 AI 了解你的品牌。"},
-    {"@type":"HowToStep","position":2,"name":"選擇版型與口吻","text":"從 4 款專業版型與 6 種文案口吻中選擇最符合品牌調性的組合。"},
-    {"@type":"HowToStep","position":3,"name":"AI 自動生成","text":"AI 在 30 秒內自動生成文案、配套圖片與完整頁面設計。"},
-    {"@type":"HowToStep","position":4,"name":"取得專屬網址","text":"立即取得品牌專屬網址，直接分享至社群媒體或搭配廣告投放使用。"}
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {"@type":"Question","name":"頁面可以修改嗎？","acceptedAnswer":{"@type":"Answer","text":"每個頁面提供 2–3 次免費修改機會（依方案而定），修改範圍包括文案調整、圖片更換與版面微調。"}},
-    {"@type":"Question","name":"需要自己準備圖片嗎？","acceptedAnswer":{"@type":"Answer","text":"不需要！AI 會自動生成配套圖片。您也可以提供自有品牌圖片，我們會協助整合至頁面設計中。"}},
-    {"@type":"Question","name":"BrandDrop 和請設計師做網頁有什麼差別？","acceptedAnswer":{"@type":"Answer","text":"傳統設計師製作品牌網頁需要 1–3 週時間與 3–10 萬元費用。BrandDrop 30 秒完成，費用僅市場均價的 1/5，且已涵蓋文案、圖片與版型設計。"}},
-    {"@type":"Question","name":"可以使用自己的網域嗎？","acceptedAnswer":{"@type":"Answer","text":"BRAND 品牌方案支援掛載自有網域。STARTER 與 GROWTH 方案提供品牌專屬子網址。"}},
-    {"@type":"Question","name":"頁面會永久保存嗎？","acceptedAnswer":{"@type":"Answer","text":"STARTER 單次方案購買後永久有效；訂閱方案在訂閱期間持續有效，取消訂閱後頁面將於 30 天後下架。"}}
-  ]
+<!-- adlocus.com BrandDrop body content (重組以套用我們的 components.js header) -->
+<nav><div><div
+class=nav-logo style=font-size:48px;letter-spacing:-2px;>Brand<span
+style=background:linear-gradient(135deg,#ff4500,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;>Drop</span></div><div
+class=nav-parent style=font-size:12px;color:#888;letter-spacing:1px;margin-top:2px;>by Locus 絡客思行銷科技</div></div><p>  <a
+href=#contact class=nav-cta>免費諮詢 →</a><br></nav><section
+class=hero><div><div
+class=hero-badge>✦ AI 驅動品牌頁面服務</div><h1 class="hero-title">
+只要一個想法，<br>
+<span
+class=highlight>AI 幫你完成</span><br>
+品牌頁面<br></h1><p
+class=hero-desc>
+不需要設計師，不需要工程師。<br>
+輸入產品名稱，30 秒內生成專業的一頁式品牌網站，<br>
+立即擁有專屬網址，馬上開始宣傳。</p><div
+class=hero-btns>
+<a
+href=branddrop-start.html class=btn-primary>立即開始 →</a><br>
+<a
+href=#how class=btn-secondary>了解流程</a></div></div><div
+class=hero-visual><div
+style=position:relative;><div
+class=hero-card><div
+class=card-label>✦ 客戶輸入</div><div
+class=card-input>
+<strong>品牌名稱</strong><br>
+好味手工餅乾</div><div
+class=card-input>
+<strong>一句話描述</strong><br>
+用台灣在地食材製作的手工餅乾禮盒</div><div
+class=card-input>
+<strong>風格偏好</strong><br>
+溫暖自然風 · 親切口吻</div><div
+class=card-arrow>↓</div><div
+class=card-output><div
+class=card-output-label>✦ AI 生成結果</div><div
+class=card-output-title>好味手工餅乾 &#x1f36a;</div><div
+class=card-output-desc>每一片都是對土地的感謝。選用台灣在地小農食材，不添加人工色素，讓甜蜜傳遞最純粹的心意&#8230;</div></div><div
+class=card-url>
+&#x1f517; branddrop.iflocus.com/haomi-cookies</div></div><div
+class="floating-badge badge-1">&#x26a1; 30 秒完成</div><div
+class="floating-badge badge-2">✓ 立即上線</div></div></div></section><div
+class=stats><div
+class=stats-inner><div><div
+class=stat-num>30<span
+style=font-size:28px>秒</span></div><div
+class=stat-label>平均生成時間</div></div><div><div
+class=stat-num>6<span
+style=font-size:28px>種</span></div><div
+class=stat-label>AI 文案口吻</div></div><div><div
+class=stat-num>4<span
+style=font-size:28px>款</span></div><div
+class=stat-label>專業版型設計</div></div><div><div
+class=stat-num>1<span
+style=font-size:28px>/5</span></div><div
+class=stat-label>市場均價</div></div></div></div><section
+class=section id=how><div
+class=section-tag>HOW IT WORKS</div><h2 class="section-title">四步驟，<br>品牌頁面到手</h2><p
+class=section-sub>從填寫資料到頁面上線，整個流程最快 30 分鐘完成，比你訂一份外送還快。</p><div
+class=steps><div
+class=step-card><div
+class=step-num>1</div><div
+class=step-icon>&#x1f4dd;</div><div
+class=step-title>填寫需求表單</div><p
+class=step-desc>告訴我們你的品牌名稱、產品描述、目標客群，以及希望的頁面風格。</p></div><div
+class=step-card><div
+class=step-num>2</div><div
+class=step-icon>&#x1f3a8;</div><div
+class=step-title>選擇版型與口吻</div><p
+class=step-desc>從 4 種專業版型和 6 種 AI 文案口吻中選擇最符合品牌個性的組合。</p></div><div
+class=step-card><div
+class=step-num>3</div><div
+class=step-icon>&#x2728;</div><div
+class=step-title>AI 自動生成</div><p
+class=step-desc>AI 根據你的資訊自動生成文案、配圖、完整排版，30 秒內完成。</p></div><div
+class=step-card><div
+class=step-num>4</div><div
+class=step-icon>&#x1f680;</div><div
+class=step-title>取得專屬網址</div><p
+class=step-desc>頁面上線後你會收到專屬網址，立即分享到社群、廣告或 LINE 開始宣傳。</p></div></div></section><div
+class=features-wrap><div
+style="max-width:1200px;margin:0 auto;padding:0 60px;"><div
+class=section-tag>FEATURES</div><h2 class="section-title" style="margin-bottom:48px;">你得到的，<br>不只是一個網頁</h2></div><div
+class=features-grid style="max-width:1200px;margin:0 auto;"><div
+class=feat>
+<span
+class=feat-emoji>&#x1f916;</span></p><div
+class=feat-title>AI 文案自動生成</div><p
+class=feat-desc>6 種品牌口吻任你選——熱血教練、質感品牌、親切鄰居、專業達人、網紅種草、故事敘述，讓 AI 幫你說出最對的話。</p></div><div
+class=feat>
+<span
+class=feat-emoji>&#x1f5bc;&#xfe0f;</span></p><div
+class=feat-title>AI 圖片配套生成</div><p
+class=feat-desc>不用另外找攝影師。AI 根據你的產品描述自動生成符合品牌風格的配圖，省去數千元的拍攝成本。</p></div><div
+class=feat>
+<span
+class=feat-emoji>&#x1f3a8;</span></p><div
+class=feat-title>4 種專業版型</div><p
+class=feat-desc>暗黑科技、活力彩色、極簡白底、深邃奢華，每一種都由專業設計師操刀，保證質感不輸萬元設計。</p></div><div
+class=feat>
+<span
+class=feat-emoji>&#x1f517;</span></p><div
+class=feat-title>專屬網址即時上線</div><p
+class=feat-desc>每個頁面都有獨立網址，可直接分享到 Instagram、Facebook、LINE 或投放廣告，不需要額外設定。</p></div><div
+class=feat>
+<span
+class=feat-emoji>&#x1f4f1;</span></p><div
+class=feat-title>手機完全相容</div><p
+class=feat-desc>所有頁面皆針對手機瀏覽優化，70% 的消費者用手機瀏覽，你的頁面在任何裝置上都完美呈現。</p></div><div
+class=feat>
+<span
+class=feat-emoji>&#x26a1;</span></p><div
+class=feat-title>30 秒極速交付</div><p
+class=feat-desc>傳統網站設計需要 2～4 週，BrandDrop 最快 30 秒完成。產品上市的黃金時機，我們不讓你等。</p></div></div></div><section
+class=section id=pricing><div
+class=section-tag>PRICING</div><h2 class="section-title">透明定價，<br>沒有隱藏費用</h2><p
+class=section-sub>市場均價的五分之一，從今天開始就擁有專業品牌頁面。</p><div
+style=display:flex;flex-wrap:wrap;gap:24px;margin-top:60px;align-items:flex-start;></p><div
+style="flex:1;min-width:260px;border:2px solid #e0ddd6;border-radius:20px;padding:40px 32px;background:white;"><div
+style=font-size:13px;font-weight:700;letter-spacing:2px;color:#888;margin-bottom:16px;>STARTER · 單次體驗</div><div
+style=font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1;color:#141414;margin-bottom:4px;><sup
+style=font-size:20px;vertical-align:top;margin-top:12px;display:inline-block;font-weight:400;>NT$</sup>6,900</div><div
+style=font-size:13px;color:#888;margin-bottom:32px;>單次，永久有效</div><ul
+style=list-style:none;margin-bottom:32px;><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>1 個品牌頁面</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>4 種版型任選</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>6 種 AI 文案口吻</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>AI 配圖生成</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>專屬網址</li><li
+style="font-size:14px;padding:10px 0;display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>免費修改 2 次／頁</li></ul><p>  <a
+href=branddrop-start.html style="display:block;text-align:center;padding:16px;border-radius:100px;border:2px solid #141414;text-decoration:none;color:#141414;font-weight:700;font-size:15px;">立即開始</a></div><div
+style="flex:1;min-width:260px;border:2px solid #ff4500;border-radius:20px;padding:40px 32px;background:#141414;color:white;position:relative;"><div
+style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#ff4500;color:white;font-size:11px;font-weight:700;letter-spacing:2px;padding:5px 18px;border-radius:100px;white-space:nowrap;">最多人選擇</div><div
+style=font-size:13px;font-weight:700;letter-spacing:2px;color:#666;margin-bottom:16px;>GROWTH · 成長方案</div><div
+style=font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1;color:white;margin-bottom:4px;><sup
+style=font-size:20px;vertical-align:top;margin-top:12px;display:inline-block;font-weight:400;>NT$</sup>2,999</div><div
+style=font-size:13px;color:#888;margin-bottom:32px;>每月，每月最多 5 頁</div><ul
+style=list-style:none;margin-bottom:32px;><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;color:#ccc;"><span
+style=color:#ff4500;font-weight:700;>✓</span>每月 5 個品牌頁面</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;color:#ccc;"><span
+style=color:#ff4500;font-weight:700;>✓</span>所有版型與口吻</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;color:#ccc;"><span
+style=color:#ff4500;font-weight:700;>✓</span>AI 文案 + 圖片生成</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;color:#ccc;"><span
+style=color:#ff4500;font-weight:700;>✓</span>專屬網址管理後台</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px;color:#ccc;"><span
+style=color:#ff4500;font-weight:700;>✓</span>優先處理（24H 內）</li><li
+style="font-size:14px;padding:10px 0;display:flex;align-items:center;gap:10px;color:#ccc;"><span
+style=color:#ff4500;font-weight:700;>✓</span>免費修改 2 次／頁</li></ul><p>  <a
+href=#contact style=display:block;text-align:center;padding:16px;border-radius:100px;background:#ff4500;border:none;text-decoration:none;color:white;font-weight:700;font-size:15px;>立即訂閱</a></div><div
+style="flex:1;min-width:260px;border:2px solid #e0ddd6;border-radius:20px;padding:40px 32px;background:white;"><div
+style=font-size:13px;font-weight:700;letter-spacing:2px;color:#888;margin-bottom:16px;>BRAND · 品牌方案</div><div
+style=font-size:52px;font-weight:900;letter-spacing:-2px;line-height:1;color:#141414;margin-bottom:4px;><sup
+style=font-size:20px;vertical-align:top;margin-top:12px;display:inline-block;font-weight:400;>NT$</sup>5,999</div><div
+style=font-size:13px;color:#888;margin-bottom:32px;>每月，每月最多 15 頁</div><ul
+style=list-style:none;margin-bottom:32px;><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>每月 15 個品牌頁面</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>專屬客服經理</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>可掛自有網域</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>客製化版型調整</li><li
+style="font-size:14px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>優先處理（4H 內）</li><li
+style="font-size:14px;padding:10px 0;display:flex;align-items:center;gap:10px;color:#1a1a1a;"><span
+style=color:#ff4500;font-weight:700;>✓</span>免費修改 3 次／頁</li></ul><p>  <a
+href=#contact style="display:block;text-align:center;padding:16px;border-radius:100px;border:2px solid #141414;text-decoration:none;color:#141414;font-weight:700;font-size:15px;">聯絡我們</a></div></div></section><section
+style="background:#0f0f0f;padding:80px 24px;"><div
+style="max-width:1200px;margin:0 auto;"><div
+style=font-size:11px;font-weight:700;letter-spacing:4px;color:#555;margin-bottom:12px;text-align:center;>WHAT&#8217;S NEXT</div><h2 style="font-size:clamp(32px,5vw,56px);font-weight:900;letter-spacing:-2px;line-height:1.05;color:white;text-align:center;margin-bottom:16px;">頁面做好了，<br>然後呢？</h2><p
+style="font-size:15px;color:#666;text-align:center;max-width:560px;margin:0 auto 48px;line-height:1.7;">品牌頁面只是第一步。絡客思有完整的行銷科技服務，幫你把流量帶進來，讓更多人看到你的品牌。</p><div
+style=display:flex;flex-wrap:wrap;gap:24px;justify-content:center;><div
+style="flex:1;min-width:260px;max-width:360px;background:#1a1a1a;border:2px solid #2a2a2a;border-radius:20px;padding:36px 28px;"><div
+style=font-size:36px;margin-bottom:16px;>&#x1f4f1;</div><div
+style=font-size:11px;font-weight:700;letter-spacing:3px;color:#ff4500;margin-bottom:8px;>STEP 02</div><div
+style=font-size:22px;font-weight:900;color:white;margin-bottom:12px;letter-spacing:-0.5px;>手機推播廣告</div><p
+style=font-size:14px;color:#666;line-height:1.7;margin-bottom:24px;>利用 LBS 場域定位技術，精準推播給你的目標客群。業界最高 CTR 5%-15%，讓你的品牌頁面被真正有需求的人看到。</p><div
+style=display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;><div
+style="background:#2a2a2a;border-radius:8px;padding:6px 12px;font-size:12px;color:#aaa;">CTR 5%-15%</div><div
+style="background:#2a2a2a;border-radius:8px;padding:6px 12px;font-size:12px;color:#aaa;">精準場域定位</div><div
+style="background:#2a2a2a;border-radius:8px;padding:6px 12px;font-size:12px;color:#aaa;">300萬用戶觸及</div></div><p>  <a
+href=locusad.html style="display:block;text-align:center;padding:14px;border-radius:100px;border:2px solid #444;text-decoration:none;color:white;font-weight:700;font-size:14px;transition:all 0.2s;">了解手機推播 →</a></div><div
+style="flex:1;min-width:260px;max-width:360px;background:#1a1a1a;border:2px solid #ff4500;border-radius:20px;padding:36px 28px;position:relative;"><div
+style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#ff4500;color:white;font-size:11px;font-weight:700;letter-spacing:2px;padding:5px 18px;border-radius:100px;white-space:nowrap;">最多客戶選擇</div><div
+style=font-size:36px;margin-bottom:16px;>&#x1f3af;</div><div
+style=font-size:11px;font-weight:700;letter-spacing:3px;color:#ff8c00;margin-bottom:8px;>STEP 03</div><div
+style=font-size:22px;font-weight:900;color:white;margin-bottom:12px;letter-spacing:-0.5px;>數位廣告投放</div><p
+style=font-size:14px;color:#666;line-height:1.7;margin-bottom:24px;>FB、Google、LINE 全平台廣告投放，搭配你的品牌頁面作為落地頁，轉換率更高，讓每一塊廣告預算都花在刀口上。</p><div
+style=display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;><div
+style="background:#2a2a2a;border-radius:8px;padding:6px 12px;font-size:12px;color:#aaa;">FB / Google / LINE</div><div
+style="background:#2a2a2a;border-radius:8px;padding:6px 12px;font-size:12px;color:#aaa;">精準受眾設定</div><div
+style="background:#2a2a2a;border-radius:8px;padding:6px 12px;font-size:12px;color:#aaa;">數據報告追蹤</div></div><p>  <a
+href=contact_us.html style=display:block;text-align:center;padding:14px;border-radius:100px;background:#ff4500;border:none;text-decoration:none;color:white;font-weight:700;font-size:14px;>立即諮詢廣告投放 →</a></div><div
+style="flex:1;min-width:260px;max-width:360px;background:#1a1a1a;border:2px solid #2a2a2a;border-radius:20px;padding:36px 28px;"><div
+style=font-size:36px;margin-bottom:16px;>&#x1f504;</div><div
+style=font-size:11px;font-weight:700;letter-spacing:3px;color:#ffc800;margin-bottom:8px;>STEP 04</div><div
+style=font-size:22px;font-weight:900;color:white;margin-bottom:12px;letter-spacing:-0.5px;>OMO 整合行銷</div><p
+style=font-size:14px;color:#666;line-height:1.7;margin-bottom:24px;>線上線下整合行銷方案，適合有實體店面的品牌。把路過的人變成線上顧客，把線上顧客帶回實體消費。</p><div
+style=display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;><div
+style="background:#2a2a2a;border-radius:8px;padding:6px 12px;font-size:12px;color:#aaa;">線上線下整合</div><div
+style="background:#2a2a2a;border-radius:8px;padding:6px 12px;font-size:12px;color:#aaa;">實體店面導流</div><div
+style="background:#2a2a2a;border-radius:8px;padding:6px 12px;font-size:12px;color:#aaa;">會員經營</div></div><p>  <a
+href=iflocus.html style="display:block;text-align:center;padding:14px;border-radius:100px;border:2px solid #444;text-decoration:none;color:white;font-weight:700;font-size:14px;">了解 OMO 行銷 →</a></div></div><div
+style=text-align:center;margin-top:48px;><p
+style=font-size:14px;color:#555;margin-bottom:20px;>想了解完整的品牌成長方案？</p><p>  <a
+href=contact_us.html style="display:inline-block;padding:16px 40px;background:white;color:#111;border-radius:100px;font-size:15px;font-weight:700;text-decoration:none;">聯絡絡客思顧問團隊 →</a></div></div></section><div
+class=faq-wrap><div
+class=faq-inner><div
+class=section-tag style=text-align:center;>FAQ</div><h2 class="section-title" style="text-align:center;margin-bottom:48px;">常見問題</h2><div
+class="faq-item open"><div
+class=faq-q onclick=toggleFaq(this)>
+生成的頁面我可以修改嗎？<br>
+<span
+class=faq-icon>+</span></div><div
+class=faq-a>可以。單次體驗和成長方案每個頁面提供 2 次免費修改，品牌方案提供 3 次。超出後每次加收 NT$500。同一次申請修改多個項目算 1 次，建議一次說清楚所有需求。修改內容包含文字調整、圖片更換、連結更新等。換版型或口吻屬於大修改，除消耗 1 次修改次數外，另計 1 頁額度。</div></div><div
+class=faq-item><div
+class=faq-q onclick=toggleFaq(this)>
+我需要自己準備圖片嗎？<br>
+<span
+class=faq-icon>+</span></div><div
+class=faq-a>不需要！BrandDrop 採用「設計師品牌美學」——用大字體、色塊排版與精心設計的視覺元素來呈現你的品牌，不依賴產品照片也能做出高端感頁面。這正是 Notion、Linear、Vercel 等國際知名品牌的設計哲學：文字排版 + 色塊設計，反而更有專業質感。當然，如果你有產品照片，我們也可以直接整合進頁面，讓視覺效果更升一級。</div></div><div
+class=faq-item><div
+class=faq-q onclick=toggleFaq(this)>
+頁面網址可以自訂嗎？<br>
+<span
+class=faq-icon>+</span></div><div
+class=faq-a>成長方案提供 branddrop.iflocus.com/你的品牌名稱 格式的網址。品牌方案支援綁定你自己的網域，例如 yourbrand.com。</div></div><div
+class=faq-item><div
+class=faq-q onclick=toggleFaq(this)>
+生成的頁面會永久保留嗎？<br>
+<span
+class=faq-icon>+</span></div><div
+class=faq-a>單次方案的頁面永久有效，只要訂閱有效期間不中斷。訂閱方案在有效期內頁面持續上線，若停止訂閱後頁面會進入封存狀態，可隨時重新啟用。</div></div><div
+class=faq-item><div
+class=faq-q onclick=toggleFaq(this)>
+跟請設計師做有什麼不同？<br>
+<span
+class=faq-icon>+</span></div><div
+class=faq-a>傳統設計師製作一頁式網站需要 NT$20,000～80,000 不等，且需要 2～4 週時間。BrandDrop 最快 30 秒完成，費用只有市場均價的五分之一，適合需要快速上線或預算有限的品牌。</div></div><div
+class=faq-item><div
+class=faq-q onclick=toggleFaq(this)>
+可以授權給其他品牌或代理商使用嗎？<br>
+<span
+class=faq-icon>+</span></div><div
+class=faq-a>可以。BrandDrop 提供企業授權方案，適合行銷代理商、電商平台、或想要為客戶提供此服務的品牌。請聯絡我們討論合作細節。</div></div></div></div><section
+class=contact-section id=contact><div><div
+class=section-tag>GET STARTED</div><h2 class="contact-title">準備好了嗎？<br>讓我們<span>開始吧</span></h2><p
+class=contact-desc>填寫右側表單，我們會在 1 個工作天內與你聯繫，確認需求後即可開始製作你的第一個品牌頁面。</p><div
+class=contact-info><div
+class=contact-row><div
+class=contact-icon>&#x1f4e7;</div><p>  <span>sales@iflocus.com</span></div><div
+class=contact-row><div
+class=contact-icon>&#x1f4ac;</div><p>  <span>FB Messenger：<a
+href=https://www.facebook.com/LOCUS.iFLocus target=_blank style=color:var(--accent); rel=noopener>facebook.com/LOCUS.iFLocus</a></span></div><div
+class=contact-row><div
+class=contact-icon>&#x23f0;</div><p>  <span>週一至週五 09:00～18:00</span></div></div></div><div
+class=form-card><div
+class=form-title>立即預約諮詢</div><div
+class=form-sub>選擇以下任一方式與我們聯繫，我們將在 1 個工作天內回覆。</div><p>  <a
+href="mailto:sales@iflocus.com?subject=BrandDrop諮詢" class=form-submit style=display:block;text-align:center;padding:18px;background:#ff4500;color:white;border-radius:100px;text-decoration:none;font-weight:700;font-size:16px;margin-top:24px;>&#x2709;&#xfe0f; 立即寄信諮詢 →</a><br>
+<a
+href=https://www.facebook.com/LOCUS.iFLocus target=_blank style=display:block;text-align:center;padding:16px;background:#1877f2;color:white;border-radius:100px;text-decoration:none;font-weight:700;font-size:15px;margin-top:12px; rel=noopener>&#x1f4ac; FB Messenger 聯絡我們 →</a></p><div
+style=text-align:center;margin-top:16px;font-size:13px;color:#666;>或直接寄信至 sales@iflocus.com</div></div></section><div
+class=footer-cta><h2 class="footer-cta-title">你的品牌，<br>值得被<span>看見</span></h2><p
+class=footer-cta-sub>現在開始，NT$6,900 擁有你的第一個專業品牌頁面</p><p>  <a
+href=branddrop-start.html class=btn-primary style="font-size:18px;padding:20px 56px;">立即開始 →</a></div>
+
+<script>
+function toggleFaq(el){
+  var item = el.closest('.faq-item');
+  if(item) item.classList.toggle('open');
 }
 </script>
 <script src="js/main.js"></script>
