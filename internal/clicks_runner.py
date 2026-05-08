@@ -49,6 +49,8 @@ class ClickOptions:
     end_hour: int
     interval_min_sec: float
     interval_max_sec: float
+    timeout_sec: float
+    retries: int
     headless: bool
     dry_run: bool
     allowed_hosts: list[str]
@@ -123,35 +125,54 @@ def run_clicks(options: ClickOptions) -> list[dict[str, str]]:
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=options.headless)
         for idx in range(1, options.count + 1):
-            context = browser.new_context(locale="zh-TW", timezone_id="Asia/Taipei")
-            page = context.new_page()
             status = "failed"
             http_status = ""
             title = ""
             screenshot_name = ""
             error = ""
-            try:
-                response = page.goto(options.url, wait_until="domcontentloaded", timeout=30000)
-                http_status = str(response.status) if response else ""
-                page.wait_for_load_state("networkidle", timeout=10000)
-                title = page.title()
+            attempts = max(1, options.retries + 1)
 
-                if options.selector:
-                    target = page.locator(options.selector).first
-                    target.wait_for(state="visible", timeout=10000)
-                    target.click()
-                    status = "selector_clicked"
-                else:
-                    status = "visited"
+            for attempt in range(1, attempts + 1):
+                context = browser.new_context(locale="zh-TW", timezone_id="Asia/Taipei")
+                page = context.new_page()
+                context_closed = False
+                try:
+                    response = page.goto(
+                        options.url,
+                        wait_until="domcontentloaded",
+                        timeout=options.timeout_sec * 1000,
+                    )
+                    http_status = str(response.status) if response else ""
+                    try:
+                        page.wait_for_load_state("networkidle", timeout=15000)
+                    except PlaywrightTimeout:
+                        pass
+                    title = page.title()
 
-                screenshot_name = f"{options.job_id}_{idx:03d}.png"
-                page.screenshot(path=str(options.report_dir / screenshot_name), full_page=True)
-            except PlaywrightTimeout as exc:
-                error = f"timeout: {exc}"
-            except Exception as exc:
-                error = str(exc)
-            finally:
-                context.close()
+                    if options.selector:
+                        target = page.locator(options.selector).first
+                        target.wait_for(state="visible", timeout=15000)
+                        target.click()
+                        status = "selector_clicked"
+                    else:
+                        status = "visited"
+
+                    screenshot_name = f"{options.job_id}_{idx:03d}.png"
+                    page.screenshot(path=str(options.report_dir / screenshot_name), full_page=True)
+                    error = "" if attempt == 1 else f"recovered_after_attempt_{attempt}"
+                    context.close()
+                    context_closed = True
+                    break
+                except PlaywrightTimeout as exc:
+                    error = f"timeout on attempt {attempt}/{attempts}: {exc}"
+                except Exception as exc:
+                    error = f"error on attempt {attempt}/{attempts}: {exc}"
+                finally:
+                    if not context_closed:
+                        context.close()
+
+                if attempt < attempts:
+                    time.sleep(min(10, 2 * attempt))
 
             rows.append(
                 {
@@ -194,6 +215,8 @@ def write_report(options: ClickOptions, rows: list[dict[str, str]]) -> Path:
                 "endHour": options.end_hour,
                 "intervalMinSec": options.interval_min_sec,
                 "intervalMaxSec": options.interval_max_sec,
+                "timeoutSec": options.timeout_sec,
+                "retries": options.retries,
                 "allowedHosts": options.allowed_hosts,
                 "jobId": options.job_id,
             },
@@ -214,6 +237,8 @@ def build_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--end-hour", type=int, default=22)
     parser.add_argument("--interval-min-sec", type=float, default=30)
     parser.add_argument("--interval-max-sec", type=float, default=90)
+    parser.add_argument("--timeout-sec", type=float, default=60)
+    parser.add_argument("--retries", type=int, default=2)
     parser.add_argument("--allowed-hosts", default=",".join(DEFAULT_ALLOWED_HOSTS))
     parser.add_argument("--report-dir", type=Path, default=DEFAULT_REPORT_DIR)
     parser.add_argument("--job-id", default="")
@@ -240,6 +265,8 @@ def main(argv: list[str] | None = None) -> int:
         end_hour=args.end_hour,
         interval_min_sec=args.interval_min_sec,
         interval_max_sec=args.interval_max_sec,
+        timeout_sec=args.timeout_sec,
+        retries=args.retries,
         headless=args.headless,
         dry_run=args.dry_run,
         allowed_hosts=parse_allowed_hosts(args.allowed_hosts),
