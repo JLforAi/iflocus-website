@@ -153,13 +153,34 @@ img { max-width: 100%; height: auto; display: block; }
   gap: 5px;
   cursor: pointer;
   padding: 4px;
+  width: 34px;
+  height: 26px;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  transition: all 0.3s;
 }
 .nav-hamburger span {
   width: 26px; height: 2px;
   background: var(--text);
   border-radius: 2px;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
   display: block;
+  transform-origin: center center;
+}
+/* 點擊後:3 條橫線 -> 3 條直線 */
+.nav-hamburger.active {
+  flex-direction: row;
+  gap: 5px;
+  width: 26px;
+  height: 26px;
+}
+.nav-hamburger.active span {
+  width: 2px;
+  height: 26px;
+  border-radius: 2px;
+  background: var(--primary);
 }
 
 /* ===== HERO BANNER / SLIDER ===== */
