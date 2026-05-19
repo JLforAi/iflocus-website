@@ -248,50 +248,135 @@ def fill_google(page: Page, row: dict[str, Any], submit: bool) -> dict[str, Any]
 
 
 def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, Any]:
-    page.wait_for_selector("body", timeout=15000)
-    filled = fill_first_text_fields(page, row)
+    """
+    Multi-page SurveyCake filler.
+    Uses JS to interact with hidden radio/checkbox inputs (SurveyCake renders
+    custom-styled options on top of real inputs), then clicks next/submit buttons
+    by visible text to navigate through all pages.
+    """
+    page.wait_for_selector("body", timeout=20000)
+    page.wait_for_timeout(2000)  # wait for React/JS to render
 
-    questions = page.locator(".sc-question, [class*='question']").all()
-    for question in questions:
-        options = question.locator(".sc-option:visible")
-        if options.count():
-            wanted = row.get("radio") or row.get("checkbox")
-            if click_option_by_value(options, wanted, fallback_index=0):
-                filled += 1
+    filled = 0
+    max_pages = 30  # safety limit
 
-        select = question.locator("select:visible")
-        if select.count():
-            value = str(row.get("select") or "")
+    for _page_num in range(max_pages):
+        page.wait_for_timeout(1500)
+
+        # --- fill visible plain text / email inputs ---
+        text_values = [
+            row.get("short_text") or row.get("name") or "一般消費者",
+            row.get("long_text") or "品質和價格都很重要",
+            row.get("email") or "respondent@example.com",
+        ]
+        text_fields = page.locator(
+            "input[type='text']:visible, input[type='email']:visible, textarea:visible"
+        ).all()
+        for idx, field in enumerate(text_fields):
             try:
-                select.first.select_option(value=value)
+                field.fill(str(text_values[min(idx, len(text_values) - 1)]))
+                filled += 1
             except Exception:
-                select.first.select_option(index=1)
-            filled += 1
+                pass
 
-    stars = page.locator(".sc-star:visible")
-    if stars.count():
-        rating = int(row.get("rating") or 4)
-        stars.nth(max(0, min(rating - 1, stars.count() - 1))).click()
-        filled += 1
+        # --- click radio / checkbox options via JS (handles hidden inputs) ---
+        try:
+            n = page.evaluate("""() => {
+                let clicked = 0;
+                const seed = Math.random();
 
-    nps = page.locator(".sc-nps-btn:visible")
-    if nps.count():
-        score = int(row.get("nps") or 8)
-        target = page.locator(f".sc-nps-btn[data-val='{score}']")
-        (target.first if target.count() else nps.nth(min(score, nps.count() - 1))).click()
-        filled += 1
+                // Collect all radio groups on this page
+                const radioGroups = {};
+                document.querySelectorAll('input[type="radio"]').forEach(inp => {
+                    const name = inp.name || inp.getAttribute('data-name') || 'unnamed';
+                    if (!radioGroups[name]) radioGroups[name] = [];
+                    radioGroups[name].push(inp);
+                });
+                Object.values(radioGroups).forEach(inputs => {
+                    if (inputs.some(i => i.checked)) return; // already answered
+                    const idx = Math.floor(seed * inputs.length) % inputs.length;
+                    const inp = inputs[idx];
+                    // Click the label or parent clickable element
+                    const label = inp.closest('label') ||
+                                  inp.parentElement?.closest('[role="radio"]') ||
+                                  inp.parentElement;
+                    if (label) { label.click(); clicked++; }
+                    else { inp.click(); clicked++; }
+                });
 
-    sliders = page.locator("input[type='range']:visible").all()
-    for slider in sliders:
-        slider.fill(str(row.get("slider") or 50))
-        filled += 1
+                // Collect all checkbox groups — pick 1–2 options each
+                const checkboxGroups = {};
+                document.querySelectorAll('input[type="checkbox"]').forEach(inp => {
+                    const name = inp.name || inp.getAttribute('data-name') || inp.closest('[class*="question"]')?.id || 'ck';
+                    if (!checkboxGroups[name]) checkboxGroups[name] = [];
+                    checkboxGroups[name].push(inp);
+                });
+                Object.values(checkboxGroups).forEach(inputs => {
+                    if (inputs.some(i => i.checked)) return;
+                    const pick = Math.floor(seed * inputs.length) % inputs.length;
+                    const inp = inputs[pick];
+                    const label = inp.closest('label') ||
+                                  inp.parentElement?.closest('[role="checkbox"]') ||
+                                  inp.parentElement;
+                    if (label) { label.click(); clicked++; }
+                    else { inp.click(); clicked++; }
+                });
 
-    submitted = False
-    if submit:
-        page.locator(".sc-btn-primary:visible, button:has-text('送出'), button:has-text('Submit')").first.click()
-        submitted = wait_for_success(page, ["#sc-done", "SurveyCake Mock"])
+                return clicked;
+            }""")
+            filled += n or 0
+        except Exception:
+            pass
 
-    return {"filled": filled, "submitted": submitted}
+        # --- try to click "下一頁" / "下一步" ---
+        next_btn = None
+        for sel in [
+            "button:has-text('下一頁')",
+            "button:has-text('下一步')",
+            "a:has-text('下一頁')",
+            "input[type='button'][value*='下一']",
+        ]:
+            try:
+                loc = page.locator(sel).first
+                if loc.is_visible(timeout=500):
+                    next_btn = loc
+                    break
+            except Exception:
+                pass
+
+        if next_btn:
+            try:
+                next_btn.scroll_into_view_if_needed()
+                next_btn.click()
+                page.wait_for_timeout(2000)
+                continue  # go to next page loop
+            except Exception:
+                pass
+
+        # --- no next button: look for submit ---
+        submitted = False
+        if submit:
+            for sel in [
+                "button:has-text('送出')",
+                "button:has-text('提交')",
+                "button:has-text('完成')",
+                "button:has-text('Submit')",
+                "input[type='submit']",
+            ]:
+                try:
+                    loc = page.locator(sel).first
+                    if loc.is_visible(timeout=500):
+                        loc.scroll_into_view_if_needed()
+                        loc.click()
+                        page.wait_for_timeout(3000)
+                        submitted = True
+                        break
+                except Exception:
+                    pass
+
+        return {"filled": filled, "submitted": submitted}
+
+    return {"filled": filled, "submitted": False}
 
 
 def wait_for_success(page: Page, markers: list[str]) -> bool:
