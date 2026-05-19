@@ -352,21 +352,41 @@ def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, 
     for _page_num in range(max_pages):
         page.wait_for_timeout(1500)
 
-        # --- fill visible plain text / email inputs ---
-        text_values = [
-            row.get("short_text") or row.get("name") or "一般消費者",
-            row.get("long_text") or "品質和價格都很重要",
-            row.get("email") or "respondent@example.com",
-        ]
-        text_fields = page.locator(
-            "input[type='text']:visible, input[type='email']:visible, textarea:visible"
-        ).all()
-        for idx, field in enumerate(text_fields):
-            try:
-                field.fill(str(text_values[min(idx, len(text_values) - 1)]))
-                filled += 1
-            except Exception:
-                pass
+        # --- fill text / email inputs, detecting email by question context ---
+        short_text = row.get("short_text") or row.get("name") or "一般消費者"
+        long_text  = row.get("long_text") or "品質和價格都很重要"
+        email_val  = row.get("email") or "respondent@example.com"
+        try:
+            page.evaluate(f"""(args) => {{
+                const [shortText, longText, emailVal] = args;
+                let textIdx = 0;
+                const textValues = [shortText, longText, shortText];
+                const fields = document.querySelectorAll(
+                    'input[type="text"]:not([disabled]), input[type="email"]:not([disabled]), textarea:not([disabled])'
+                );
+                fields.forEach(el => {{
+                    if (el.offsetParent === null) return; // skip hidden
+                    // Detect email by question title or input type
+                    const subject = el.closest('[data-subject-type]');
+                    const subjectText = (subject?.innerText || '').toLowerCase();
+                    const isEmail = el.type === 'email'
+                        || subjectText.includes('email')
+                        || subjectText.includes('信箱');
+                    const val = isEmail ? emailVal : textValues[Math.min(textIdx, textValues.length-1)];
+                    if (!isEmail) textIdx++;
+                    // Set value via React-compatible native setter
+                    const proto = el.tagName === 'TEXTAREA'
+                        ? window.HTMLTextAreaElement.prototype
+                        : window.HTMLInputElement.prototype;
+                    const setter = Object.getOwnPropertyDescriptor(proto, 'value').set;
+                    setter.call(el, val);
+                    el.dispatchEvent(new Event('input', {{bubbles:true}}));
+                    el.dispatchEvent(new Event('change', {{bubbles:true}}));
+                }});
+            }}""", [short_text, long_text, email_val])
+            filled += 1
+        except Exception:
+            pass
 
         # --- click SurveyCake options via data-subject-option-id (no standard inputs) ---
         try:
