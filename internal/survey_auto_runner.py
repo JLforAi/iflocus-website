@@ -257,6 +257,21 @@ def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, 
     page.wait_for_selector("body", timeout=20000)
     page.wait_for_timeout(2000)  # wait for React/JS to render
 
+    # --- click "開始" / "Start" intro button if present ---
+    for start_sel in [
+        "button:has-text('開始')",
+        "button:has-text('Start')",
+        "a:has-text('開始')",
+    ]:
+        try:
+            btn = page.locator(start_sel).first
+            if btn.is_visible(timeout=1500):
+                btn.click()
+                page.wait_for_timeout(2000)
+                break
+        except Exception:
+            pass
+
     filled = 0
     max_pages = 30  # safety limit
 
