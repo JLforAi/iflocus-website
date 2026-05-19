@@ -183,16 +183,24 @@ def submission_key(job_id: str, worker_index: int, response_index: int) -> str:
 
 
 def fill_first_text_fields(page: Page, row: dict[str, Any]) -> int:
-    values = [
-        row.get("short_text") or row.get("name") or "SurveyAI test response",
-        row.get("long_text") or row.get("reason") or "This is an automated test response.",
-        row.get("email") or "respondent@example.com",
-    ]
+    short_text = row.get("short_text") or row.get("name") or "SurveyAI test response"
+    long_text  = row.get("long_text") or row.get("reason") or "This is an automated test response."
+    email      = row.get("email") or "respondent@example.com"
     filled = 0
+    text_idx = 0
+    text_values = [short_text, long_text, short_text]
     fields = page.locator("input[type='text']:visible, input[type='email']:visible, textarea:visible").all()
-    for idx, field in enumerate(fields):
-        field.fill(str(values[min(idx, len(values) - 1)]))
-        filled += 1
+    for field in fields:
+        try:
+            input_type = field.evaluate("el => (el.type || el.tagName).toLowerCase()")
+            if input_type == "email":
+                field.fill(email)
+            else:
+                field.fill(str(text_values[min(text_idx, len(text_values) - 1)]))
+                text_idx += 1
+            filled += 1
+        except Exception:
+            pass
     return filled
 
 
@@ -330,25 +338,20 @@ def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, 
                     const options = Array.from(subject.querySelectorAll('[data-subject-option-id]'));
                     if (options.length === 0) return;
 
-                    // Skip if already answered (option has a selected/active visual state)
-                    const isSelected = el => {
-                        const cls = el.className || '';
-                        return cls.includes('selected') || cls.includes('active') || cls.includes('checked');
-                    };
-                    if (options.some(isSelected)) return;
-
                     if (type === 'CHOICEONE') {
-                        // Single choice: pick one random option (avoid first to look natural)
+                        // Single choice: skip if already selected
+                        const alreadyDone = options.some(el => el.className.includes('selected') || el.className.includes('active'));
+                        if (alreadyDone) return;
                         const idx = Math.max(1, Math.floor(seed * options.length)) % options.length;
-                        options[idx].click();
+                        options[idx].dispatchEvent(new MouseEvent('click', {bubbles:true, cancelable:true}));
                         clicked++;
                     } else {
-                        // Multiple choice (CHOICEMULTIPLE): pick 1–2 options
+                        // Multiple choice: always try to click (required badge = not answered)
                         const idx = Math.floor(seed * options.length) % options.length;
-                        options[idx].click();
+                        options[idx].dispatchEvent(new MouseEvent('click', {bubbles:true, cancelable:true}));
                         clicked++;
                         if (options.length > 2 && seed > 0.4) {
-                            options[(idx + 2) % options.length].click();
+                            options[(idx + 2) % options.length].dispatchEvent(new MouseEvent('click', {bubbles:true, cancelable:true}));
                             clicked++;
                         }
                     }
