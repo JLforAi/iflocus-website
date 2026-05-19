@@ -220,8 +220,17 @@ def fill_first_text_fields(page: Page, row: dict[str, Any]) -> int:
     fields = page.locator("input[type='text']:visible, input[type='email']:visible, textarea:visible").all()
     for field in fields:
         try:
-            input_type = field.evaluate("el => (el.type || el.tagName).toLowerCase()")
-            if input_type == "email":
+            meta = field.evaluate("""el => ({
+                type: (el.type || '').toLowerCase(),
+                placeholder: (el.placeholder || el.getAttribute('aria-label') || '').toLowerCase(),
+                name: (el.name || el.id || '').toLowerCase()
+            })""")
+            is_email = (
+                meta["type"] == "email"
+                or any(kw in meta["placeholder"] for kw in ["email", "e-mail", "信箱", "@"])
+                or any(kw in meta["name"] for kw in ["email", "mail"])
+            )
+            if is_email:
                 field.fill(email)
             else:
                 field.fill(str(text_values[min(text_idx, len(text_values) - 1)]))
