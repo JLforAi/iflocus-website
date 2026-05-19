@@ -220,15 +220,24 @@ def fill_first_text_fields(page: Page, row: dict[str, Any]) -> int:
     fields = page.locator("input[type='text']:visible, input[type='email']:visible, textarea:visible").all()
     for field in fields:
         try:
-            meta = field.evaluate("""el => ({
-                type: (el.type || '').toLowerCase(),
-                placeholder: (el.placeholder || el.getAttribute('aria-label') || '').toLowerCase(),
-                name: (el.name || el.id || '').toLowerCase()
-            })""")
+            meta = field.evaluate("""el => {
+                const subjectType = (el.closest('[data-subject-type]') || {}).getAttribute?.('data-subject-type') || '';
+                const subjectTitle = (el.closest('[data-subject-type]')?.querySelector('[aria-label=\"slate html\"]')?.innerText || '').toLowerCase();
+                return {
+                    inputType: (el.type || '').toLowerCase(),
+                    placeholder: (el.placeholder || '').toLowerCase(),
+                    name: (el.name || el.id || '').toLowerCase(),
+                    subjectType: subjectType.toLowerCase(),
+                    subjectTitle: subjectTitle
+                };
+            }""")
+            print(f"  [field] type={meta['inputType']} subjectType={meta['subjectType']} title={meta['subjectTitle'][:30]}", flush=True)
             is_email = (
-                meta["type"] == "email"
+                meta["inputType"] == "email"
+                or meta["subjectType"] == "email"
                 or any(kw in meta["placeholder"] for kw in ["email", "e-mail", "信箱", "@"])
                 or any(kw in meta["name"] for kw in ["email", "mail"])
+                or any(kw in meta["subjectTitle"] for kw in ["email", "e-mail", "信箱"])
             )
             if is_email:
                 field.fill(email)
