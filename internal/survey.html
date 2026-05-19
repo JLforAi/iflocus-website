@@ -504,9 +504,10 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
 <!-- ===== STEP 1 ===== -->
 <div class="step-page active" id="step-1">
   <div class="page-title">匯入客戶市調需求單</div>
-  <div class="page-subtitle">上傳 .xlsx 需求單，或使用範例資料快速體驗</div>
+  <div class="page-subtitle">上傳需求單自動填入，或直接手動填寫後進行下一步</div>
 
-  <div class="card">
+  <!-- 上傳區 -->
+  <div class="card" id="upload-card">
     <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
       <div class="upload-icon">📂</div>
       <div class="upload-title">拖曳或點擊上傳需求單</div>
@@ -516,6 +517,53 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
     <div class="upload-actions">
       <button class="btn btn-outline btn-sm" onclick="useSampleData()">📝 使用範例資料</button>
       <a href="客戶市調需求單.xlsx" download class="template-dl">⬇ 下載需求單範本</a>
+    </div>
+    <div style="text-align:center;margin-top:16px">
+      <button class="btn btn-outline btn-sm" onclick="switchToManual()" style="color:var(--text-muted);font-size:13px">
+        略過，直接手動填寫 →
+      </button>
+    </div>
+  </div>
+
+  <!-- 手動填寫區（預設隱藏） -->
+  <div class="card hidden" id="manual-card">
+    <div class="card-title"><span>✏️</span>手動填寫基本資訊（選填）</div>
+    <div class="alert alert-info" style="margin-bottom:16px">
+      <span class="alert-icon">💡</span>
+      <span>所有欄位皆為選填。未填寫的欄位在 Prompt 中會以「不限」或「未指定」處理。</span>
+    </div>
+    <div class="row">
+      <div class="form-row">
+        <label class="form-label">公司 / 品牌名稱</label>
+        <input type="text" id="m-company" class="form-input" placeholder="例：NaturaBella">
+      </div>
+      <div class="form-row">
+        <label class="form-label">產品 / 服務名稱</label>
+        <input type="text" id="m-product" class="form-input" placeholder="例：玫瑰精華保濕日霜">
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">問卷連結</label>
+      <input type="url" id="m-surveyurl" class="form-input" placeholder="https://forms.gle/xxx 或 https://www.surveycake.com/s/xxx">
+    </div>
+    <div class="form-row">
+      <label class="form-label">這次市調最想了解什麼？</label>
+      <textarea id="m-goal" class="form-input" rows="3" placeholder="例：消費者對產品定價的接受度、購買動機…"></textarea>
+    </div>
+    <div class="row">
+      <div class="form-row">
+        <label class="form-label">案件編號（選填）</label>
+        <input type="text" id="m-case" class="form-input" placeholder="例：20260519-01">
+      </div>
+      <div class="form-row">
+        <label class="form-label">期望模擬份數（選填）</label>
+        <input type="number" id="m-count" class="form-input" placeholder="例：500">
+      </div>
+    </div>
+    <div style="margin-top:8px">
+      <button class="btn btn-outline btn-sm" onclick="switchToUpload()" style="color:var(--text-muted);font-size:13px">
+        ← 改為上傳需求單
+      </button>
     </div>
   </div>
 
@@ -537,11 +585,12 @@ input:checked+.toggle-thumb::before{transform:translateX(20px)}
       <div class="card-title"><span>📋</span>問卷資訊</div>
       <div class="preview-grid" id="preview-survey"></div>
     </div>
+  </div>
 
-    <div class="step-nav">
-      <button class="btn btn-outline" onclick="document.getElementById('file-input').click()">↩ 重新上傳</button>
-      <button class="btn btn-gold btn-lg" onclick="goToStep(2)">下一步：受訪者設定 →</button>
-    </div>
+  <!-- 下一步（永遠顯示） -->
+  <div class="step-nav" style="margin-top:24px">
+    <button class="btn btn-outline btn-sm" id="reupload-btn" onclick="document.getElementById('file-input').click()" style="display:none">↩ 重新上傳</button>
+    <button class="btn btn-gold btn-lg" onclick="collectManualAndNext()">下一步：受訪者設定 →</button>
   </div>
 </div>
 
@@ -1190,6 +1239,8 @@ function renderPreview(){
   }
 
   STATE.maxUnlocked=Math.max(STATE.maxUnlocked,1);
+  // Show reupload button after a file has been parsed
+  document.getElementById('reupload-btn').style.display='inline-flex';
 }
 
 function renderFields(pairs){
@@ -1205,6 +1256,44 @@ function renderFieldsColumn(pairs){
       <div class="preview-label">${label}</div>
       <div class="preview-value ${val?'':'empty'}">${val||'（未填寫）'}</div>
     </div>`).join('');
+}
+
+// ===== STEP 1 — MANUAL / UPLOAD TOGGLE =====
+function switchToManual(){
+  document.getElementById('upload-card').classList.add('hidden');
+  document.getElementById('manual-card').classList.remove('hidden');
+  document.getElementById('preview-container').classList.add('hidden');
+  // Clear any previously parsed data so manual fields start fresh
+  STATE.data={};
+  STATE.maxUnlocked=0;
+}
+function switchToUpload(){
+  document.getElementById('manual-card').classList.add('hidden');
+  document.getElementById('upload-card').classList.remove('hidden');
+}
+function collectManualAndNext(){
+  const manualCard=document.getElementById('manual-card');
+  const isManual=!manualCard.classList.contains('hidden');
+  if(isManual){
+    // Collect from manual fields; all optional
+    const company=(document.getElementById('m-company').value||'').trim();
+    const product=(document.getElementById('m-product').value||'').trim();
+    const surveyUrl=(document.getElementById('m-surveyurl').value||'').trim();
+    const goal=(document.getElementById('m-goal').value||'').trim();
+    const caseNote=(document.getElementById('m-case').value||'').trim();
+    const count=(document.getElementById('m-count').value||'').trim();
+    STATE.data={
+      companyName:company,productName:product,
+      surveyUrl:surveyUrl,surveyGoal:goal,
+      caseNote:caseNote,surveyCount:count
+    };
+    STATE.maxUnlocked=Math.max(STATE.maxUnlocked,1);
+  } else {
+    // Upload path: data already in STATE.data from parseXLSX / useSampleData
+    // Just ensure maxUnlocked is at least 1
+    STATE.maxUnlocked=Math.max(STATE.maxUnlocked,1);
+  }
+  goToStep(2);
 }
 
 // ===== STEP 3 — MODE & COUNT =====
