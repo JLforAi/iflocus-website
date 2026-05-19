@@ -1114,7 +1114,7 @@ function parseXLSX(file){
       const rows=XLSX.utils.sheet_to_json(ws,{header:1});
       const data={};
       rows.forEach(row=>{
-        const key=String(row[1]||'').trim();
+        const key=String(row[1]||'').trim().replace(/^[★\s]+/,'');
         const val=String(row[2]||'').trim();
         if(FIELD_MAP[key])data[FIELD_MAP[key]]=val;
       });
