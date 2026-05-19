@@ -314,54 +314,51 @@ def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, 
             except Exception:
                 pass
 
-        # --- click radio / checkbox options via JS (handles hidden inputs) ---
+        # --- click SurveyCake options via data-subject-option-id (no standard inputs) ---
         try:
             n = page.evaluate("""() => {
                 let clicked = 0;
                 const seed = Math.random();
 
-                // Collect all radio groups on this page
-                const radioGroups = {};
-                document.querySelectorAll('input[type="radio"]').forEach(inp => {
-                    const name = inp.name || inp.getAttribute('data-name') || 'unnamed';
-                    if (!radioGroups[name]) radioGroups[name] = [];
-                    radioGroups[name].push(inp);
-                });
-                Object.values(radioGroups).forEach(inputs => {
-                    if (inputs.some(i => i.checked)) return; // already answered
-                    const idx = Math.floor(seed * inputs.length) % inputs.length;
-                    const inp = inputs[idx];
-                    // Click the label or parent clickable element
-                    const label = inp.closest('label') ||
-                                  inp.parentElement?.closest('[role="radio"]') ||
-                                  inp.parentElement;
-                    if (label) { label.click(); clicked++; }
-                    else { inp.click(); clicked++; }
-                });
+                // Each question has [data-subject-type] and [data-subject-id]
+                const subjects = document.querySelectorAll('[data-subject-type][data-subject-id]');
+                subjects.forEach(subject => {
+                    const type = subject.getAttribute('data-subject-type');
+                    // Skip non-question types (e.g. QUOTE = intro text)
+                    if (!type || type === 'QUOTE' || type === 'STATEMENT') return;
 
-                // Collect all checkbox groups — pick 1–2 options each
-                const checkboxGroups = {};
-                document.querySelectorAll('input[type="checkbox"]').forEach(inp => {
-                    const name = inp.name || inp.getAttribute('data-name') || inp.closest('[class*="question"]')?.id || 'ck';
-                    if (!checkboxGroups[name]) checkboxGroups[name] = [];
-                    checkboxGroups[name].push(inp);
-                });
-                Object.values(checkboxGroups).forEach(inputs => {
-                    if (inputs.some(i => i.checked)) return;
-                    const pick = Math.floor(seed * inputs.length) % inputs.length;
-                    const inp = inputs[pick];
-                    const label = inp.closest('label') ||
-                                  inp.parentElement?.closest('[role="checkbox"]') ||
-                                  inp.parentElement;
-                    if (label) { label.click(); clicked++; }
-                    else { inp.click(); clicked++; }
-                });
+                    const options = Array.from(subject.querySelectorAll('[data-subject-option-id]'));
+                    if (options.length === 0) return;
 
+                    // Skip if already answered (option has a selected/active visual state)
+                    const isSelected = el => {
+                        const cls = el.className || '';
+                        return cls.includes('selected') || cls.includes('active') || cls.includes('checked');
+                    };
+                    if (options.some(isSelected)) return;
+
+                    if (type === 'CHOICEONE') {
+                        // Single choice: pick one random option (avoid first to look natural)
+                        const idx = Math.max(1, Math.floor(seed * options.length)) % options.length;
+                        options[idx].click();
+                        clicked++;
+                    } else {
+                        // Multiple choice (CHOICEMULTIPLE): pick 1–2 options
+                        const idx = Math.floor(seed * options.length) % options.length;
+                        options[idx].click();
+                        clicked++;
+                        if (options.length > 2 && seed > 0.4) {
+                            options[(idx + 2) % options.length].click();
+                            clicked++;
+                        }
+                    }
+                });
                 return clicked;
             }""")
             filled += n or 0
         except Exception:
             pass
+        page.wait_for_timeout(500)  # let React state update after clicks
 
         # --- try to click "下一頁" / "下一步" ---
         next_btn = None
