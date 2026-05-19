@@ -272,6 +272,26 @@ def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, 
         except Exception:
             pass
 
+    # --- debug: save HTML so we can inspect real selectors ---
+    try:
+        debug_path = BASE_DIR / "debug_page1.html"
+        debug_path.write_text(page.content(), encoding="utf-8")
+    except Exception:
+        pass
+
+    # --- debug: print what radio/checkbox inputs are found ---
+    try:
+        info = page.evaluate("""() => {
+            const radios = document.querySelectorAll('input[type="radio"]');
+            const checks = document.querySelectorAll('input[type="checkbox"]');
+            const btns   = Array.from(document.querySelectorAll('button')).map(b=>b.innerText.trim()).filter(t=>t);
+            return {radios: radios.length, checks: checks.length, buttons: btns.slice(0,10)};
+        }""")
+        print(f"  [debug] radio inputs={info['radios']}, checkbox inputs={info['checks']}, buttons={info['buttons']}")
+        sys.stdout.flush()
+    except Exception:
+        pass
+
     filled = 0
     max_pages = 30  # safety limit
 
