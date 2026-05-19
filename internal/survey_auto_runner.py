@@ -37,6 +37,34 @@ BASE_DIR = Path(__file__).parent
 DEFAULT_STATE = BASE_DIR / ".survey_auto_state.json"
 DEFAULT_REPORT_DIR = BASE_DIR / "survey_auto_results"
 
+# ===== 模擬 Email 產生器 =====
+_SURNAMES = [
+    "lin","chen","huang","zhang","li","wang","wu","liu","cai","yang",
+    "xu","zheng","xie","hong","guo","zhu","ye","luo","liao","jiang",
+    "lu","fan","fang","su","zeng","hsieh","tang","cheng","hsu","kuo",
+]
+_GIVEN = [
+    "wei","ting","yu","jia","yi","xin","zhen","min","hui","ling",
+    "jie","jun","kai","hao","yan","mei","fang","ya","xuan","qi",
+    "zhi","rui","en","si","le","tzu","pei","wan","hsiao","chun",
+]
+_DOMAINS = [
+    "gmail.com","gmail.com","gmail.com",  # weighted higher
+    "yahoo.com.tw","yahoo.com.tw",
+    "hotmail.com","outlook.com",
+    "icloud.com","pchome.com.tw","hinet.net",
+]
+
+def generate_email(index: int) -> str:
+    """Return a realistic-looking but fake email for the given index."""
+    rng = random.Random(index * 7919 + 42)
+    surname = rng.choice(_SURNAMES)
+    given   = rng.choice(_GIVEN)
+    domain  = rng.choice(_DOMAINS)
+    sep     = rng.choice([".", "_", ""])
+    suffix  = str(rng.randint(1, 99)) if rng.random() < 0.4 else ""
+    return f"{surname}{sep}{given}{suffix}@{domain}"
+
 
 DEFAULT_RESPONSES = [
     {
@@ -431,7 +459,7 @@ def wait_for_success(page: Page, markers: list[str]) -> bool:
     return False
 
 
-def run_submissions(options: RunOptions, responses: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def run_submissions(options: RunOptions, responses: list[dict[str, Any]], email_by_index: dict[int, str] | None = None) -> list[dict[str, Any]]:
     state = load_state(options.state_file)
     submitted_keys = set(state.get("submitted", []))
     indices = list(slice_for_worker(options.count, options.worker_index, options.worker_total))
@@ -456,7 +484,9 @@ def run_submissions(options: RunOptions, responses: list[dict[str, Any]]) -> lis
             print(f"[{local_no}/{total}] 開始填寫... ", end="", flush=True)
             context = browser.new_context(locale="zh-TW", timezone_id="Asia/Taipei")
             page = context.new_page()
-            row = response_for_index(responses, response_index)
+            row = dict(response_for_index(responses, response_index))
+            if email_by_index and response_index in email_by_index:
+                row["email"] = email_by_index[response_index]
             started = datetime.now()
             status = "failed"
             detail: dict[str, Any] = {}
@@ -703,23 +733,23 @@ def main(argv: list[str] | None = None) -> int:
         state_file=args.state_file,
         report_dir=args.report_dir,
     )
-    # Load email list if provided
+    # Build email list: file > auto-generate
     email_list: list[str] = []
     if args.emails:
         ep = resolve_path(args.emails)
         if ep.exists():
             email_list = [l.strip() for l in ep.read_text(encoding="utf-8").splitlines() if l.strip()]
-            print(f"[Email] 讀取 {len(email_list)} 個 Email，共 {args.count} 份（{'足夠' if len(email_list) >= args.count else '不足，將循環使用'}）")
+            print(f"[Email] 讀取清單：{len(email_list)} 個（{'足夠' if len(email_list) >= args.count else '不足，將循環使用'}）")
         else:
-            print(f"[警告] 找不到 Email 清單：{ep}，改用預設假 Email")
-    # Inject emails into responses
-    if email_list:
-        for i, resp in enumerate(responses):
-            resp = dict(resp)
-            resp["email"] = email_list[i % len(email_list)]
-            responses[i] = resp
+            print(f"[警告] 找不到 Email 清單：{ep}，改用自動產生")
+    if not email_list:
+        email_list = [generate_email(i) for i in range(args.count)]
+        print(f"[Email] 自動產生 {len(email_list)} 個模擬 Email（如需真實 Email 請用 --emails emails.txt）")
+    # Inject unique email per submission index into responses list
+    # (responses cycles; email must be per-index not per-response-slot)
+    _email_by_index: dict[int, str] = {i: email_list[i % len(email_list)] for i in range(args.count)}
 
-    rows = run_submissions(options, responses)
+    rows = run_submissions(options, responses, _email_by_index)
     submitted = sum(1 for row in rows if row["status"] == "submitted")
     skipped = sum(1 for row in rows if row["status"] == "skipped_duplicate")
     failed = sum(1 for row in rows if row["status"] == "failed")
