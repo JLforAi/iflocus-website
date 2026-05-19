@@ -318,14 +318,22 @@ def run_submissions(options: RunOptions, responses: list[dict[str, Any]]) -> lis
     results: list[dict[str, Any]] = []
     options.report_dir.mkdir(parents=True, exist_ok=True)
 
+    total = len(indices)
+    print(f"[開始] 本機負責 {total} 份，共 {options.count} 份（平台：{options.platform}）")
+    print(f"[設定] 每份間隔 {int(options.interval_min_sec)}–{int(options.interval_max_sec)} 秒，無頭模式：{options.headless}")
+    sys.stdout.flush()
+
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=options.headless)
         for local_no, response_index in enumerate(indices, start=1):
             key = submission_key(options.job_id, options.worker_index, response_index)
             if key in submitted_keys:
+                print(f"[{local_no}/{total}] 跳過（已送出過）")
+                sys.stdout.flush()
                 results.append({"response_index": response_index + 1, "status": "skipped_duplicate"})
                 continue
 
+            print(f"[{local_no}/{total}] 開始填寫... ", end="", flush=True)
             context = browser.new_context(locale="zh-TW", timezone_id="Asia/Taipei")
             page = context.new_page()
             row = response_for_index(responses, response_index)
@@ -334,7 +342,16 @@ def run_submissions(options: RunOptions, responses: list[dict[str, Any]]) -> lis
             detail: dict[str, Any] = {}
             try:
                 page.goto(options.form_url, wait_until="domcontentloaded", timeout=30000)
-                if options.platform == "surveycake":
+                # Re-detect platform from actual URL after redirect
+                actual_url = page.url.lower()
+                platform = options.platform
+                if platform == "auto" or ("pse.is" in options.form_url.lower() or "bit.ly" in options.form_url.lower() or "reurl" in options.form_url.lower()):
+                    if "surveycake" in actual_url:
+                        platform = "surveycake"
+                    else:
+                        platform = "google"
+
+                if platform == "surveycake":
                     detail = fill_surveycake(page, row, options.submit)
                 else:
                     detail = fill_google(page, row, options.submit)
@@ -354,6 +371,16 @@ def run_submissions(options: RunOptions, responses: list[dict[str, Any]]) -> lis
                     screenshot = Path("")
                 context.close()
 
+            elapsed = round((datetime.now() - started).total_seconds(), 1)
+            if status == "submitted":
+                print(f"✓ 送出成功（{elapsed}s）")
+            elif status == "filled_no_submit":
+                print(f"✓ 填寫完成，未送出（{elapsed}s）")
+            else:
+                err = detail.get("error", "")
+                print(f"✗ 失敗（{elapsed}s）{': ' + err[:80] if err else ''}")
+            sys.stdout.flush()
+
             results.append(
                 {
                     "response_index": response_index + 1,
@@ -361,7 +388,7 @@ def run_submissions(options: RunOptions, responses: list[dict[str, Any]]) -> lis
                     "status": status,
                     "filled": detail.get("filled", 0),
                     "submitted": detail.get("submitted", False),
-                    "seconds": round((datetime.now() - started).total_seconds(), 2),
+                    "seconds": elapsed,
                     "screenshot": screenshot.name,
                     "error": detail.get("error", ""),
                 }
@@ -370,6 +397,8 @@ def run_submissions(options: RunOptions, responses: list[dict[str, Any]]) -> lis
             if local_no < len(indices):
                 pause = random.uniform(options.interval_min_sec, options.interval_max_sec)
                 if pause > 0:
+                    print(f"  → 等待 {int(pause)} 秒後繼續...")
+                    sys.stdout.flush()
                     time.sleep(pause)
         browser.close()
 
