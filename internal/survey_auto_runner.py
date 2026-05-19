@@ -657,6 +657,7 @@ def build_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--report-dir", type=Path, default=DEFAULT_REPORT_DIR)
     parser.add_argument("--headless", action="store_true")
     parser.add_argument("--no-submit", action="store_true")
+    parser.add_argument("--emails", type=Path, help="Path to .txt file with one email per line")
     parser.add_argument("--print-schedule", action="store_true")
     parser.add_argument("--scheduler", choices=["windows", "python"], default="windows")
     parser.add_argument("--create-windows-tasks", action="store_true")
@@ -702,6 +703,22 @@ def main(argv: list[str] | None = None) -> int:
         state_file=args.state_file,
         report_dir=args.report_dir,
     )
+    # Load email list if provided
+    email_list: list[str] = []
+    if args.emails:
+        ep = resolve_path(args.emails)
+        if ep.exists():
+            email_list = [l.strip() for l in ep.read_text(encoding="utf-8").splitlines() if l.strip()]
+            print(f"[Email] 讀取 {len(email_list)} 個 Email，共 {args.count} 份（{'足夠' if len(email_list) >= args.count else '不足，將循環使用'}）")
+        else:
+            print(f"[警告] 找不到 Email 清單：{ep}，改用預設假 Email")
+    # Inject emails into responses
+    if email_list:
+        for i, resp in enumerate(responses):
+            resp = dict(resp)
+            resp["email"] = email_list[i % len(email_list)]
+            responses[i] = resp
+
     rows = run_submissions(options, responses)
     submitted = sum(1 for row in rows if row["status"] == "submitted")
     skipped = sum(1 for row in rows if row["status"] == "skipped_duplicate")
