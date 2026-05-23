@@ -66,12 +66,67 @@ def generate_email(index: int) -> str:
     return f"{surname}{sep}{given}{suffix}@{domain}"
 
 
+# ===== 繁體中文 AI 模擬文字池 =====
+_ZH_SHORT = [
+    "通常透過社群媒體得知新產品",
+    "習慣在購買前比較多個品牌",
+    "重視產品成分的安全與透明度",
+    "朋友推薦是我選擇產品的主要依據",
+    "偏好有口碑且評價穩定的品牌",
+    "會先看消費者評論再決定是否購買",
+    "注重性價比，不一定選最貴的",
+    "喜歡嘗試新品牌，願意接受新事物",
+    "對於有機、天然成分特別有興趣",
+    "常在網路平台上搜尋產品資訊",
+    "購買前會確認是否有過敏成分",
+    "重視售後服務與品牌的回應速度",
+    "習慣在促銷活動期間集中採購",
+    "偏好小包裝試用品，降低嘗試風險",
+    "會關注品牌的環保與永續理念",
+    "透過 YouTube 開箱影片了解產品",
+    "看到熟悉的明星代言會增加信任感",
+    "優先選擇台灣本土製造的產品",
+    "注重包裝設計，視覺美觀也很重要",
+    "重視產品效果，願意為品質多付費",
+]
+
+_ZH_LONG = [
+    "我在選購產品時，最在意的是成分的安全性與品牌透明度。如果廠商能清楚標示原料來源，並提供第三方檢驗報告，我的購買意願會大幅提升。",
+    "價格固然重要，但產品的實際效果才是我持續回購的關鍵。我通常會先購買試用裝評估，若效果符合預期，才考慮購買正裝。",
+    "社群媒體的口碑對我影響很大，特別是素人真實使用心得。與其相信廣告宣傳，我更傾向參考與自己膚質或需求相近的消費者評論。",
+    "我希望品牌能夠提供更多客製化的產品選擇，因為每個人的需求都不同。一刀切的產品難以滿足所有消費者，多樣化的選擇更能吸引我嘗試。",
+    "產品包裝的設計與環保性對我而言同樣重要。如果品牌使用可回收材質或提供補充包，我會更願意長期支持這個品牌。",
+    "我認為品牌與消費者的互動非常重要，快速且有誠意的客服回應讓我感到被重視。有問題能即時獲得解答，購物體驗會更加安心。",
+    "除了產品本身，我也很在意購買流程是否便利。一個操作簡單、付款安全、配送準時的購物環境，會讓我更樂意再次光顧。",
+    "我傾向於選擇有科學研究背書或皮膚科醫師推薦的產品，這類認證能有效降低我嘗試新品的疑慮，建立品牌在我心中的可信度。",
+    "朋友的口碑介紹是促使我初次購買的最大推力。如果身邊有人推薦並分享親身體驗，我會比看任何廣告都更快下定購買決心。",
+    "我期待品牌能定期推出會員專屬優惠或積點回饋機制，這樣不只能增加我的忠誠度，也讓我感覺花的每一分錢都更有價值。",
+    "對我來說，產品的香味和使用質地非常影響購買意願。即使成分再好，如果氣味令人不舒服或質地太黏稠，我也很難堅持使用。",
+    "我希望品牌能在廣告中使用更真實、多元的形象，而非只追求完美濾鏡。真實呈現產品使用效果，更能建立消費者長期的信任感。",
+    "促銷折扣固然吸引人，但如果品牌過於頻繁打折，反而會讓我懷疑產品的原始定價是否合理，甚至降低對品牌價值的認同感。",
+    "我認為試用包或小樣的提供非常重要，讓消費者在正式購買前有機會評估產品的適合度，這樣能有效降低購買錯誤的風險。",
+    "我在購買時會特別查看產品是否通過相關安全認證，例如不含有害化學物質的認證，這些標章能大幅提升我對產品的信心。",
+    "我重視品牌的故事與理念，若品牌能傳達明確的價值觀，例如支持在地農業或關懷弱勢族群，我會更有動力選擇該品牌的產品。",
+    "使用體驗的一致性很重要，每次購買的產品品質都應維持在相同水準。若某批產品的品質明顯下降，我可能就不會再回購了。",
+    "我希望品牌能提供更清楚的使用說明與教學資源，例如影片示範或圖文步驟，讓初次使用者能快速上手並發揮產品最佳效果。",
+    "在眾多選擇中，品牌的視覺識別與整體美感也是影響我購買決策的因素之一，精緻的包裝設計讓我願意花時間進一步了解產品。",
+    "我會定期追蹤喜愛品牌的社群帳號，希望能第一時間得知新品上市、限定優惠或品牌活動，這種互動讓我對品牌更有歸屬感。",
+]
+
+
+def generate_zh_text(index: int, field: str = "short") -> str:
+    """Return a varied Traditional Chinese text for the given response index."""
+    rng = random.Random(index * 3571 + (17 if field == "short" else 89))
+    pool = _ZH_SHORT if field == "short" else _ZH_LONG
+    return rng.choice(pool)
+
+
 DEFAULT_RESPONSES = [
     {
-        "name": "Respondent A",
+        "name": "受訪者甲",
         "email": "respondent.a@example.com",
-        "short_text": "I usually discover products from social platforms.",
-        "long_text": "Ingredient safety, reviews, and price are the main reasons I decide to try a product.",
+        "short_text": "通常透過社群媒體得知新產品",
+        "long_text": "我在選購產品時，最在意的是成分的安全性與品牌透明度。如果廠商能清楚標示原料來源，並提供第三方檢驗報告，我的購買意願會大幅提升。",
         "radio": "25-34",
         "checkbox": "ig",
         "select": "500-1000",
@@ -80,10 +135,10 @@ DEFAULT_RESPONSES = [
         "slider": "45",
     },
     {
-        "name": "Respondent B",
+        "name": "受訪者乙",
         "email": "respondent.b@example.com",
-        "short_text": "Friends and review sites influence my purchase decisions.",
-        "long_text": "I prefer products with clear labels, reliable customer support, and trial-size options.",
+        "short_text": "習慣在購買前比較多個品牌",
+        "long_text": "社群媒體的口碑對我影響很大，特別是素人真實使用心得。與其相信廣告宣傳，我更傾向參考與自己需求相近的消費者評論。",
         "radio": "35-44",
         "checkbox": "review",
         "select": "1000-2000",
@@ -92,10 +147,10 @@ DEFAULT_RESPONSES = [
         "slider": "55",
     },
     {
-        "name": "Respondent C",
+        "name": "受訪者丙",
         "email": "respondent.c@example.com",
-        "short_text": "I compare several brands before buying.",
-        "long_text": "A brand feels trustworthy when the benefits, ingredients, and real user feedback are consistent.",
+        "short_text": "注重性價比，不一定選最貴的",
+        "long_text": "品牌與消費者的互動非常重要，快速且有誠意的客服回應讓我感到被重視。有問題能即時獲得解答，購物體驗會更加安心。",
         "radio": "18-24",
         "checkbox": "yt",
         "select": "500-",
@@ -113,6 +168,8 @@ class RunOptions:
     count: int
     headless: bool
     submit: bool
+    manual_submit: bool
+    use_chrome: bool
     interval_min_sec: float
     interval_max_sec: float
     worker_index: int
@@ -301,7 +358,7 @@ def fill_google(page: Page, row: dict[str, Any], submit: bool) -> dict[str, Any]
     return {"filled": filled, "submitted": submitted}
 
 
-def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, Any]:
+def fill_surveycake(page: Page, row: dict[str, Any], submit: bool, manual_submit: bool = False) -> dict[str, Any]:
     """
     Multi-page SurveyCake filler.
     Uses JS to interact with hidden radio/checkbox inputs (SurveyCake renders
@@ -348,13 +405,30 @@ def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, 
 
     filled = 0
     max_pages = 30  # safety limit
+    import random as _rnd
+
+    def _human_pause(min_ms: int, max_ms: int):
+        """模擬真人的隨機停頓"""
+        page.wait_for_timeout(_rnd.randint(min_ms, max_ms))
+
+    def _random_mouse_move():
+        """隨機滑鼠移動，模擬真人視線轉移"""
+        try:
+            vp = page.viewport_size or {"width": 1280, "height": 720}
+            for _ in range(_rnd.randint(2, 4)):
+                page.mouse.move(_rnd.randint(100, vp["width"]-100), _rnd.randint(100, vp["height"]-100), steps=_rnd.randint(5, 15))
+                page.wait_for_timeout(_rnd.randint(100, 400))
+        except Exception:
+            pass
 
     for _page_num in range(max_pages):
-        page.wait_for_timeout(1500)
+        # 進入頁面後：閱讀時間 3-8 秒（真人讀題）
+        _human_pause(3000, 8000)
+        _random_mouse_move()
 
         # --- fill text / email inputs, detecting email by question context ---
-        short_text = row.get("short_text") or row.get("name") or "一般消費者"
-        long_text  = row.get("long_text") or "品質和價格都很重要"
+        short_text = row.get("short_text") or "通常透過社群媒體得知新產品"
+        long_text  = row.get("long_text") or "我在選購產品時最在意成分的安全性與品牌透明度，也會參考其他消費者的真實評論。"
         email_val  = row.get("email") or "respondent@example.com"
         try:
             page.evaluate(f"""(args) => {{
@@ -364,14 +438,40 @@ def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, 
                 const fields = document.querySelectorAll(
                     'input[type="text"]:not([disabled]), input[type="email"]:not([disabled]), textarea:not([disabled])'
                 );
-                fields.forEach(el => {{
-                    if (el.offsetParent === null) return; // skip hidden
-                    // Detect email by question title or input type
+                const allVisible = Array.from(fields).filter(el => el.offsetParent !== null);
+                allVisible.forEach((el, elIdx) => {{
+                    // 取得周圍文字（多層往上找，確保讀到有意義的內容）
                     const subject = el.closest('[data-subject-type]');
-                    const subjectText = (subject?.innerText || '').toLowerCase();
+                    let contextText = (subject?.innerText || '').toLowerCase();
+                    if (!contextText || contextText.length < 5) {{
+                        let p = el.parentElement;
+                        for (let i = 0; i < 6 && p; i++, p = p.parentElement) {{
+                            const t = (p.innerText || '').toLowerCase();
+                            if (t.length > 5) {{ contextText = t; break; }}
+                        }}
+                    }}
+                    // placeholder：先用 getAttribute 再用 .placeholder
+                    const placeholder = (el.getAttribute('placeholder') || el.placeholder || '').toLowerCase();
+                    const nameAttr = (el.name || el.id || '').toLowerCase();
+                    const isLastField = elIdx === allVisible.length - 1;
+                    const isOnlyField = allVisible.length === 1;
                     const isEmail = el.type === 'email'
-                        || subjectText.includes('email')
-                        || subjectText.includes('信箱');
+                        || contextText.includes('email')
+                        || contextText.includes('信箱')      // 電子信箱、請填入電子信箱
+                        || contextText.includes('電子郵件')
+                        || contextText.includes('郵箱')
+                        || contextText.includes('e-mail')
+                        || contextText.includes('抽獎')
+                        || contextText.includes('幸運')
+                        || contextText.includes('禮')
+                        || contextText.includes('聯絡')
+                        || placeholder.includes('email')
+                        || placeholder.includes('信箱')      // 請填入電子信箱
+                        || placeholder.includes('郵件')
+                        || nameAttr.includes('email')
+                        || nameAttr.includes('mail')
+                        || (isLastField && textIdx >= 1)
+                        || (isOnlyField && isLastField);
                     const val = isEmail ? emailVal : textValues[Math.min(textIdx, textValues.length-1)];
                     if (!isEmail) textIdx++;
                     // Set value via React-compatible native setter
@@ -388,31 +488,50 @@ def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, 
         except Exception:
             pass
 
+        # --- 用 Playwright keyboard.type() 模擬真人逐字輸入 email（最能觸發 React onChange）---
+        for email_sel in [
+            "input[placeholder*='信箱']",
+            "input[placeholder*='mail' i]",
+            "input[placeholder*='電子']",
+            "input[placeholder*='Email']",
+            "input[placeholder*='email']",
+        ]:
+            try:
+                loc = page.locator(email_sel).first
+                if loc.is_visible(timeout=600):
+                    # 1. 三擊全選清空舊值
+                    loc.click(click_count=3, timeout=600)
+                    page.wait_for_timeout(150)
+                    page.keyboard.press("Delete")
+                    page.wait_for_timeout(150)
+                    # 2. 模擬真人逐字輸入（每字 50ms 延遲，觸發 React onChange）
+                    page.keyboard.type(email_val, delay=50)
+                    page.wait_for_timeout(200)
+                    # 3. Tab 移開觸發 blur 事件
+                    page.keyboard.press("Tab")
+                    page.wait_for_timeout(300)
+                    break
+            except Exception:
+                pass
+
         # --- click SurveyCake options via data-subject-option-id (no standard inputs) ---
         try:
             n = page.evaluate("""() => {
                 let clicked = 0;
                 const seed = Math.random();
-
-                // Each question has [data-subject-type] and [data-subject-id]
                 const subjects = document.querySelectorAll('[data-subject-type][data-subject-id]');
                 subjects.forEach(subject => {
                     const type = subject.getAttribute('data-subject-type');
-                    // Skip non-question types (e.g. QUOTE = intro text)
                     if (!type || type === 'QUOTE' || type === 'STATEMENT') return;
-
                     const options = Array.from(subject.querySelectorAll('[data-subject-option-id]'));
                     if (options.length === 0) return;
-
                     if (type === 'CHOICEONE') {
-                        // Single choice: skip if already selected
                         const alreadyDone = options.some(el => el.className.includes('selected') || el.className.includes('active'));
                         if (alreadyDone) return;
                         const idx = Math.max(1, Math.floor(seed * options.length)) % options.length;
                         options[idx].dispatchEvent(new MouseEvent('click', {bubbles:true, cancelable:true}));
                         clicked++;
                     } else {
-                        // Multiple choice: always try to click (required badge = not answered)
                         const idx = Math.floor(seed * options.length) % options.length;
                         options[idx].dispatchEvent(new MouseEvent('click', {bubbles:true, cancelable:true}));
                         clicked++;
@@ -428,6 +547,10 @@ def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, 
         except Exception:
             pass
         page.wait_for_timeout(500)  # let React state update after clicks
+
+        # 填完後：檢查時間 2-5 秒
+        _human_pause(2000, 5000)
+        _random_mouse_move()
 
         # --- try to click "下一頁" / "下一步" ---
         next_btn = None
@@ -456,24 +579,81 @@ def fill_surveycake(page: Page, row: dict[str, Any], submit: bool) -> dict[str, 
 
         # --- no next button: look for submit ---
         submitted = False
-        if submit:
-            for sel in [
-                "button:has-text('送出')",
-                "button:has-text('提交')",
-                "button:has-text('完成')",
-                "button:has-text('Submit')",
-                "input[type='submit']",
-            ]:
+        submit_visible = False
+        for sel in ["button:has-text('送出')", "button:has-text('提交')", "button:has-text('完成')", "button:has-text('Submit')", "input[type='submit']"]:
+            try:
+                if page.locator(sel).first.is_visible(timeout=500):
+                    submit_visible = True
+                    break
+            except Exception:
+                pass
+
+        if submit_visible:
+            if manual_submit:
+                # 半自動模式：注入頁面上的紅色橫條提示 + 輪詢等待網頁變化
+                print("\n" + "="*60)
+                print("✋ 已填完所有題目，請在【瀏覽器】中：")
+                print("   1. 確認 email 欄位已填入正確地址")
+                print("   2. 手動點擊「送出」或「確定送出」")
+                print("   3. 出現感謝頁面後，腳本會自動偵測並繼續")
+                print("   （最多等 15 分鐘，逾時會自動結束）")
+                print("="*60)
+                sys.stdout.flush()
+                # 在頁面上方注入顯眼紅色提示條
                 try:
-                    loc = page.locator(sel).first
-                    if loc.is_visible(timeout=500):
-                        loc.scroll_into_view_if_needed()
-                        loc.click()
-                        page.wait_for_timeout(3000)
-                        submitted = True
-                        break
+                    page.evaluate("""() => {
+                        const bar = document.createElement('div');
+                        bar.id = '__survey_ai_banner__';
+                        bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:999999;background:#ff4444;color:white;padding:16px;text-align:center;font-size:18px;font-weight:bold;box-shadow:0 2px 10px rgba(0,0,0,.3);';
+                        bar.textContent = '✋ 自動填寫完成！請確認 email 後手動點「送出」';
+                        document.body.appendChild(bar);
+                    }""")
                 except Exception:
                     pass
+                # 輪詢偵測：URL 變化、感謝文字出現、或送出按鈕消失
+                import time as _time
+                start_t = _time.time()
+                start_url = page.url
+                manual_done = False
+                while _time.time() - start_t < 900:  # 15 分鐘
+                    try:
+                        if page.url != start_url:
+                            manual_done = True; break
+                        body_text = page.evaluate("() => document.body ? document.body.innerText : ''") or ""
+                        if "感謝您的填寫" in body_text and "請點擊下方按鈕" not in body_text:
+                            manual_done = True; break
+                        if "問卷已送出" in body_text or "已完成填寫" in body_text:
+                            manual_done = True; break
+                        # 檢查送出按鈕還在不在
+                        still_has_submit = False
+                        for s in ["button:has-text('送出')", "button:has-text('確定送出')"]:
+                            try:
+                                if page.locator(s).first.is_visible(timeout=200):
+                                    still_has_submit = True; break
+                            except Exception:
+                                pass
+                        if not still_has_submit and _time.time() - start_t > 5:
+                            manual_done = True; break
+                    except Exception:
+                        pass
+                    _time.sleep(2)
+                if manual_done:
+                    print(">>> 偵測到送出完成，繼續...", flush=True)
+                else:
+                    print(">>> 逾時，請確認是否實際送出", flush=True)
+                submitted = manual_done
+            elif submit:
+                for sel in ["button:has-text('送出')", "button:has-text('提交')", "button:has-text('完成')", "button:has-text('Submit')", "input[type='submit']"]:
+                    try:
+                        loc = page.locator(sel).first
+                        if loc.is_visible(timeout=500):
+                            loc.scroll_into_view_if_needed()
+                            loc.click()
+                            page.wait_for_timeout(5000)
+                            submitted = True
+                            break
+                    except Exception:
+                        pass
 
         return {"filled": filled, "submitted": submitted}
 
@@ -510,7 +690,41 @@ def run_submissions(options: RunOptions, responses: list[dict[str, Any]], email_
     sys.stdout.flush()
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=options.headless)
+        if options.use_chrome:
+            # 使用本機 Chrome（有真實 cookie/歷史），讓 Cloudflare 認為是真人
+            chrome_paths = [
+                r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+                r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+            ]
+            chrome_exe = next((p_ for p_ in chrome_paths if Path(p_).exists()), None)
+            user_data = Path.home() / "AppData" / "Local" / "Google" / "Chrome" / "User Data"
+            if chrome_exe:
+                print(f"[Chrome] 使用本機 Chrome：{chrome_exe}")
+                sys.stdout.flush()
+                # 用 channel="chrome" 啟動真實 Chrome 二進制（指紋與 Chromium 不同）
+                browser = p.chromium.launch(
+                    channel="chrome",
+                    headless=False,
+                    args=[
+                        "--disable-blink-features=AutomationControlled",
+                        "--disable-features=IsolateOrigins,site-per-process",
+                        "--no-first-run",
+                        "--no-default-browser-check",
+                    ],
+                    ignore_default_args=["--enable-automation"],
+                )
+                use_persistent = False
+            else:
+                print("[Chrome] 找不到 Chrome，改用 Playwright Chromium")
+                browser = p.chromium.launch(headless=options.headless)
+                use_persistent = False
+        else:
+            browser = p.chromium.launch(
+                headless=options.headless,
+                args=["--disable-blink-features=AutomationControlled"],
+                ignore_default_args=["--enable-automation"],
+            )
+            use_persistent = False
         for local_no, response_index in enumerate(indices, start=1):
             key = submission_key(options.job_id, options.worker_index, response_index)
             if key in submitted_keys:
@@ -520,11 +734,21 @@ def run_submissions(options: RunOptions, responses: list[dict[str, Any]], email_
                 continue
 
             print(f"[{local_no}/{total}] 開始填寫... ", end="", flush=True)
-            context = browser.new_context(locale="zh-TW", timezone_id="Asia/Taipei")
-            page = context.new_page()
+            if use_persistent:
+                # persistent context 本身就是 context，直接開新頁
+                context = browser
+                page = browser.new_page()
+            else:
+                context = browser.new_context(locale="zh-TW", timezone_id="Asia/Taipei")
+                page = context.new_page()
             row = dict(response_for_index(responses, response_index))
             if email_by_index and response_index in email_by_index:
                 row["email"] = email_by_index[response_index]
+            # 依 index 自動生成不同繁體中文填答文字
+            if not row.get("short_text") or row.get("short_text") in ("一般消費者",):
+                row["short_text"] = generate_zh_text(response_index, "short")
+            if not row.get("long_text") or row.get("long_text") in ("品質和價格都很重要",):
+                row["long_text"] = generate_zh_text(response_index, "long")
             started = datetime.now()
             status = "failed"
             detail: dict[str, Any] = {}
@@ -540,12 +764,17 @@ def run_submissions(options: RunOptions, responses: list[dict[str, Any]], email_
                         platform = "google"
 
                 if platform == "surveycake":
-                    detail = fill_surveycake(page, row, options.submit)
+                    detail = fill_surveycake(page, row, options.submit, options.manual_submit)
                 else:
                     detail = fill_google(page, row, options.submit)
 
-                if not options.submit or detail.get("submitted"):
-                    status = "submitted" if options.submit else "filled_no_submit"
+                if detail.get("submitted"):
+                    status = "submitted"
+                    submitted_keys.add(key)
+                    state["submitted"] = sorted(submitted_keys)
+                    save_state(options.state_file, state)
+                elif not options.submit:
+                    status = "filled_no_submit"
                     submitted_keys.add(key)
                     state["submitted"] = sorted(submitted_keys)
                     save_state(options.state_file, state)
@@ -557,7 +786,13 @@ def run_submissions(options: RunOptions, responses: list[dict[str, Any]], email_
                     page.screenshot(path=str(screenshot), full_page=True)
                 except Exception:
                     screenshot = Path("")
-                context.close()
+                if not use_persistent:
+                    context.close()
+                else:
+                    try:
+                        page.close()
+                    except Exception:
+                        pass
 
             elapsed = round((datetime.now() - started).total_seconds(), 1)
             if status == "submitted":
@@ -588,7 +823,10 @@ def run_submissions(options: RunOptions, responses: list[dict[str, Any]], email_
                     print(f"  → 等待 {int(pause)} 秒後繼續...")
                     sys.stdout.flush()
                     time.sleep(pause)
-        browser.close()
+        if use_persistent:
+            browser.close()
+        else:
+            browser.close()
 
     write_report(options.report_dir, options.job_id, results)
     return results
@@ -725,6 +963,8 @@ def build_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--report-dir", type=Path, default=DEFAULT_REPORT_DIR)
     parser.add_argument("--headless", action="store_true")
     parser.add_argument("--no-submit", action="store_true")
+    parser.add_argument("--manual-submit", action="store_true", help="填完後暫停，讓使用者手動點送出按鈕（解決 Cloudflare 驗證問題）")
+    parser.add_argument("--use-chrome", action="store_true", help="使用本機 Chrome 瀏覽器（更能通過 Cloudflare 驗證）")
     parser.add_argument("--emails", type=Path, help="Path to .txt file with one email per line")
     parser.add_argument("--print-schedule", action="store_true")
     parser.add_argument("--scheduler", choices=["windows", "python"], default="windows")
@@ -763,6 +1003,8 @@ def main(argv: list[str] | None = None) -> int:
         count=args.count,
         headless=args.headless,
         submit=not args.no_submit,
+        manual_submit=args.manual_submit,
+        use_chrome=args.use_chrome,
         interval_min_sec=args.interval_min_sec,
         interval_max_sec=args.interval_max_sec,
         worker_index=args.worker_index,
