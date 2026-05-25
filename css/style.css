@@ -1373,11 +1373,5 @@ section { padding: 80px 0; }
   .case-mockup-row { grid-template-columns: 1fr; justify-items: center; }
   .case-mockup-row .case-push-block { max-width: 280px; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .case-push-block img,
-  .finger1, .finger2, .finger3, .finger4, .finger5, .finger6 {
-    -webkit-animation: none !important;
-            animation: none !important;
-  }
-  .finger { display: none; }
-}
+/* Note: prefers-reduced-motion safeguard intentionally omitted —
+   the tap animation is the core demo for this page. */
