@@ -1308,8 +1308,10 @@ section { padding: 80px 0; }
   border-radius: 0;
   box-shadow: none;
   margin: 0;
-  -webkit-animation: pushFadout 4s infinite 2s;
-          animation: pushFadout 4s infinite 2s;
+  /* No fadout — image stays fully visible. The finger circle animates
+     ON TOP of the screenshot to simulate a tap. AdLocus' original
+     faded the image to swap to a "next screen" mockup; we don't have
+     paired after-screens, so a fade-to-empty would just look broken. */
 }
 .finger-code {
   position: absolute;
