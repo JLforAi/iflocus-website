@@ -1278,3 +1278,106 @@ section { padding: 80px 0; }
   gap: 16px;
   flex-wrap: wrap;
 }
+
+/* ===== PUSH-NOTIFICATION FINGER-TAP DEMO ANIMATION =====
+   Heritage CSS from AdLocus — simulates a user tapping a push
+   notification: white glowing finger circle swoops in from the right,
+   taps a point on the phone screenshot, and the screenshot fades out
+   (as if transitioning to the app). 4s loop, 2s initial delay.
+   Six finger variants (finger1-6) for different vertical tap points.
+   Usage:
+     <div class="case-push-block">
+       <img src="phone-screenshot.jpg" alt="...">
+       <div class="finger-code"><div class="finger finger3"></div></div>
+     </div>
+*/
+.case-push-block {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  max-width: 100%;
+  background: #f5f6f7;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+.case-push-block img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  -webkit-animation: pushFadout 4s infinite 2s;
+          animation: pushFadout 4s infinite 2s;
+}
+.finger-code {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+.finger {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 10px #000;
+  opacity: 0;
+}
+.finger1 { -webkit-animation: fingerTap1 4s infinite 2s; animation: fingerTap1 4s infinite 2s; }
+.finger2 { -webkit-animation: fingerTap2 4s infinite 2s; animation: fingerTap2 4s infinite 2s; }
+.finger3 { -webkit-animation: fingerTap3 4s infinite 2s; animation: fingerTap3 4s infinite 2s; }
+.finger4 { -webkit-animation: fingerTap4 4s infinite 2s; animation: fingerTap4 4s infinite 2s; }
+.finger5 { -webkit-animation: fingerTap5 4s infinite 2s; animation: fingerTap5 4s infinite 2s; }
+.finger6 { -webkit-animation: fingerTap6 4s infinite 2s; animation: fingerTap6 4s infinite 2s; }
+
+@keyframes pushFadout { 0%, 25% { opacity: 1 } 65%, 100% { opacity: 0 } }
+@-webkit-keyframes pushFadout { 0%, 25% { opacity: 1 } 65%, 100% { opacity: 0 } }
+
+@keyframes fingerTap1 { 0%{right:0;top:100px;opacity:0} 20%{right:150px;top:7%;opacity:1;transform:scale(1)} 25%{right:150px;top:7%;transform:scale(.7)} 30%{right:150px;top:7%;transform:scale(1)} 50%,100%{right:200px;top:100px;opacity:0} }
+@keyframes fingerTap2 { 0%{right:0;top:200px;opacity:0} 20%{right:150px;top:15%;opacity:1;transform:scale(1)} 25%{right:150px;top:15%;transform:scale(.7)} 30%{right:150px;top:15%;transform:scale(1)} 50%,100%{right:200px;top:200px;opacity:0} }
+@keyframes fingerTap3 { 0%{right:0;top:300px;opacity:0} 20%{right:150px;top:38%;opacity:1;transform:scale(1)} 25%{right:150px;top:38%;transform:scale(.7)} 30%{right:150px;top:38%;transform:scale(1)} 50%,100%{right:200px;top:300px;opacity:0} }
+@keyframes fingerTap4 { 0%{right:0;top:330px;opacity:0} 20%{right:150px;top:32%;opacity:1;transform:scale(1)} 25%{right:150px;top:32%;transform:scale(.7)} 30%{right:150px;top:32%;transform:scale(1)} 50%,100%{right:200px;top:330px;opacity:0} }
+@keyframes fingerTap5 { 0%{right:0;top:440px;opacity:0} 20%{right:150px;top:46%;opacity:1;transform:scale(1)} 25%{right:150px;top:46%;transform:scale(.7)} 30%{right:150px;top:46%;transform:scale(1)} 50%,100%{right:200px;top:440px;opacity:0} }
+@keyframes fingerTap6 { 0%{right:0;top:50%;opacity:0} 20%{right:150px;top:26%;opacity:1;transform:scale(1)} 25%{right:150px;top:26%;transform:scale(.7)} 30%{right:150px;top:26%;transform:scale(1)} 50%,100%{right:200px;top:50%;opacity:0} }
+
+/* Layout helpers for the push-block in our case pages */
+.case-mockup-row {
+  display: grid;
+  grid-template-columns: minmax(0, 280px) 1fr;
+  gap: 24px;
+  align-items: center;
+  margin: 24px 0;
+}
+.case-mockup-row .case-push-block { width: 100%; }
+.case-mockup-row > img {
+  width: 100%;
+  max-height: 380px;
+  object-fit: contain;
+  background: #f5f6f7;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+.case-mockup-solo {
+  text-align: center;
+  margin: 24px 0;
+}
+.case-mockup-solo .case-push-block {
+  width: 100%;
+  max-width: 280px;
+}
+@media (max-width: 600px) {
+  .case-mockup-row { grid-template-columns: 1fr; justify-items: center; }
+  .case-mockup-row .case-push-block { max-width: 280px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-push-block img,
+  .finger1, .finger2, .finger3, .finger4, .finger5, .finger6 {
+    -webkit-animation: none !important;
+            animation: none !important;
+  }
+  .finger { display: none; }
+}
