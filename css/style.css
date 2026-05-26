@@ -1308,10 +1308,23 @@ section { padding: 80px 0; }
   border-radius: 0;
   box-shadow: none;
   margin: 0;
-  /* No fadout — image stays fully visible. The finger circle animates
-     ON TOP of the screenshot to simulate a tap. AdLocus' original
-     faded the image to swap to a "next screen" mockup; we don't have
-     paired after-screens, so a fade-to-empty would just look broken. */
+}
+/* Crossfade mode: when .case-push-block has a .screen-after sibling,
+   the notification screenshot (.screen-before) fades out to reveal
+   the destination landing page (.screen-after) underneath. */
+.case-push-block .screen-after {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.case-push-block .screen-before {
+  position: relative;
+  z-index: 2;
+  -webkit-animation: pushFadout 4s infinite 2s;
+          animation: pushFadout 4s infinite 2s;
 }
 .finger-code {
   position: absolute;
@@ -1375,5 +1388,47 @@ section { padding: 80px 0; }
   .case-mockup-row { grid-template-columns: 1fr; justify-items: center; }
   .case-mockup-row .case-push-block { max-width: 280px; }
 }
+/* Tabbed mockup widget — iOS / Android / Diamond platform tabs */
+.case-mockup-tabbed {
+  margin: 32px 0;
+}
+.case-mockup-tabbed .mockup-tab-nav {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.case-mockup-tabbed .mockup-tab {
+  background: #f5f6f7;
+  color: var(--text-light);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.case-mockup-tabbed .mockup-tab:hover {
+  background: #eaeaea;
+}
+.case-mockup-tabbed .mockup-tab.active {
+  background: #dd3333;
+  color: #fff;
+  border-color: #dd3333;
+}
+.case-mockup-tabbed .mockup-panels {
+  display: flex;
+  justify-content: center;
+}
+.case-mockup-tabbed .mockup-panel {
+  display: none;
+  width: 100%;
+  max-width: 280px;
+}
+.case-mockup-tabbed .mockup-panel.active {
+  display: block;
+}
+
 /* Note: prefers-reduced-motion safeguard intentionally omitted —
    the tap animation is the core demo for this page. */

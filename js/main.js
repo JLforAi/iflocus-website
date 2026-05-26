@@ -177,6 +177,27 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 })();
 
+// ===== CASE MOCKUP TABS (iOS / Android / Diamond) =====
+// Click a tab label to swap which platform's mockup is visible.
+// AdLocus heritage: each case has 1-3 platform variants of the push
+// notification, each paired with an "after-tap" landing page that
+// shows through when the notification screenshot fades out.
+(function () {
+  document.querySelectorAll('.case-mockup-tabbed').forEach(function (group) {
+    const tabs = group.querySelectorAll('.mockup-tab');
+    const panels = group.querySelectorAll('.mockup-panel');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        const target = tab.getAttribute('data-tab');
+        tabs.forEach(function (t) { t.classList.toggle('active', t === tab); });
+        panels.forEach(function (p) {
+          p.classList.toggle('active', p.getAttribute('data-tab') === target);
+        });
+      });
+    });
+  });
+})();
+
 // ===== STICKY HEADER SHADOW =====
 (function () {
   const header = document.querySelector('.site-header');
