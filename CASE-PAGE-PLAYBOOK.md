@@ -278,6 +278,7 @@ done
 
 - 公司：**絡客思行銷科技** / Locus Marketing Technology CO., LTD.
 - 服務：**iFLocus** / **AiLocus**（**不是**公司名，別寫「iFLocus 絡客思行銷科技」）
+- **案例頁正文一律用 `AiLocus`**（取代舊有 `iFLocus`）；SEO meta/og 標籤亦同步改用 `AiLocus`。新建/修改 case-*.html 時禁止再出現 `iFLocus` 字樣。
 - **禁止出現** `AdLocus` 字樣（前台任何位置；URL 例外：`ps.adlocus.com`）
 - **禁用浮誇詞**：業界最高 / 營收倍增 / 業界最佳表現 → 改寫 業界領先 / 實測 / 成長
 - 中文標點全形：，。；：！？
