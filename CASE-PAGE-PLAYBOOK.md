@@ -305,4 +305,58 @@ done
 
 ---
 
-_文件版本：v1.0（2026-05-26）— 3C 案例（case-3c.html）遷移後沉澱_
+## ✅ 完工自我檢查清單（commit 前必跑）
+
+```bash
+cd "/g/我的雲端硬碟/iflocus-website"
+PAGE=case-XXX.html
+
+echo "--- 1. 禁用詞 ---"
+grep -iE "AdLocus|業界最高|營收倍增|業界最佳表現" "$PAGE" || echo "(clean)"
+
+echo "--- 2. 所有 src 路徑皆在 git ---"
+grep -oP 'src="images/external/[^"]*"' "$PAGE" | sed 's/src="//;s/"//' | sort -u | while IFS= read -r p; do
+  [ -z "$(git ls-files "$p")" ] && echo "NOT-IN-GIT: $p"
+done && echo "(done)"
+
+echo "--- 3. 各圖片確實存在且 >1KB ---"
+grep -oP 'src="images/external/[^"]*"' "$PAGE" | sed 's/src="//;s/"//' | sort -u | while IFS= read -r p; do
+  [ ! -f "$p" ] && echo "MISSING: $p" && continue
+  sz=$(stat -c%s "$p" 2>/dev/null)
+  [ "$sz" -lt 1024 ] && echo "TOO_SMALL($sz): $p"
+done && echo "(done)"
+
+echo "--- 4. screen-before / screen-after 計數 ---"
+sb=$(grep -c "screen-before" "$PAGE")
+sa=$(grep -c "screen-after"  "$PAGE")
+echo "  screen-before=$sb  screen-after=$sa  push-only=$(( sb - sa ))"
+echo "  若 push-only > 0，必須有 :not(:has(.screen-after)) animation:none 規則"
+grep ":has(.screen-after)" "$PAGE" && echo "  (rule found)" || echo "  ⚠ MISSING :has() rule"
+
+echo "--- 5. 檔名大小寫衝突（同目錄相同名稱只差大小寫） ---"
+grep -oP 'images/external/[^"]+' "$PAGE" | sort -u | awk -F'/' '{print tolower($0)" "$0}' | sort | awk 'prev==$1{print "COLLISION: "$2} {prev=$1}' || echo "(none)"
+
+echo "--- 6. main.js 已引入 ---"
+grep -c "js/main.js" "$PAGE" | grep -q "^[1-9]" && echo "  (found)" || echo "  ⚠ MISSING <script src=js/main.js>"
+
+echo "--- 7. cache-bust query string 含產業碼 ---"
+grep "style.css?v=" "$PAGE" || echo "  ⚠ MISSING cache-bust"
+```
+
+**檢查項目說明**：
+
+| # | 檢查內容 | 若失敗怎麼辦 |
+|---|---------|------------|
+| 1 | 無禁用詞 | 全文搜尋替換 |
+| 2 | 所有圖路徑在 git index | `git add` 補上，或修正路徑 |
+| 3 | 圖存在且 >1KB | 重新 curl 下載；1KB 以下是伺服器 404 頁 |
+| 4 | push-only panel 有 animation:none | 在頁內 `<style>` 加 `:not(:has(.screen-after)) .screen-before { animation: none; }` |
+| 5 | 無大小寫衝突（Windows 不分大小寫，但 GitHub Pages Linux 區分）| 給衝突的其中一方重新命名（加品牌前綴，如 `kapiti-500x888.jpg`），更新 HTML，重新下載 |
+| 6 | main.js 已引入 | 在 `</body>` 前加 `<script src="js/main.js"></script>` |
+| 7 | cache-bust 有更新 | 改成 `?v=YYYYMMDD-XXX` |
+
+> 📌 **大小寫衝突的根本預防**：同一目錄若有多篇案例使用泛型活動頁名（`500x888.jpg`、`500X888.jpg`），下載時一律改以品牌前綴命名（`kapiti-500x888.jpg`、`duanchunzhen-500x888.jpg`），完全避免衝突。
+
+---
+
+_文件版本：v1.1（2026-05-26）— 新增自我檢查清單，來自食品餐飲案例遷移後沉澱_
