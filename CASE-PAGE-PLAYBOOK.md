@@ -223,6 +223,39 @@ done
 - Commit 訊息描述變更（用過去的 commit 為參考）
 - `git push`，等 GitHub Pages 部署（1-3 分鐘）
 
+### Step 9：**驗證 GitHub Pages 部署成功**（**強制做，別跳過**）
+
+**踩坑教訓**：`git push` 成功不等於 Pages 部署成功。曾發生過 push 時 `.git/index.lock` 或 `AUTO_MERGE.lock` 殘留，導致 GitHub 收到 commit 但**沒有觸發 pages-build-deployment workflow**，前台繼續服務舊版內容。
+
+```bash
+# 1. 確認最新 commit 已在 origin/main
+LATEST=$(git rev-parse HEAD)
+REMOTE=$(git ls-remote origin main | awk '{print $1}')
+[ "$LATEST" = "$REMOTE" ] && echo "✅ remote=local" || echo "❌ NOT pushed"
+
+# 2. 查最新 Pages build commit 是否就是 LATEST
+gh api repos/JLforAi/iflocus-website/pages/builds/latest \
+  --jq '{commit,status,duration,created_at}'
+
+# 3. 如果 build commit ≠ LATEST，手動觸發 rebuild
+gh api -X POST repos/JLforAi/iflocus-website/pages/builds
+
+# 4. 輪詢直到 status=built
+until [ "$(gh api repos/JLforAi/iflocus-website/pages/builds/latest --jq .status)" = "built" ]; do
+  sleep 8
+done
+
+# 5. 確認前台 HTML 真的更新（用 cache-bust query string 繞過 CDN）
+curl -sL --ssl-no-revoke "https://iflocus.com/case-XXX.html?bust=$(date +%s)" \
+  -o /tmp/live.html -w "size=%{size_download}\n"
+grep -c "YYYYMMDD-XXX\|新案例 id" /tmp/live.html  # 應 > 0
+```
+
+**Pages 沒觸發部署的常見原因**：
+- 推送時 `.git/*.lock` 殘留（鎖位但 commit 仍寫入）→ 清掉後手動 `gh api -X POST .../pages/builds`
+- 工作流被 disable（檢查 repo Settings → Pages 的 Source）
+- Jekyll build error（log 看 `error_count`，但通常仍會 deploy 上次成功版）
+
 ---
 
 ## 🛠️ CSS / JS 依賴（已在專案內，不需要重寫）
