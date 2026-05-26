@@ -255,6 +255,75 @@ grep -c "YYYYMMDD-XXX\|新案例 id" /tmp/live.html  # 應 > 0
 - 推送時 `.git/*.lock` 殘留（鎖位但 commit 仍寫入）→ 清掉後手動 `gh api -X POST .../pages/builds`
 - 工作流被 disable（檢查 repo Settings → Pages 的 Source）
 - Jekyll build error（log 看 `error_count`，但通常仍會 deploy 上次成功版）
+- **GitHub 端 codeload / Pages 服務故障**（見下節）
+
+### Step 9.1：**遇到 GitHub Pages 服務故障時的處置**（2026-05-26 踩坑）
+
+**症狀**：
+- Push 後 pages-build-deployment workflow **完全沒被觸發**（不只是 build 失敗，是 run 列表都沒有新項目）
+- 手動 `gh api -X POST .../pages/builds` 後，build 卡在 `status: building` 半小時以上不動
+- 點進 Annotations 看到 `Failed to download archive 'https://codeload.github.com/actions/upload-pages-artifact/tar.gz/...'`
+- 另一條 annotation：`Internal server error. Correlation ID: xxxx-xxxx-xxxx`
+- 即便 `actions/checkout@v4` 在其他 workflow（如 SurveyAI）跑得正常，**只有 `actions/configure-pages` / `upload-pages-artifact` / `deploy-pages` 抓不到**
+
+**這代表**：GitHub 端的 Pages 服務在抓特定 action repo 的 tarball 時故障了，**不是您的問題**（不是額度、不是 token、不是 workflow yml）。Legacy build 內部也用同一組 action，所以 legacy 跟 Actions 兩條路會同時掛掉。
+
+**正確處置順序**（**先觀察、別亂改**）：
+
+1. **先確認是 GitHub 端故障**：
+   ```bash
+   # 從本地測 codeload 是否可達（如果本地 OK 但 runner fail = GitHub 端）
+   curl -sL --ssl-no-revoke -w "%{http_code}\n" -o /dev/null \
+     "https://codeload.github.com/actions/upload-pages-artifact/tar.gz/v3"
+   # 應該回 HTTP 200。如果是，那 runner 端有問題，不是您
+   ```
+   也開瀏覽器看 https://www.githubstatus.com — 通常會公告 incident
+
+2. **不要做的事**（這次的失敗教訓）：
+   - ❌ **不要把 Pages source 切到 `gh-pages` branch**（會讓整站變 404，舊版內容也消失）
+   - ❌ 不要連續送多個試錯 commit（`configure-pages@v5` / `@v4` / `@v3`...）只會在 Actions 列表製造一堆紅 X
+   - ❌ 不要急著加 `.nojekyll` 或切 `build_type` — 不會修好 codeload 故障
+
+3. **可以做的事**：
+   - ✅ **先等 30 分鐘**，GitHub 通常自我修復
+   - ✅ **維持 Pages source = main**（即使 build errored，舊版至少還在 serve）
+   - ✅ 觀察 `gh api repos/.../pages/builds/latest` 每 5-10 分鐘看一次是否恢復
+
+4. **真的等不到時的備援**（用第三方 action 繞開）：
+   建立 `.github/workflows/pages.yml`：
+   ```yaml
+   name: Deploy static site to Pages
+   on:
+     push: { branches: ["main"] }
+     workflow_dispatch:
+   permissions:
+     contents: write
+     pages: write
+     id-token: write
+   jobs:
+     deploy:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+           with: { persist-credentials: true, fetch-depth: 0 }
+         - uses: peaceiris/actions-gh-pages@v4
+           with:
+             github_token: ${{ secrets.GITHUB_TOKEN }}
+             publish_dir: .
+             publish_branch: gh-pages
+             force_orphan: true
+             cname: iflocus.com
+   ```
+   並把 default workflow permissions 改成 write：
+   ```bash
+   gh api -X PUT repos/JLforAi/iflocus-website/actions/permissions/workflow \
+     -f default_workflow_permissions=write -F can_approve_pull_request_reviews=true
+   ```
+   `peaceiris/actions-gh-pages` 不依賴 `actions/*-pages-*`，會把整站推到 `gh-pages` branch。
+
+   **重要**：完成後 **Pages source 仍維持 = main**，等 GitHub 自我修復後 legacy build 會直接拿 main 的內容 serve 出去（這次實測就是這樣最後成功的）。
+
+**結論**：codeload 故障 ≈ GitHub 端短暫災情，**沉住氣等比急著動手強**。
 
 ---
 
