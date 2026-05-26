@@ -583,9 +583,9 @@ section { padding: 80px 0; }
 
 .hero-about,
 .hero-iflocus {
-  --hero-image: url("../images/iflocus-56.jpg");
-  --hero-tint: rgba(216,48,58,0.42);
-  --hero-position: center right;
+  --hero-image: url("../images/hero/hero-iflocus-crowd.jpg");
+  --hero-tint: rgba(120,30,90,0.55);
+  --hero-position: center;
 }
 
 .hero-locusps {
@@ -674,22 +674,22 @@ section { padding: 80px 0; }
 }
 
 .hero-sports {
-  --hero-image: url("../images/iflocus-62.jpg");
-  --hero-tint: rgba(255,90,0,0.38);
-  --hero-position: center right;
+  --hero-image: url("../images/hero/hero-sports-running.jpg");
+  --hero-tint: rgba(212,80,20,0.50);
+  --hero-position: center;
 }
 
 .hero-integrated,
 .hero-contact {
-  --hero-image: url("../images/page-assets/brand-service-overview.jpg");
-  --hero-tint: rgba(49,138,86,0.40);
-  --hero-position: center right;
+  --hero-image: url("../images/hero/hero-contact-meeting.jpg");
+  --hero-tint: rgba(20,80,60,0.55);
+  --hero-position: center;
 }
 
 .hero-training {
-  --hero-image: url("../images/page-assets/training-service.jpg");
-  --hero-tint: rgba(0,102,204,0.34);
-  --hero-position: center right;
+  --hero-image: url("../images/hero/hero-training-workshop.jpg");
+  --hero-tint: rgba(10,60,120,0.55);
+  --hero-position: center;
 }
 
 .hero-video {
@@ -699,9 +699,9 @@ section { padding: 80px 0; }
 }
 
 .hero-locusad {
-  --hero-image: url("../images/iflocus-61.jpg");
-  --hero-tint: rgba(0,129,204,0.44);
-  --hero-position: center right;
+  --hero-image: url("../images/hero/hero-locusad-citymap.jpg");
+  --hero-tint: rgba(0,80,140,0.55);
+  --hero-position: center;
 }
 
 .hero-ailocus {
@@ -736,8 +736,8 @@ section { padding: 80px 0; }
 }
 
 .hero-branddrop {
-  --hero-image: url("../images/page-assets/integrated-workflow.jpg");
-  --hero-tint: rgba(255,102,0,0.40);
+  --hero-image: url("../images/hero/hero-branddrop-workflow.jpg");
+  --hero-tint: rgba(180,100,30,0.50);
   --hero-position: center;
 }
 
