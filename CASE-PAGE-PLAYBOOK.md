@@ -269,6 +269,7 @@ done
 | Style.css 有 cache → 改了沒反應 | bump `?v=YYYYMMDD-xxx` query string |
 | `data-dt-location` attachment URL 直接回傳圖 | 不是 HTML 頁，不需另外解析 |
 | WP REST `parent=POST_ID` 漏掉某些 attachment | 用 `search=keyword` 全域搜（如聲寶 Diamond-PUSH parent=None）|
+| 頁面 HTML 裡的 `<img src>` 可能包含無關圖片（別的廣告、模板裝飾圖等） | **必須以 `wp/v2/media?parent=POST_ID` 的 attachment 清單為準**，不要直接抓頁面 HTML 裡的圖 URL；attachment id 才是確認歸屬的唯一依據 |
 | `display: inline-block` 在 grid 內可能不撐滿 | 加 `width: 100%` 補回 |
 
 ---
