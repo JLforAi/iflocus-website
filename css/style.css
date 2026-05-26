@@ -562,9 +562,10 @@ section { padding: 80px 0; }
 }
 
 .page-hero.hero-scenic p {
-  max-width: 650px;
+  max-width: 600px;
   opacity: 0.92;
   text-shadow: 0 2px 12px rgba(0,0,0,0.28);
+  line-height: 1.75;
 }
 
 .page-hero.hero-scenic .flex-center {
