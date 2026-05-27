@@ -593,10 +593,15 @@ section { padding: 80px 0; }
   justify-content: center;
 }
 
-.hero-about,
 .hero-iflocus {
   --hero-image: url("../images/hero/hero-iflocus-crowd.jpg");
   --hero-tint: rgba(120,30,90,0.55);
+  --hero-position: center;
+}
+
+.hero-about {
+  --hero-image: url("../images/hero/hero-about-team.jpg");
+  --hero-tint: rgba(40,70,140,0.55);
   --hero-position: center;
 }
 
