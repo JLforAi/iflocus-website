@@ -691,9 +691,9 @@ section { padding: 80px 0; }
 }
 
 .hero-sports {
-  --hero-image: url("../images/hero/hero-sports-action.jpg");
-  --hero-tint: rgba(30,80,160,0.45);
-  --hero-position: center top;
+  --hero-image: url("../images/hero/hero-sports-cheer.jpg");
+  --hero-tint: rgba(40,30,80,0.55);
+  --hero-position: center 30%;
 }
 
 .hero-integrated,
