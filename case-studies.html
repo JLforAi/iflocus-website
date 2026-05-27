@@ -32,9 +32,19 @@
   </script>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .filter-bar { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:48px; }
-    .filter-btn { padding:8px 20px; border-radius:20px; border:2px solid var(--border); background:#fff; color:var(--text); font-size:14px; cursor:pointer; transition:all 0.2s; font-family:inherit; }
+    .filter-bar { margin-bottom:48px; }
+    .filter-all-row { display:flex; justify-content:center; margin-bottom:24px; }
+    .filter-group { margin-bottom:18px; }
+    .filter-group-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:center; }
+    .filter-group-label { font-size:13px; font-weight:700; color:var(--text-light); letter-spacing:0.08em; padding:6px 14px; background:#f0f4f8; border-radius:4px; white-space:nowrap; }
+    .filter-buttons { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+    .filter-btn { padding:8px 18px; border-radius:20px; border:2px solid var(--border); background:#fff; color:var(--text); font-size:14px; cursor:pointer; transition:all 0.2s; font-family:inherit; }
     .filter-btn:hover, .filter-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .filter-btn-all { padding:10px 28px; font-weight:700; }
+    @media(max-width:600px){
+      .filter-group-row { flex-direction:column; align-items:stretch; gap:8px; }
+      .filter-group-label { text-align:center; }
+    }
     .case-card { display:none; }
     .case-card.show { display:block; }
   </style>
@@ -51,23 +61,46 @@
   <div class="section-inner">
     <!-- Filter Bar -->
     <div class="filter-bar">
-      <button class="filter-btn active" data-filter="all">全部案例</button>
-      <button class="filter-btn" data-filter="election">智慧選戰</button>
-      <button class="filter-btn" data-filter="3c">3C 科技</button>
-      <button class="filter-btn" data-filter="food">食品餐飲</button>
-      <button class="filter-btn" data-filter="fashion">女性時尚</button>
-      <button class="filter-btn" data-filter="leisure">休閒生活</button>
-      <button class="filter-btn" data-filter="finance">金融保險</button>
-      <button class="filter-btn" data-filter="telecom">電信通訊</button>
-      <button class="filter-btn" data-filter="realestate">房地產</button>
-      <button class="filter-btn" data-filter="hk">香港地區</button>
-      <button class="filter-btn" data-filter="product">產品推廣</button>
-      <button class="filter-btn" data-filter="promo">優惠活動</button>
-      <button class="filter-btn" data-filter="event">實體活動</button>
-      <button class="filter-btn" data-filter="omo">虛實整合</button>
-      <button class="filter-btn" data-filter="member">會員推廣</button>
-      <button class="filter-btn" data-filter="survey">名單問卷</button>
-      <button class="filter-btn" data-filter="report">案例報告</button>
+      <div class="filter-all-row">
+        <button class="filter-btn filter-btn-all active" data-filter="all">全部案例</button>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-row">
+          <span class="filter-group-label">產業類型</span>
+          <div class="filter-buttons">
+            <button class="filter-btn" data-filter="election">智慧選戰</button>
+            <button class="filter-btn" data-filter="3c">3C 科技</button>
+            <button class="filter-btn" data-filter="food">食品餐飲</button>
+            <button class="filter-btn" data-filter="fashion">女性時尚</button>
+            <button class="filter-btn" data-filter="leisure">休閒生活</button>
+            <button class="filter-btn" data-filter="finance">金融保險</button>
+            <button class="filter-btn" data-filter="telecom">電信通訊</button>
+            <button class="filter-btn" data-filter="realestate">房地產</button>
+          </div>
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-row">
+          <span class="filter-group-label">活動類型</span>
+          <div class="filter-buttons">
+            <button class="filter-btn" data-filter="product">產品推廣</button>
+            <button class="filter-btn" data-filter="promo">優惠活動</button>
+            <button class="filter-btn" data-filter="event">實體活動</button>
+            <button class="filter-btn" data-filter="omo">虛實整合</button>
+            <button class="filter-btn" data-filter="member">會員推廣</button>
+            <button class="filter-btn" data-filter="survey">名單問卷</button>
+            <button class="filter-btn" data-filter="report">案例報告</button>
+          </div>
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-row">
+          <span class="filter-group-label">區域</span>
+          <div class="filter-buttons">
+            <button class="filter-btn" data-filter="hk">香港地區</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Cases Grid -->
