@@ -642,10 +642,11 @@ section { padding: 80px 0; }
   background-image:
     radial-gradient(circle at 73% 36%, rgba(0,142,204,0.22), transparent 28%),
     linear-gradient(90deg, rgba(6,18,34,0.96) 0%, rgba(7,26,49,0.88) 34%, rgba(7,28,52,0.42) 58%, rgba(5,10,18,0.12) 100%),
-    linear-gradient(180deg, rgba(5,10,18,0.12) 0%, rgba(5,10,18,0.38) 100%),
+    linear-gradient(90deg, rgba(5,10,18,0) 48%, rgba(6,16,30,0.36) 100%),
+    linear-gradient(180deg, rgba(5,10,18,0.16) 0%, rgba(5,10,18,0.44) 100%),
     var(--hero-image);
-  background-size: cover, cover, cover, cover;
-  background-position: center, center, center, center;
+  background-size: cover, cover, cover, cover, cover;
+  background-position: center, center, center, center, center;
   background-repeat: no-repeat;
 }
 
@@ -680,7 +681,7 @@ section { padding: 80px 0; }
   letter-spacing: 0;
 }
 
-.home-hero-lead {
+.page-hero.hero-home .home-hero-lead {
   font-size: clamp(16px, 1.35vw, 19px);
   color: rgba(255,255,255,0.88);
   text-shadow: 0 3px 18px rgba(0,0,0,0.36);
@@ -1303,10 +1304,11 @@ section { padding: 80px 0; }
     padding: 56px 20px 48px;
     justify-content: flex-end;
     background-image:
+      linear-gradient(90deg, rgba(5,10,18,0.20) 0%, rgba(5,10,18,0.48) 100%),
       linear-gradient(180deg, rgba(5,10,18,0.18) 0%, rgba(5,10,18,0.58) 42%, rgba(5,10,18,0.92) 100%),
       var(--hero-image);
-    background-size: cover, cover;
-    background-position: 66% center, 66% center;
+    background-size: cover, cover, cover;
+    background-position: 66% center, 66% center, 66% center;
   }
 
   .page-hero.hero-home .tag {
@@ -1320,10 +1322,11 @@ section { padding: 80px 0; }
     line-height: 1.2;
   }
 
-  .home-hero-lead {
+  .page-hero.hero-home .home-hero-lead {
     font-size: 15px;
     line-height: 1.78;
     margin-top: 18px;
+    max-width: 260px;
   }
 
   .home-hero-proof {
