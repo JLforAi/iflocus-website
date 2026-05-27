@@ -414,6 +414,16 @@ grep -c "YYYYMMDD-XXX\|新案例 id" /tmp/live.html  # 應 > 0
 - **所有 hero 內容（tag / h1 / 多段 p / 按鈕）一律置中**（`.page-hero.hero-scenic` 已設 `text-align: center` + `align-items: center`），HTML 不需要再加 `style="text-align:..."` 覆寫
 - 不要為了「對齊到左側 1180px container」加 `padding-left: calc(...)` — hero 應該對稱、置中、跟內容區的 section 分開呼吸
 
+**Hero 文字換行控制（CJK 重點）**：
+- CSS 已套 `word-break: keep-all`、`text-wrap: balance`（h1）、`text-wrap: pretty`（p），瀏覽器會自動：
+  - 不在中文字之間斷行（不會出現「記|住」這種拆字）
+  - 多行標題自動均衡長度
+- 若副標仍在「奇怪的逗號之後」斷行，**手動在語意斷點插入單一 `<br>`**：
+  ```html
+  <p>iFLocus 以人為核心，整合影響者、場域數據與五感體驗，<br>陪品牌建立能被記住的成長路徑。</p>
+  ```
+  注意：這是「同段內視覺斷行」，跟「拆段」不同；段內換行用 `<br>`、段與段之間用 `<p>`
+
 **Case 頁與一般段落寫法**：
 - 條列式（3 點以上）一律用 `<ul>` / `<ol>` 而非一個 `<p>` 用頓號塞滿
 - 段落 + 條列並存時：用 `<p>` 給敘述句、`<ul>` 給可數要點，**不要混在同一個 `<p>`**

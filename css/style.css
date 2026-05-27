@@ -565,6 +565,8 @@ section { padding: 80px 0; }
   max-width: 760px;
   margin-left: auto;
   margin-right: auto;
+  text-wrap: balance;
+  word-break: keep-all;
   text-shadow: 0 2px 18px rgba(0,0,0,0.32);
 }
 
@@ -579,6 +581,8 @@ section { padding: 80px 0; }
   text-shadow: 0 2px 12px rgba(0,0,0,0.28);
   line-height: 1.85;
   margin-top: 8px;
+  text-wrap: pretty;
+  word-break: keep-all;
 }
 
 .page-hero.hero-scenic p + p {
