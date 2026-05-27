@@ -411,6 +411,8 @@ grep -c "YYYYMMDD-XXX\|新案例 id" /tmp/live.html  # 應 > 0
 - Hero `<h1>` 用 `<br>` 強制換行，**讓主標題本身就有節奏**
 - Hero `<p>` 副標限制在 **一個段落 + 不超過 60 字**；如果想表達 2 件事就拆成 2 個 `<p>`
 - 多段 `<p>` 之間 CSS 已在 `.page-hero.hero-scenic p` 設好 margin — HTML 直接放兩個 `<p>` 即可，**不需要加 `<br><br>`**
+- **所有 hero 內容（tag / h1 / 多段 p / 按鈕）一律置中**（`.page-hero.hero-scenic` 已設 `text-align: center` + `align-items: center`），HTML 不需要再加 `style="text-align:..."` 覆寫
+- 不要為了「對齊到左側 1180px container」加 `padding-left: calc(...)` — hero 應該對稱、置中、跟內容區的 section 分開呼吸
 
 **Case 頁與一般段落寫法**：
 - 條列式（3 點以上）一律用 `<ul>` / `<ol>` 而非一個 `<p>` 用頓號塞滿
