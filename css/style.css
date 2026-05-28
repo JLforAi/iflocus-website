@@ -745,10 +745,14 @@ section { padding: 80px 0; }
    photo reads vivid instead of dim. Uses a radial vignette focused
    on the text-center band so hero text still has enough contrast. */
 .page-hero.hero-scenic.hero-sports {
+  background-color: #101827;
   background-image:
     radial-gradient(ellipse at center, rgba(10,16,28,0.45) 0%, rgba(10,16,28,0.20) 70%),
     linear-gradient(135deg, var(--hero-tint, rgba(0,102,204,0.48)), rgba(255,255,255,0.04)),
     var(--hero-image);
+  background-size: cover, cover, auto 100%;
+  background-position: center, center, right center;
+  background-repeat: no-repeat;
 }
 
 .hero-integrated,
@@ -1321,7 +1325,8 @@ section { padding: 80px 0; }
   }
 
   .page-hero.hero-scenic.hero-sports {
-    background-position: 66% center;
+    background-size: cover, cover, auto 100%;
+    background-position: center, center, 72% center;
   }
 
   .page-hero.hero-scenic.hero-home {
