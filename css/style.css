@@ -737,9 +737,9 @@ section { padding: 80px 0; }
 }
 
 .hero-sports {
-  --hero-image: url("../images/hero/hero-sports-cheer.jpg");
+  --hero-image: url("../images/hero/hero-sports-cheer-faces.jpg");
   --hero-tint: rgba(180,80,40,0.20);
-  --hero-position: center 25%;
+  --hero-position: center center;
 }
 /* Lighter base overlay for hero-sports so the bright cheer+athlete
    photo reads vivid instead of dim. Uses a radial vignette focused
@@ -1304,6 +1304,20 @@ section { padding: 80px 0; }
       linear-gradient(135deg, var(--hero-tint, rgba(0,102,204,0.48)), rgba(255,255,255,0.02)),
       var(--hero-image);
     background-position: center;
+  }
+
+  .page-hero.hero-scenic.hero-sports h1 {
+    max-width: 310px;
+    font-size: clamp(28px, 8vw, 34px);
+    line-height: 1.32;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .page-hero.hero-scenic.hero-sports p {
+    max-width: 320px;
+    font-size: 16px;
+    line-height: 1.75;
   }
 
   .page-hero.hero-scenic.hero-home {
