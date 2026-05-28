@@ -738,8 +738,8 @@ section { padding: 80px 0; }
 
 .hero-sports {
   --hero-image: url("../images/hero/hero-sports-cheer.jpg");
-  --hero-tint: rgba(40,30,80,0.55);
-  --hero-position: center 30%;
+  --hero-tint: rgba(180,80,40,0.30);
+  --hero-position: center 25%;
 }
 
 .hero-integrated,
