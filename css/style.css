@@ -737,7 +737,7 @@ section { padding: 80px 0; }
 }
 
 .hero-sports {
-  --hero-image: url("../images/hero/hero-sports-cheer-faces.jpg");
+  --hero-image: url("../images/hero/hero-sports-asian-ambassador.jpg");
   --hero-tint: rgba(180,80,40,0.20);
   --hero-position: center center;
 }
@@ -1318,6 +1318,10 @@ section { padding: 80px 0; }
     max-width: 320px;
     font-size: 16px;
     line-height: 1.75;
+  }
+
+  .page-hero.hero-scenic.hero-sports {
+    background-position: 66% center;
   }
 
   .page-hero.hero-scenic.hero-home {
