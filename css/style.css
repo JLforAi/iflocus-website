@@ -1658,11 +1658,12 @@ section { padding: 80px 0; }
   white-space: nowrap;
 }
 
-/* FB video case section */
+/* FB video case section — Reels are 9:16, so frame is portrait and we
+   pack 4 cards per row on desktop to keep each card from looming. */
 .fb-video-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
 }
 .fb-video-card {
   margin: 0;
@@ -1675,7 +1676,7 @@ section { padding: 80px 0; }
 .fb-video-frame {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 */
+  padding-top: 177.78%; /* 9:16 Reels */
   background: #0f1320;
   overflow: hidden;
 }
@@ -1740,22 +1741,30 @@ a.fb-video-cta-card:hover {
   text-align: center;
   color: var(--white);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.5;
 }
 .fb-video-cta-text small {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   opacity: 0.9;
   margin-top: 8px;
 }
 
+/* 4 → 2 → 1 columns as viewport narrows (cards are portrait 9:16) */
+@media (max-width: 1024px) {
+  .fb-video-grid { grid-template-columns: repeat(2, 1fr); }
+  .fb-video-cta-text { font-size: 18px; }
+}
 @media (max-width: 768px) {
   .fb-follow-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
   .fb-follow-btn { width: 100%; justify-content: center; }
   .fb-dual-inner { flex-direction: column; align-items: stretch; padding: 24px; }
   .fb-dual-actions { width: 100%; }
   .fb-dual-btn { flex: 1; justify-content: center; }
+}
+@media (max-width: 560px) {
   .fb-video-grid { grid-template-columns: 1fr; gap: 20px; }
+  .fb-video-cta-text { font-size: 20px; }
 }
 
