@@ -199,3 +199,25 @@ Cleanup pass executed across commits `972644e`, `f9cc41b`, `b323d46`. The follow
 
 ### Numbering oddity (not a cleanup item)
 - `images/iflocus-XX.jpg` series goes 56–62, then jumps to 64. `iflocus-63.jpg` does not exist on disk and is not referenced anywhere — confirmed below (D-3 check). Likely an intentional skip, not a missing upload.
+
+---
+
+## 9. 後續業務面建議
+
+### FB 影片版權阻擋：reel/952985710920051(桃氣啦啦隊澳門銀河)
+
+此 reel 在嵌入測試時，FB iframe 回報「無法使用 — 此影片含有屬於其他人的內容」。診斷為 BGM 第三方版權阻擋（試過官方 FB embed generator 的精確 src 含 `width=267 height=476 t=0` 參數，結果一致 — 確認不是 URL syntax，而是 FB 內容政策層級的限制）。
+
+**影響範圍：**
+- 此 reel 無法在任何官網或合作夥伴頁面 embed
+- 同類風險可能存在於其他「使用商業 BGM」的自製影片
+- FB 可能對含版權音樂的影片進一步限制觸及（演算法降權、自動消音、移除等）
+
+**建議向 Faye / 內容團隊反映：**
+- 未來自製影片優先使用免授權音樂（YouTube Audio Library、Epidemic Sound、Artlist、Uppbeat 等）
+- 既有影片若可重新後製，建議替換 BGM 以恢復可嵌入性
+- 拍攝現場若有商業活動 BGM 收音也屬於阻擋風險（場域應援、運動賽事尤甚），後製時可考慮蓋過或加入旁白疊軌
+
+**記錄日期：** 2026-06-01
+**Commit：** `ef783a8`（slot 1 降級 CTA 卡）
+
