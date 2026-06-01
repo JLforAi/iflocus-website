@@ -1723,22 +1723,45 @@ section { padding: 80px 0; }
 }
 
 /* "More videos" CTA card variant — same shell as a video card, no iframe.
-   touch-action: manipulation eliminates iOS WebKit's 300ms tap delay and
-   the hover-quirk that swallowed the first tap; -webkit-tap-highlight-color
-   gives Safari a visible tap feedback so users know the card responded. */
+   Tap-reliability defenses below are explained in DEV_NOTES.md under
+   "iOS Chrome tap event 吞噬陷阱". TL;DR: iPhone Safari was fine after the
+   PR #3 fix but iPhone Chrome still swallowed short taps (long-press
+   context-menu showed correct href, proving link structure was fine).
+   The fix layers three defenses so neither factor B (transition state
+   machine) nor factor C (SVG hit-test ambiguity) can fire on touch. */
 a.fb-video-cta-card {
   color: inherit;
   text-decoration: none;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  touch-action: manipulation;
+  touch-action: manipulation;              /* defense 1: kill 300ms tap delay */
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0.18);
   cursor: pointer;
+  /* NOTE: no transition here. transition is moved into the hover-only
+     @media block below so touch devices never see a transitioning element,
+     which is what iOS Chrome's stricter click-state-machine could swallow. */
 }
-/* Hover effects are pointer-only — iOS treats a tap as hover-then-click,
-   which on some WebKit versions blocks the click. Gating via @media
-   (hover:hover) means touch devices skip the hover state and tap fires
-   straight through. */
-@media (hover: hover) {
+/* Defense 2: stop SVG and other descendants from owning the hit-test.
+   Children render visually but pointer events bubble straight to <a>,
+   removing any ambiguity that iOS Chrome's gesture recognizer could use
+   to defer / discard the click (e.g. mis-treating the tap as a candidate
+   for image-preview gesture on the SVG). */
+.fb-video-cta-card * {
+  pointer-events: none;
+}
+/* …but the anchor itself must remain hittable. Re-enabling at higher
+   specificity than the wildcard above. */
+a.fb-video-cta-card {
+  pointer-events: auto;
+}
+/* Defense 3: hover styles AND the transition only attach when the user
+   has a fine pointer (mouse). Coarse pointers (touch) skip the entire
+   block, so touch devices have neither :hover synthesis nor a transition
+   state for the click to get swallowed by. The `and (pointer: fine)` is
+   extra belt-and-braces over `(hover: hover)` alone, since some browser
+   builds have historically been inconsistent on hover-media reporting. */
+@media (hover: hover) and (pointer: fine) {
+  a.fb-video-cta-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
   a.fb-video-cta-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 28px rgba(0,102,204,0.18);
@@ -1764,9 +1787,8 @@ a.fb-video-cta-card {
   background: linear-gradient(135deg, var(--accent) 0%, #cc5200 100%);
 }
 
-/* Per-variant hover shadow — only fires on fine pointers
-   (gated above in @media (hover: hover) wrapper). */
-@media (hover: hover) {
+/* Per-variant hover shadow — fine pointer only (same gating as above). */
+@media (hover: hover) and (pointer: fine) {
   a.fb-video-cta-card--blue:hover { box-shadow: 0 8px 28px rgba(0,102,204,0.28); }
   a.fb-video-cta-card--purple:hover { box-shadow: 0 8px 28px rgba(147,51,234,0.28); }
   a.fb-video-cta-card--dark:hover { box-shadow: 0 8px 28px rgba(31,41,55,0.35); }
