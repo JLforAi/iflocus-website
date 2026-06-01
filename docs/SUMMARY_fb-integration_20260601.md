@@ -171,3 +171,22 @@ Thumbs.db
 ---
 
 **Next step**: tell me which rows under §7【可直接刪除】and【建議刪除但請確認】to remove. I'll then `git rm` them, update `.gitignore`, run a final preview check across all pages, and make the `chore:` commit.
+
+---
+
+## 8. 未清理項目 — 7/1 後評估
+
+Cleanup pass executed across commits `972644e`, `f9cc41b`, `b323d46`. The following were **intentionally left in place** for now and should be re-evaluated after 7/1 launch stabilises:
+
+### Assets retained pending future use
+- `images/page-assets/` — 7 unused but purposefully-named files (`brand-team-joseph.jpg`, `brand-team-faye.jpg`, `brand-service-overview.jpg`, `video-case-links-1.jpg`, `video-case-links-2.jpg`, `video-hero-clean.jpg`, `sports-impact-plan.jpg`). Look like pre-staged assets for sections not yet wired up.
+- `images/external/` orphans deferred — 20 files: `great-case-02/03/06/07.png`, `nissen.png`, the `2022/12/*` long-tail (10 files), and `2023/07/iFLocus-網頁-v3-*` (5 files). All 0 references, but kept because they may be needed as a content-pass restores history pages.
+
+### Already gitignored — disk cleanup deferred
+- `change-log.md`, `hidden-pages-ppt-classification.md` — ignored from version control, still on disk.
+- `internal/` — survey / clicks runners + test fixtures. Treated as live ops tooling pending confirmation.
+- `backups/site-before-influence-marketing-20260429-180103/` — 2.3 MB snapshot. Reclaim after 7/1.
+- `LOGO/` — 12 MB design source masters. Keep on disk; gitignored already.
+
+### Numbering oddity (not a cleanup item)
+- `images/iflocus-XX.jpg` series goes 56–62, then jumps to 64. `iflocus-63.jpg` does not exist on disk and is not referenced anywhere — confirmed below (D-3 check). Likely an intentional skip, not a missing upload.
