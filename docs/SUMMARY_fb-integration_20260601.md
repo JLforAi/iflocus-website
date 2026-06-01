@@ -149,7 +149,7 @@ Verified via `python -m http.server` preview at native (532 px) and forced 1280 
 | Path | Why uncertain |
 |---|---|
 | Pre-existing un-staged style.css tweaks (`.hero-sports` lines 745–755 area) | See §6. Not a file to delete — a diff to decide on. |
-| 4 untracked `images/external/2016-09 / 2017-07 / 2017-08/*` files in your initial git status (活動頁 / 智慧城市展 / 飛利浦_北六_banner) | These filenames appear referenced in case pages (grep hits in `case-studies.html`, `case-event.html`, `case-leisure.html`, `case-3c.html`), so they look in-use — likely just need `git add`. Confirm and stage. |
+| 4 untracked `images/external/2016-09 / 2017-07 / 2017-08/*` files in your initial git status | **Corrected after per-file grep audit (was previously listed wrong here as "all 4 in-use").** Actual situation: 2 in-use, 2 orphans. — `2017/07/資策會_智慧城市展_Diamond-Push.jpg` and `2017/07/資策會_智慧城市展_活動頁.jpg` are referenced from `case-leisure.html`. — `2016/09/活動頁.2jpg.jpg` (malformed double-extension save accident) and `2017/08/飛利浦_北六_banner.jpg` (0 grep hits; the HTML references `飛利浦_四六_banner.jpg`, a separate existing file). Resolved in commit `972644e`: 2 in-use added to version control, 2 orphans deleted. |
 
 ### 【未掃描 / 超出本任務範圍】
 
