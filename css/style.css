@@ -1722,19 +1722,57 @@ section { padding: 80px 0; }
   border-top: 1px solid var(--border);
 }
 
-/* "More videos" CTA card variant — same shell as a video card, no iframe */
+/* "More videos" CTA card variant — same shell as a video card, no iframe.
+   touch-action: manipulation eliminates iOS WebKit's 300ms tap delay and
+   the hover-quirk that swallowed the first tap; -webkit-tap-highlight-color
+   gives Safari a visible tap feedback so users know the card responded. */
 a.fb-video-cta-card {
   color: inherit;
   text-decoration: none;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.18);
+  cursor: pointer;
 }
-a.fb-video-cta-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(0,102,204,0.18);
+/* Hover effects are pointer-only — iOS treats a tap as hover-then-click,
+   which on some WebKit versions blocks the click. Gating via @media
+   (hover:hover) means touch devices skip the hover state and tap fires
+   straight through. */
+@media (hover: hover) {
+  a.fb-video-cta-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,102,204,0.18);
+  }
 }
 .fb-video-cta-frame {
+  /* default = blue, kept for back-compat if no modifier present */
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
 }
+
+/* Color modifiers (BEM-style) on the anchor; descendant selectors
+   override the frame background. */
+.fb-video-cta-card--blue .fb-video-cta-frame {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+.fb-video-cta-card--purple .fb-video-cta-frame {
+  background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%);
+}
+.fb-video-cta-card--dark .fb-video-cta-frame {
+  background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);
+}
+.fb-video-cta-card--featured .fb-video-cta-frame {
+  background: linear-gradient(135deg, var(--accent) 0%, #cc5200 100%);
+}
+
+/* Per-variant hover shadow — only fires on fine pointers
+   (gated above in @media (hover: hover) wrapper). */
+@media (hover: hover) {
+  a.fb-video-cta-card--blue:hover { box-shadow: 0 8px 28px rgba(0,102,204,0.28); }
+  a.fb-video-cta-card--purple:hover { box-shadow: 0 8px 28px rgba(147,51,234,0.28); }
+  a.fb-video-cta-card--dark:hover { box-shadow: 0 8px 28px rgba(31,41,55,0.35); }
+  a.fb-video-cta-card--featured:hover { box-shadow: 0 8px 28px rgba(255,102,0,0.28); }
+}
+
 .fb-video-cta-text {
   position: absolute;
   inset: 0;
@@ -1756,16 +1794,21 @@ a.fb-video-cta-card:hover {
   margin-top: 8px;
 }
 
-/* Featured variant — accent (orange) instead of primary (blue),
-   with icon + action line for additional visual weight. */
-.fb-video-cta-frame-featured {
-  background: linear-gradient(135deg, var(--accent) 0%, #cc5200 100%);
-}
+/* Inline SVG icon above the heading — white-translucent so it sits
+   on top of any variant's gradient without clashing. */
 .fb-video-cta-icon {
-  font-size: 36px;
-  margin-bottom: 4px;
+  display: inline-flex;
+  margin-bottom: 10px;
   line-height: 1;
+  color: rgba(255,255,255,0.92);
 }
+.fb-video-cta-icon svg {
+  width: 48px;
+  height: 48px;
+  stroke-width: 1.6;
+}
+
+/* Featured-only "action pill" under the main text. */
 .fb-video-cta-action {
   display: inline-block;
   margin-top: 16px;
@@ -1776,9 +1819,6 @@ a.fb-video-cta-card:hover {
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
-}
-a.fb-video-cta-featured:hover {
-  box-shadow: 0 8px 28px rgba(255,102,0,0.28);
 }
 
 /* 4 → 2 → 1 columns as viewport narrows (cards are portrait 9:16) */
