@@ -34,20 +34,29 @@ Task 7 cleanup commit is **not** made yet — awaiting Joseph's confirmation on 
 
 ## 3. Video slots — final state
 
-All placeholders replaced as of commit `bc39178`:
+Updated after the FB embed sweep that started at `bc39178` and finalised at `b565682` (and the slot-1 rollback that supersedes it).
 
-| Slot | File | Content | Source URL |
-|---|---|---|---|
-| OMO 1 | iflocus.html | iframe | `facebook.com/reel/1537253340875553/` |
-| OMO 2 | iflocus.html | iframe | `facebook.com/reel/1176132454682873/` |
-| OMO 3 | iflocus.html | iframe | `facebook.com/LOCUS.iFLocus/posts/pfbid0wEbGhVZUm8Go4ucFjyPYwqh8kLS698QwBTD8zwWaeRQmsdcDNrLSqK8TTxtKpn6rl` |
-| OMO 4 | iflocus.html | CTA card「更多影片 → 前往 iFLocus 粉絲團」 | links to fanpage |
-| SPORTS 1 | sports-marketing.html | iframe | `facebook.com/reel/952985710920051/` |
-| SPORTS 2–4 | sports-marketing.html | CTA cards「更多運動行銷案例請至粉絲團 →」 | each links to fanpage |
+### iFLocus OMO (`iflocus.html`) — 3 videos + 1 featured CTA + 1 generic CTA? No, exactly 4 cells:
 
-Captions are still `[案例名稱] - 簡短說明` — replace those when you have copy.
+| Slot | Content | Source / target |
+|---|---|---|
+| 1 | iframe | `facebook.com/reel/1537253340875553/` |
+| 2 | iframe | `facebook.com/reel/1176132454682873/` |
+| 3 | **Featured CTA card** (orange, 📌 icon) | links to `share/p/1CrVxP9hy2/` — original embed failed because plugins/video.php cannot resolve the video stream from a `/posts/pfbid…` URL, so this slot was repurposed as a high-emphasis CTA pointing to the underlying post |
+| 4 | Generic CTA card (blue) | links to fanpage |
 
-**Captions to fill:** search each file for `[案例名稱]` — 3 occurrences in iflocus.html (slots 1–3) and 1 in sports-marketing.html (slot 1). The CTA cards have their own descriptive captions and don't need editing.
+### 運動行銷 (`sports-marketing.html`) — 1 video + 3 generic CTAs
+
+| Slot | Content | Source / target |
+|---|---|---|
+| 1 | Generic CTA card | links to fanpage — reel `952985710920051` was attempted here but FB blocks embedding ("無法使用 — 含有屬於其他人的內容", likely BGM copyright). URL params (`width/height/t=0`) make no difference: this is content-policy, not URL-syntax |
+| 2 | Generic CTA card | post `pfbid0Vkm4az…` was attempted here but produced the same `/posts/pfbid…` failure as the original OMO slot 3 |
+| 3 | iframe | `facebook.com/reel/1920276022041641/` — only sports embed that works |
+| 4 | Generic CTA card | links to fanpage |
+
+> Note: the sports cards render in physical order CTA / CTA / Video / CTA. Visually awkward; consider moving slot 3's video to slot 1 in a follow-up commit so the page leads with content.
+
+**Captions still need copy** — search each file for `[案例名稱]` or `[運動案例` placeholders.
 
 ### iframe template (if you need to swap a URL later)
 
@@ -118,7 +127,7 @@ Verified via `python -m http.server` preview at native (532 px) and forced 1280 
 
 ## 6. Flags for Joseph
 
-- **sports-marketing.html is short.** Even with the new video grid, the page is content-light (5 sections total). The video block fills the bottom acceptably, but the page would benefit from a body-content expansion (KOL/運動女力 examples, packages, FAQ). **Per your instruction, I did not invent copy** — flagging for Faye's content pass as a separate task.
+- **sports-marketing.html is short.** Even with the video grid, the page is content-light (5 sections total). The video block adds bottom weight but ended up as only 1 playable iframe + 3 CTA cards because two intended Reels failed FB-side embed checks (one BGM copyright, one mixed-post-format limitation — see §3). Page would still benefit from body-content expansion (KOL/運動女力 examples, packages, FAQ). **Per your instruction, I did not invent copy** — flagging for Faye's content pass as a separate task.
 - **`css/style.css` had pre-existing un-staged tweaks** to `.page-hero.hero-scenic.hero-sports` (background-color/size/position) from before this session. I kept those out of the FB commits so they remain un-staged exactly as you found them. Decide separately whether to commit / discard.
 - **GA placeholder.** `contact_us.html` still has `GA_MEASUREMENT_ID` literally hardcoded (lines 26–32). Not in scope for this branch — flagging because it'll matter for 7/1.
 
