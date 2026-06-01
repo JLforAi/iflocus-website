@@ -1572,3 +1572,156 @@ section { padding: 80px 0; }
 
 /* Note: prefers-reduced-motion safeguard intentionally omitted —
    the tap animation is the core demo for this page. */
+
+/* ===== Facebook integration ===== */
+
+/* Footer FB link upgrade */
+.footer-fb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-fb-icon {
+  flex-shrink: 0;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+.footer-fb-link:hover .footer-fb-icon { opacity: 1; }
+
+/* Homepage FB follow strip */
+.fb-follow-strip {
+  background: var(--bg-light);
+  padding: 56px 24px;
+}
+.fb-follow-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.fb-follow-text h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.fb-follow-text p {
+  font-size: 15px;
+  color: var(--text-light);
+  margin: 0;
+  max-width: 560px;
+}
+.fb-follow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Contact page FB / Messenger dual entry */
+.fb-dual-section {
+  padding: 48px 24px 0;
+}
+.fb-dual-inner {
+  background: linear-gradient(135deg, #f5f8ff 0%, #eaf1ff 100%);
+  border: 1px solid #d9e6ff;
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.fb-dual-text h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+.fb-dual-text p {
+  font-size: 14px;
+  color: var(--text-light);
+  margin: 0;
+}
+.fb-dual-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.fb-dual-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* FB video case section */
+.fb-video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+.fb-video-card {
+  margin: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.fb-video-frame {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 */
+  background: #0f1320;
+  overflow: hidden;
+}
+.fb-video-frame > iframe,
+.fb-video-frame > .fb-video {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0;
+}
+.fb-video-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  text-align: center;
+  color: rgba(255,255,255,0.85);
+  background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+}
+.fb-video-fallback p {
+  font-size: 14px;
+  margin: 0;
+}
+/* Hide fallback when an iframe sibling is present and loaded */
+.fb-video-frame > iframe + .fb-video-fallback,
+.fb-video-frame > .fb-video + .fb-video-fallback {
+  display: none;
+}
+.fb-video-card figcaption {
+  padding: 14px 18px 18px;
+  font-size: 14px;
+  color: var(--text-light);
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .fb-follow-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .fb-follow-btn { width: 100%; justify-content: center; }
+  .fb-dual-inner { flex-direction: column; align-items: stretch; padding: 24px; }
+  .fb-dual-actions { width: 100%; }
+  .fb-dual-btn { flex: 1; justify-content: center; }
+  .fb-video-grid { grid-template-columns: 1fr; gap: 20px; }
+}
+
