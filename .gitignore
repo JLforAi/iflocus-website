@@ -20,3 +20,25 @@ backups/
 # Internal docs not for deployment
 hidden-pages-ppt-classification.md
 change-log.md
+
+# Scratch / intermediate
+.tmp/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Generic temp / backup
+*.bak
+*.tmp
+
+# Node / build output
+node_modules/
+.cache/
+dist/
