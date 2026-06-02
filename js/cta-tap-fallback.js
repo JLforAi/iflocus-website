@@ -45,7 +45,7 @@
     // Selector covers every anchor we've explicitly opted in to the
     // touchend-based navigation safety net. Add new entries here when a
     // new CTA anchor is introduced that needs the same reliability.
-    var cards = document.querySelectorAll('a.fb-video-cta-card, a.news-header-fb-btn');
+    var cards = document.querySelectorAll('a.fb-video-cta-card, a.fb-cta-pill');
     if (!cards.length) return;
 
     Array.prototype.forEach.call(cards, function (card) {
