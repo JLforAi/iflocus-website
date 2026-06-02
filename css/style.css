@@ -1593,36 +1593,52 @@ section { padding: 80px 0; }
 }
 .footer-fb-link:hover .footer-fb-icon { opacity: 1; }
 
-/* Homepage FB follow strip */
-.fb-follow-strip {
-  background: var(--bg-light);
-  padding: 56px 24px;
-}
-.fb-follow-inner {
+/* Homepage 最新動態 header row — title left + FB button right on desktop,
+   stacked centered on mobile. Replaces the older .fb-follow-strip section
+   (removed in the same commit as a duplicate of news + fanpage CTA). */
+.news-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
   flex-wrap: wrap;
+  gap: 16px 24px;
+  margin-bottom: 12px;
 }
-.fb-follow-text h2 {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: var(--text);
+.news-header-title {
+  margin-bottom: 0;
+  text-align: left;
+  flex: 1 1 auto;
 }
-.fb-follow-text p {
-  font-size: 15px;
-  color: var(--text-light);
-  margin: 0;
-  max-width: 560px;
-}
-.fb-follow-btn {
+.news-header-fb-btn {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  flex-shrink: 0;
   white-space: nowrap;
+  /* Same tap-reliability baseline as .fb-video-cta-card so this anchor
+     behaves consistently on touch devices. */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.18);
+}
+/* SVG icon inside the button should not own the hit-test on iOS Chrome
+   (same gesture-disambiguation reasoning as the CTA card fix). */
+.news-header-fb-btn > svg {
+  pointer-events: none;
+}
+@media (max-width: 768px) {
+  .news-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .news-header-title {
+    text-align: center;
+  }
+  .news-header-fb-btn {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+  }
 }
 
 /* Contact page FB / Messenger dual entry */
@@ -1849,8 +1865,6 @@ a.fb-video-cta-card {
   .fb-video-cta-text { font-size: 18px; }
 }
 @media (max-width: 768px) {
-  .fb-follow-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
-  .fb-follow-btn { width: 100%; justify-content: center; }
   .fb-dual-inner { flex-direction: column; align-items: stretch; padding: 24px; }
   .fb-dual-actions { width: 100%; }
   .fb-dual-btn { flex: 1; justify-content: center; }
