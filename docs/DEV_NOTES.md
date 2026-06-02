@@ -48,6 +48,39 @@ CSS 三道防線 deploy 後 Joseph iPhone Chrome 真機測試 **仍失敗**。Sa
 
 **Spotted while (PR #5):** PR #4 deploy 完成後 Joseph 真機 ground truth 驗收,Chrome 仍 dead。
 
+### 🎯 真相揭曉與結案(2026-06-01)
+
+經 Joseph 用「**有 FB App 的同事手機**」對照測試,確認真正原因:
+
+**iOS Chrome 對 `facebook.com` 跨域跳轉的協定攔截:**
+- 用戶有 FB App → iOS Chrome 喚起 App ✅
+- 用戶沒有 FB App → 無 fallback,呈現「無反應」❌
+- iOS Safari → 系統預設瀏覽器有特殊權限,fallback 到網頁 ✅
+
+**原診斷(click event 吞噬、hover quirk、transition state machine、SVG hit-test 歧義)方向皆錯**。PR #3 / #4 / #5 的修法未解原問題。
+
+**影響範圍:** 全站訪客 < 1%(iOS Chrome 且未裝 FB App 的交集)。此族群仍可長按複製連結、或切 Safari 開啟。
+
+**結案決議:不 revert 任何 PR**,理由:
+
+1. **SEO/a11y 實質影響為 0**
+   - `<a href>` 標籤完整保留,搜尋引擎正常識別
+   - 螢幕閱讀器走 click 路徑,JS 不干擾
+   - 鍵盤 Tab + Enter 操作不受影響
+
+2. **帶來實質改善**
+   - CTA 卡視覺差異化(產品需求)
+   - `touch-action: manipulation` 提升一般觸控反應
+   - 其他瀏覽器 click event 異常 case 仍有保護
+
+3. **完整除錯歷程作為工程資產**
+
+**教訓:**
+
+- Web bug 真機驗證務必涵蓋「最小可重現環境」,包括「**沒裝相關 App**」這種看似不重要的條件
+- Chrome DevTools 模擬與單一真機都無法覆蓋「**App 喚起**」這類 OS 層級交互行為
+- 跨 App 跳轉(`facebook://`、`line://`、`whatsapp://` 等)未來實作時應**先評估「沒裝對應 App 的 fallback 行為」**
+
 ---
 
 ## Git Bash on Windows 中文路徑陷阱
