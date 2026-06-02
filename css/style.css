@@ -1593,51 +1593,38 @@ section { padding: 80px 0; }
 }
 .footer-fb-link:hover .footer-fb-icon { opacity: 1; }
 
-/* Homepage 最新動態 header row — title left + FB button right on desktop,
-   stacked centered on mobile. Replaces the older .fb-follow-strip section
-   (removed in the same commit as a duplicate of news + fanpage CTA). */
-.news-header {
+/* Prominent FB pill CTA — used on the homepage between 最新動態 subtitle
+   and the news cards, and on news.html at the top + bottom of the page.
+   Centered, large, brand-blue, with the same tap-reliability baseline
+   as the CTA cards (DEV_NOTES iOS Chrome entry). */
+.fb-cta-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px 24px;
-  margin-bottom: 12px;
+  justify-content: center;
+  margin: 28px 0 32px;
 }
-.news-header-title {
-  margin-bottom: 0;
-  text-align: left;
-  flex: 1 1 auto;
-}
-.news-header-fb-btn {
-  flex-shrink: 0;
+.fb-cta-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  padding: 14px 32px;
+  font-size: 17px;
+  border-radius: 12px;
   white-space: nowrap;
-  /* Same tap-reliability baseline as .fb-video-cta-card so this anchor
-     behaves consistently on touch devices. */
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0.18);
 }
-/* SVG icon inside the button should not own the hit-test on iOS Chrome
-   (same gesture-disambiguation reasoning as the CTA card fix). */
-.news-header-fb-btn > svg {
+/* SVG icon must not own the hit-test on iOS Chrome (gesture
+   disambiguation discards short taps that land on SVG). */
+.fb-cta-pill > svg {
   pointer-events: none;
 }
-@media (max-width: 768px) {
-  .news-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  .news-header-title {
-    text-align: center;
-  }
-  .news-header-fb-btn {
+@media (max-width: 560px) {
+  .fb-cta-pill {
     width: 100%;
     max-width: 320px;
     justify-content: center;
+    padding: 13px 24px;
+    font-size: 16px;
   }
 }
 
