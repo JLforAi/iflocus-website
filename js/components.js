@@ -82,7 +82,7 @@ const FOOTER_HTML = `
       <ul>
         <li><a href="mailto:sales@iflocus.com">sales@iflocus.com</a></li>
         <li style="color:rgba(255,255,255,0.5);font-size:13px;padding:6px 0">台北市中山區松江路87號11樓</li>
-        <li><a href="https://www.facebook.com/LOCUS.iFLocus" target="_blank" rel="noopener noreferrer" class="footer-fb-link" aria-label="追蹤 iFLocus 粉絲團（另開新視窗）"><svg class="footer-fb-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13.5 22v-8h2.7l.4-3.1h-3.1V8.9c0-.9.3-1.5 1.5-1.5h1.6V4.6c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.5H7.8V14h2.7v8h3z"/></svg><span>追蹤 iFLocus 粉絲團</span></a></li>
+        <li><a href="https://www.facebook.com/LOCUS.iFLocus" target="_blank" rel="noopener noreferrer" class="footer-fb-link" aria-label="追蹤 LOCUS 粉絲團（另開新視窗）"><svg class="footer-fb-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13.5 22v-8h2.7l.4-3.1h-3.1V8.9c0-.9.3-1.5 1.5-1.5h1.6V4.6c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.5H7.8V14h2.7v8h3z"/></svg><span>追蹤 LOCUS 粉絲團</span></a></li>
         <li><a href="https://ps.adlocus.com/" target="_blank">操作平台</a></li>
       </ul>
     </div>
