@@ -466,6 +466,18 @@ section { padding: 80px 0; }
   margin-top: 48px;
 }
 
+/* Modifier: force exactly 3 columns at desktop/tablet. Use on grids
+   with 6 items so they render 3+3 (matches the symmetry of 3 cols
+   on tablet that auto-fit reaches naturally) instead of the 4+2 the
+   default would give at 1280px. Mobile (≤768px) inherits the base
+   1-column override from the existing @media rule. */
+.features-grid--3col {
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 768px) {
+  .features-grid--3col { grid-template-columns: 1fr; }
+}
+
 .feature-item {
   text-align: center;
   padding: 32px 24px;
