@@ -40,6 +40,13 @@
     .stat-bullets .item .desc { font-size:12px; color:var(--text-light); }
 
     .strategy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:32px; }
+    /* 4-col modifier for the 4-item 推播廣告版位 grid so it renders 4+0
+       instead of 3+1. Tablet (≤1024) drops to 2+2, mobile to 1 col
+       via the existing @media block below. */
+    .strategy-grid--4col { grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 1024px) {
+      .strategy-grid--4col { grid-template-columns: repeat(2, 1fr); }
+    }
     .strategy-card { background:#fff; border:1px solid var(--border); border-radius:14px; padding:28px; }
     .strategy-card .icon { font-size:32px; margin-bottom:12px; }
     .strategy-card h3 { font-size:17px; font-weight:800; margin-bottom:10px; color:var(--primary); }
@@ -73,6 +80,7 @@
       .traditional-vs .plus { padding: 8px 0; }
       .stat-bullets { grid-template-columns: repeat(2, 1fr); }
       .strategy-grid { grid-template-columns: 1fr; }
+      .strategy-grid--4col { grid-template-columns: 1fr; }
       .cycle-timeline { grid-template-columns: 1fr 1fr; }
       .cycle-timeline::before { display:none; }
     }
@@ -229,7 +237,7 @@
     <h2 class="section-title">推播<span class="section-title-accent">廣告版位</span></h2>
     <p class="section-subtitle">多種版位選擇,涵蓋 Android 與 iOS 全平台</p>
 
-    <div class="strategy-grid">
+    <div class="strategy-grid strategy-grid--4col">
       <div class="strategy-card">
         <div class="icon">💎</div>
         <h3>Diamond Push 鑽石推播</h3>
@@ -358,7 +366,7 @@
   <div class="inner">
     <h2 class="section-title">配合其他<span class="section-title-accent">數位行銷工具</span></h2>
     <p class="section-subtitle">手機推播 + 社群行銷 + 影音內容 + 知名度曝光,效益加倍</p>
-    <div class="features-grid">
+    <div class="features-grid features-grid--3col">
       <div class="feature-item">
         <span class="feature-icon">📘</span>
         <h3 class="feature-title">FB 粉絲頁 / 貼文</h3>
