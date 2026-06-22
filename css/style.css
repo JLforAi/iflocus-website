@@ -290,15 +290,29 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 .btn-primary {
-  background: var(--primary);
-  color: var(--white);
-  border-color: var(--primary);
+  background: var(--brand-fill);
+  color: var(--brand-on-fill);
+  border-color: var(--brand-fill);
 }
 .btn-primary:hover {
-  background: var(--primary-dark);
-  border-color: var(--primary-dark);
+  background: var(--brand-fill-hover);
+  border-color: var(--brand-fill-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,102,204,0.35);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--brand-500) 35%, transparent);
+}
+
+/* 骨架護欄：nav / footer 內若出現 .btn-primary，強制維持 LOCUS 藍（不吃 data-brand）。
+   目前骨架未使用 .btn-primary，此規則為未來防護。 */
+.site-header .btn-primary,
+.site-footer .btn-primary {
+  background: var(--locus-500);
+  border-color: var(--locus-500);
+  color: #FFFFFF;
+}
+.site-header .btn-primary:hover,
+.site-footer .btn-primary:hover {
+  background: var(--locus-600);
+  border-color: var(--locus-600);
 }
 
 .btn-outline {
@@ -312,15 +326,16 @@ img { max-width: 100%; height: auto; display: block; }
   border-color: var(--white);
 }
 
+/* 次要鈕：外框型品牌色（清掉 #ff6600；底色/文字/框吃 --brand-*） */
 .btn-accent {
-  background: var(--accent);
-  color: var(--white);
-  border-color: var(--accent);
+  background: var(--brand-tint);
+  color: var(--brand-text);
+  border: 1.5px solid var(--brand-500);
 }
 .btn-accent:hover {
-  background: #cc5200;
+  background: var(--brand-100);
+  border-color: var(--brand-600);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255,102,0,0.35);
 }
 
 /* ===== SECTIONS ===== */
@@ -352,7 +367,7 @@ section { padding: 80px 0; }
 }
 
 .section-title-accent {
-  color: var(--primary);
+  color: var(--brand-text);
 }
 
 /* ===== CARDS ===== */
@@ -416,7 +431,7 @@ section { padding: 80px 0; }
 .stat-number {
   font-size: clamp(36px, 5vw, 56px);
   font-weight: 800;
-  color: var(--primary);
+  color: var(--brand-text);
   line-height: 1;
   margin-bottom: 8px;
 }
@@ -501,13 +516,13 @@ section { padding: 80px 0; }
   transition: all 0.3s;
 }
 .feature-item:hover {
-  background: var(--primary);
-  color: var(--white);
+  background: var(--brand-fill);
+  color: var(--brand-on-fill);
   transform: translateY(-4px);
 }
 .feature-item:hover .feature-icon { filter: brightness(10); }
 .feature-item:hover .feature-title,
-.feature-item:hover .feature-text { color: var(--white); }
+.feature-item:hover .feature-text { color: var(--brand-on-fill); }
 
 .feature-icon {
   font-size: 48px;
@@ -907,7 +922,7 @@ section { padding: 80px 0; }
 }
 
 .pricing-card.featured {
-  border-color: var(--primary);
+  border-color: var(--brand-500);
   transform: scale(1.04);
 }
 
@@ -916,8 +931,8 @@ section { padding: 80px 0; }
   top: -14px;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--primary);
-  color: var(--white);
+  background: var(--brand-fill);
+  color: var(--brand-on-fill);
   font-size: 12px;
   font-weight: 700;
   padding: 5px 18px;
@@ -928,7 +943,7 @@ section { padding: 80px 0; }
 .pricing-plan {
   font-size: 13px;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--brand-text);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 8px;
@@ -970,7 +985,7 @@ section { padding: 80px 0; }
 
 .pricing-features li::before {
   content: '✓';
-  color: var(--primary);
+  color: var(--brand-500);
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -1106,7 +1121,7 @@ section { padding: 80px 0; }
 
 .form-group input:focus,
 .form-group textarea:focus {
-  border-color: var(--primary);
+  border-color: var(--brand-500);
   outline: none;
   background: var(--white);
 }
@@ -1117,8 +1132,8 @@ section { padding: 80px 0; }
 .tag {
   display: inline-block;
   padding: 4px 12px;
-  background: rgba(0,102,204,0.1);
-  color: var(--primary);
+  background: var(--brand-tint);
+  color: var(--brand-text);
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
@@ -1173,8 +1188,8 @@ section { padding: 80px 0; }
 
 /* ===== HIGHLIGHT BOX ===== */
 .highlight-box {
-  background: linear-gradient(135deg, rgba(0,102,204,0.08), rgba(0,102,204,0.02));
-  border-left: 4px solid var(--primary);
+  background: linear-gradient(135deg, var(--brand-tint), transparent);
+  border-left: 4px solid var(--brand-500);
   border-radius: 0 12px 12px 0;
   padding: 24px 28px;
   margin: 24px 0;
@@ -1197,8 +1212,8 @@ section { padding: 80px 0; }
 .step-num {
   flex-shrink: 0;
   width: 44px; height: 44px;
-  background: var(--primary);
-  color: var(--white);
+  background: var(--brand-fill);
+  color: var(--brand-on-fill);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1437,7 +1452,7 @@ section { padding: 80px 0; }
 
 /* ===== UTILITIES ===== */
 .text-center { text-align: center; }
-.text-primary { color: var(--primary); }
+.text-primary { color: var(--brand-text); }
 .bg-light { background: var(--bg-light); }
 .bg-dark { background: var(--bg-dark); color: var(--white); }
 .mt-8 { margin-top: 8px; }
@@ -1815,7 +1830,7 @@ a.fb-video-cta-card {
   background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);
 }
 .fb-video-cta-card--featured .fb-video-cta-frame {
-  background: linear-gradient(135deg, var(--accent) 0%, #cc5200 100%);
+  background: linear-gradient(135deg, #EB9520 0%, #C97B12 100%);
 }
 
 /* Per-variant hover shadow — fine pointer only (same gating as above). */
@@ -1823,7 +1838,7 @@ a.fb-video-cta-card {
   a.fb-video-cta-card--blue:hover { box-shadow: 0 8px 28px rgba(0,102,204,0.28); }
   a.fb-video-cta-card--purple:hover { box-shadow: 0 8px 28px rgba(147,51,234,0.28); }
   a.fb-video-cta-card--dark:hover { box-shadow: 0 8px 28px rgba(31,41,55,0.35); }
-  a.fb-video-cta-card--featured:hover { box-shadow: 0 8px 28px rgba(255,102,0,0.28); }
+  a.fb-video-cta-card--featured:hover { box-shadow: 0 8px 28px rgba(235,149,32,0.28); }
 }
 
 .fb-video-cta-text {
