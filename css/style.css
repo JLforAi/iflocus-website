@@ -492,6 +492,27 @@ section { padding: 80px 0; }
   .features-grid--3col { grid-template-columns: 1fr; }
 }
 
+/* Modifier: render exactly 5 items as 3 (top) + 2 (centered) at
+   desktop/tablet using flex wrap + justify-content:center; collapses
+   to 1 column on mobile (≤768px). Scoped class only — leaves the base
+   .features-grid grid rules untouched. */
+.features-grid--3-2center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+}
+.features-grid--3-2center > .feature-item {
+  flex: 0 1 calc((100% - 64px) / 3);
+  max-width: calc((100% - 64px) / 3);
+}
+@media (max-width: 768px) {
+  .features-grid--3-2center > .feature-item {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}
+
 /* Homepage industries icon row (8 .industry-card items). Previously
    used an inline `auto-fit, minmax(160px, 1fr)` which renders 6 cols
    at 1280px (6+2 break). Forced to 4 cols on desktop (4+4 symmetric),
