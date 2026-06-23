@@ -1248,6 +1248,10 @@ section { padding: 80px 0; }
   margin-top: 42px;
 }
 
+/* video-production 案例牆 2×2（scoped modifier；不影響其他頁的 .ppt-gallery） */
+.ppt-gallery.ppt-gallery-2col { grid-template-columns: repeat(2, 1fr); }
+@media (max-width:640px){ .ppt-gallery.ppt-gallery-2col { grid-template-columns: 1fr; } }
+
 .ppt-card {
   background: var(--white);
   border: 1px solid var(--border);
