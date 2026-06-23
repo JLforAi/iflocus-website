@@ -14,7 +14,7 @@
 
 ### iFLocus OMO — 在地影響力人流引爆方案
 iFLocus OMO 是全方位的線上線下整合行銷（OMO）解決方案，結合 AiLocus 數據洞察、場域推播廣告與 BrandDrop 品牌頁面，協助品牌打造完整的顧客旅程體驗。
-- 頁面：https://iflocus.com/iflocus.html
+- 頁面：https://iflocus.com/iflocusOMO.html
 
 ### BrandDrop — AI 品牌頁面生成服務
 BrandDrop 是 AI 驅動的品牌頁面生成服務。只要一個想法，30 秒內生成專業一頁式品牌網站，費用僅市場均價的 1/5，不需設計師，不需工程師。

@@ -10,10 +10,10 @@ const HEADER_HTML = `
       <ul class="nav-menu" id="navMenu">
         <li><a href="index.html">首頁</a></li>
         <li class="has-dropdown">
-          <a href="iflocus.html">iFLocus ▾</a>
+          <a href="iflocusOMO.html">iFLocus ▾</a>
           <ul class="dropdown-menu">
             <li><a href="brand-philosophy.html">品牌理念</a></li>
-            <li><a href="iflocus.html">OMO應援服務</a></li>
+            <li><a href="iflocusOMO.html">OMO應援服務</a></li>
             <li><a href="sports-marketing.html">運動行銷</a></li>
             <li><a href="integrated-marketing.html">整合行銷</a></li>
             <li><a href="corporate-training.html">企業培訓</a></li>
@@ -59,7 +59,7 @@ const FOOTER_HTML = `
     <div class="footer-col">
       <h4>產品服務</h4>
       <ul>
-        <li><a href="iflocus.html">OMO應援服務</a></li>
+        <li><a href="iflocusOMO.html">OMO應援服務</a></li>
         <li><a href="ailocus.html">Ai大數據</a></li>
         <li><a href="locusad.html">場域手機推播廣告</a></li>
         <li><a href="locus_ps.html">LocusPS 企業版</a></li>
