@@ -1600,9 +1600,9 @@ section { padding: 80px 0; }
   background: #eaeaea;
 }
 .case-mockup-tabbed .mockup-tab.active {
-  background: #dd3333;
-  color: #fff;
-  border-color: #dd3333;
+  background: var(--brand-fill);
+  color: var(--brand-on-fill);
+  border-color: var(--brand-fill);
 }
 .case-mockup-tabbed .mockup-panels {
   display: flex;
