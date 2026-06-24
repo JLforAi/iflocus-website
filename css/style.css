@@ -1928,3 +1928,22 @@ a.fb-video-cta-card {
   .fb-video-cta-text { font-size: 20px; }
 }
 
+/* Reusable 3+2 centered layout — desktop renders 3 across, last row 2
+   items centered; mobile collapses to 1 column. Parent-class agnostic
+   so .features-grid / .ppt-gallery etc. can both opt in by adding this
+   class. gap 22px matches .ppt-gallery's existing gap so this can layer
+   on top without visual jump. */
+.grid-3-2center {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 22px;
+}
+.grid-3-2center > * {
+  flex: 0 1 calc((100% - 44px) / 3);
+  max-width: calc((100% - 44px) / 3);
+}
+@media (max-width: 768px) {
+  .grid-3-2center > * { flex-basis: 100%; max-width: 100%; }
+}
+
