@@ -1,0 +1,509 @@
+# Case Page Migration Playbook
+**目的**：把 `case-XXX.html`（XXX = 產業）從 adlocus.com 的對應分類完整搬過來，一次成功，含 iOS/Android/Diamond tab 切換、點擊後活動頁 crossfade、手指點擊動畫、品牌資料、圖片審核。
+
+> 這份文件是 3C 案例（case-3c.html）走過 6 輪迭代後沉澱出的「正確流程」。下次遷移其他產業時照做即可避免重踩坑。
+
+---
+
+## ⚡ 觸發指令（給未來的 Claude Code 用）
+
+把下面這段貼到 Claude Code，把 `{INDUSTRY}` / `{ADLOCUS_CAT_SLUG}` / `{CAT_ID}` 換成目標分類即可：
+
+```
+請依 CASE-PAGE-PLAYBOOK.md 的完整流程，把 case-{INDUSTRY}.html 從
+https://adlocus.com/case-studies/{ADLOCUS_CAT_SLUG}/ (cat_id={CAT_ID})
+完整遷移過來。要求：
+
+1. 用 WP REST API 抓該分類所有文章 + 每篇的隱藏「活動頁」attachment
+2. 下載所有推播圖 + 點擊後活動頁圖到 images/external/YYYY/MM/
+3. 寫成 tab + crossfade 結構（.case-mockup-tabbed 模板，CSS/JS 已在 style.css + main.js）
+4. 完成後跑圖片審核（每張 > 1KB 且視覺對題）
+5. bump cache-bust query string、commit、push
+6. 遵守用詞規則（不出現 AdLocus / 業界最高 / 營收倍增 等禁用詞）
+7. 遵守段落規則：一個 `<p>` 只放一個主題；兩個獨立概念一律拆成兩段，不要靠句號硬接
+
+完成後給我變更摘要。
+```
+
+**已知分類對照表**（adlocus.com WP REST `/wp-json/wp/v2/categories`）：
+
+| 產業 | iflocus 檔名 | adlocus slug | cat_id | 文章數 |
+|------|------------|------------|--------|------|
+| 3C 科技 | case-3c.html | consumerelectronics | 40 | 7 ✅ 已完成 |
+| 食品餐飲 | case-food.html | food | 37 | 20 |
+| 女性時尚 | case-fashion.html | female-fashion | 35 | 11 |
+| 休閒生活 | case-leisure.html | leisure | 36 | 19 |
+| 金融保險 | case-finance.html | financia-insurance | 38 | 10 |
+| 電信通訊 | case-telecom.html | telecommunications | 39 | 5 |
+| 房地產 | case-realestate.html | property | 68 | 1 |
+| 香港地區 | case-hk.html | hong-kong | 49 | 9 |
+| 會員推廣 | case-member.html | customers-promotion | 42 | 8 |
+| 名單問卷 | case-survey.html | customerlist-questionnaire | 46 | 7 |
+| 產品推廣 | case-product.html | products-promotion | 41 | 43 |
+| 優惠活動 | case-promo.html | promotional-event | 43 | 28 |
+| 實體活動 | case-event.html | events | 44 | 22 |
+| 虛實整合 | case-omo.html | online2offline | 45 | 15 |
+| 案例報告 | case-report.html | report | 112 | 1 |
+| 智慧選戰 | case-election.html | (無) | — | — |
+
+---
+
+## 📋 8 步遷移流程
+
+### Step 1：抓分類所有文章
+```bash
+CAT_ID=40   # 例：3C
+curl -sL --ssl-no-revoke \
+  "https://adlocus.com/wp-json/wp/v2/posts?categories=${CAT_ID}&per_page=50&_fields=id,title,slug,link" \
+  -o ~/stash/posts.json
+PYTHONIOENCODING=utf-8 python3 -c "
+import json,os,sys
+sys.stdout.reconfigure(encoding='utf-8')
+for p in json.load(open(os.path.expanduser('~/stash/posts.json'),encoding='utf-8')):
+    print(f\"id={p['id']:5} {p['title']['rendered']}  link={p['link']}\")"
+```
+
+### Step 2：抓每篇案例頁的 tab 結構 + finger 變體
+```bash
+# 把每個 slug 的頁面存下來
+for slug in slug-a slug-b slug-c ; do
+  curl -sL --ssl-no-revoke "https://adlocus.com/${slug}/" -o ~/stash/${slug}.html
+done
+
+PYTHONIOENCODING=utf-8 python3 << 'PY'
+import re, os, sys
+sys.stdout.reconfigure(encoding='utf-8')
+SLUGS = ['slug-a', 'slug-b', 'slug-c']
+for slug in SLUGS:
+    html = open(os.path.expanduser(f'~/stash/{slug}.html'), encoding='utf-8', errors='replace').read()
+    print(f"\n=== {slug} ===")
+    labels = re.findall(r'href=[^>]*?#(tab-[0-9-]+)[^>]*>([^<]+)<', html)
+    label_by_id = {tid: lbl for tid, lbl in labels}
+    panels = re.split(r'id=(tab-[0-9-]+)\s+class="wpb_tab', html)
+    for i in range(1, len(panels), 2):
+        tid = panels[i]
+        body = panels[i+1][:8000] if i+1 < len(panels) else ''
+        fingers = re.findall(r'finger finger(\d+)', body)
+        imgs = re.findall(r'src=(https?://adlocus\.com/wp-content/uploads/[^\s>"]+\.\w+)', body)
+        lbl = label_by_id.get(tid, '?')
+        # 前 1 張圖通常是該 tab 的推播畫面
+        print(f"    [{lbl}] finger={fingers[0] if fingers else '?'}  notify_img={imgs[0].split('/')[-1] if imgs else '?'}")
+PY
+```
+
+### Step 3：抓「點擊後活動頁」隱藏附件（**關鍵踩坑點**）
+**⚠️ 重要：AdLocus 把活動頁圖綁在 WP attachment 但不在 HTML 引用，靜態解析會漏掉。**
+
+```bash
+mkdir -p ~/stash/attachments
+for post_id in 2271 2325 2396 ; do
+  curl -sL --ssl-no-revoke \
+    "https://adlocus.com/wp-json/wp/v2/media?parent=${post_id}&per_page=50&_fields=id,title,source_url" \
+    -o ~/stash/attachments/${post_id}.json
+done
+
+PYTHONIOENCODING=utf-8 python3 << 'PY'
+import json, os, sys
+sys.stdout.reconfigure(encoding='utf-8')
+POSTS = {2271:'Panasonic', 2325:'聲寶'}
+for pid, name in POSTS.items():
+    data = json.load(open(os.path.expanduser(f'~/stash/attachments/{pid}.json'), encoding='utf-8'))
+    print(f"\n=== [{pid}] {name} — {len(data)} attachments ===")
+    for m in data:
+        title = m['title']['rendered']
+        url = m['source_url']
+        is_landing = '活動頁' in title or '详情' in title or '活动' in title
+        marker = '🎯' if is_landing else '  '
+        print(f"  {marker} id={m['id']:5} title={title!r}")
+        print(f"            url={url}")
+PY
+```
+
+`parent=None` 的 attachment（如聲寶 Diamond-PUSH.jpg）要全域搜尋：
+```bash
+curl -sL "...wp-json/wp/v2/media?search=Diamond-PUSH&per_page=20&_fields=id,title,source_url,post"
+```
+
+### Step 4：下載所有圖片
+```bash
+DEST="/g/我的雲端硬碟/iflocus-website/images/external/2017/07"  # 用 Unix path！
+mkdir -p "$DEST"
+
+# 普通檔名
+curl -sL --ssl-no-revoke "URL" -o "$DEST/filename.jpg"
+
+# CJK 檔名要 URL-encode（中文字元用 %XX%XX%XX）
+# 例：活動頁.jpg → %E6%B4%BB%E5%8B%95%E9%A0%81.jpg
+curl -sL --ssl-no-revoke \
+  "https://adlocus.com/wp-content/uploads/2017/08/KC_HK_%E4%B8%AD%E5%8E%9F%E9%9B%BB%E5%99%A8_%E6%B4%BB%E5%8B%95%E9%A0%81.jpg" \
+  -o "$DEST/KC_HK_中原電器_活動頁.jpg"
+```
+
+**並行下載多張**：用 `&` 背景化 + `wait`，明顯加速。
+
+```bash
+curl -sL ... &
+curl -sL ... &
+curl -sL ... &
+wait
+```
+
+### Step 5：視覺驗證每張圖
+**必做**。用 Read tool 打開每張新下載的圖確認內容對題。AdLocus 的「活動頁」應該是手機瀏覽器顯示品牌官網/著陸頁。常見錯認：
+- ❌ 把 banner 廣告當活動頁
+- ❌ 把產品照當推播畫面
+- ✅ 推播畫面：手機鎖屏 / 通知欄
+- ✅ 活動頁：手機瀏覽器 URL bar + 品牌官網內容
+
+```bash
+# 在 Claude 對話內：用 Read 工具打開每張圖
+# Read("G:\\我的雲端硬碟\\iflocus-website\\images\\external\\2017\\07\\Panasonic_活動頁.jpg")
+```
+
+### Step 6：寫 HTML — Tab + Crossfade 模板
+
+**模板**（每個案例的 image block 用這個結構）：
+
+```html
+<div class="case-mockup-tabbed">
+  <div class="mockup-tab-nav">
+    <button type="button" class="mockup-tab active" data-tab="ios">iOS</button>
+    <button type="button" class="mockup-tab" data-tab="android">Android</button>
+    <!-- 視該案例 AdLocus 原版 tab 數調整：可能 1-3 個 -->
+  </div>
+  <div class="mockup-panels">
+    <div class="mockup-panel active" data-tab="ios">
+      <div class="case-push-block">
+        <!-- 底層：點擊後活動頁（永遠可見） -->
+        <img class="screen-after" loading="lazy"
+             src="images/external/YYYY/MM/品牌_活動頁.jpg"
+             alt="品牌 活動頁（iOS 點擊後）" onerror="this.style.display='none'">
+        <!-- 上層：推播畫面（會淡出露出底層） -->
+        <img class="screen-before" loading="lazy"
+             src="images/external/YYYY/MM/品牌_iOS.jpg"
+             alt="品牌 iOS 推播畫面" onerror="this.style.display='none'">
+        <!-- 手指點擊動畫 -->
+        <div class="finger-code"><div class="finger fingerN"></div></div>
+      </div>
+    </div>
+    <div class="mockup-panel" data-tab="android">
+      <!-- 同上，換 Android 圖 + 對應 finger 變體 -->
+    </div>
+  </div>
+</div>
+```
+
+**規則**：
+- `screen-after` 是底層（活動頁），永遠可見
+- `screen-before` 是上層（推播畫面），會 4s 淡出露出底層
+- `fingerN`（N=1-6）對應 AdLocus 原版使用的變體
+- 沒有「點擊後活動頁」的案例（如 3C 的聲寶）只放 `screen-before`、省略 `screen-after`
+- iOS/Android/Diamond tab 數量比照 AdLocus 原版
+
+### Step 7：圖片審核（**必做**）
+```bash
+cd "/g/我的雲端硬碟/iflocus-website"
+IMGS=(
+  "images/external/2017/07/Panasonic_iOS.jpg"
+  "images/external/2017/07/Panasonic_活動頁.jpg"
+  # ... 列出所有新增圖
+)
+for img in "${IMGS[@]}"; do
+  if [ -f "$img" ]; then
+    size=$(stat -c%s "$img" 2>/dev/null)
+    [ "$size" -gt 1000 ] && echo "✅ $img ($((size/1024))K)" || echo "❌ TOO SMALL $img"
+  else
+    echo "❌ MISSING $img"
+  fi
+done
+```
+
+### Step 8：Cache-bust + Commit + Push
+- 在 case-XXX.html 的 `<link rel="stylesheet" href="css/style.css?v=YYYYMMDD-XXX">` 升版號
+- Commit 訊息描述變更（用過去的 commit 為參考）
+- `git push`，等 GitHub Pages 部署（1-3 分鐘）
+
+### Step 9：**驗證 GitHub Pages 部署成功**（**強制做，別跳過**）
+
+**踩坑教訓**：`git push` 成功不等於 Pages 部署成功。曾發生過 push 時 `.git/index.lock` 或 `AUTO_MERGE.lock` 殘留，導致 GitHub 收到 commit 但**沒有觸發 pages-build-deployment workflow**，前台繼續服務舊版內容。
+
+```bash
+# 1. 確認最新 commit 已在 origin/main
+LATEST=$(git rev-parse HEAD)
+REMOTE=$(git ls-remote origin main | awk '{print $1}')
+[ "$LATEST" = "$REMOTE" ] && echo "✅ remote=local" || echo "❌ NOT pushed"
+
+# 2. 查最新 Pages build commit 是否就是 LATEST
+gh api repos/JLforAi/iflocus-website/pages/builds/latest \
+  --jq '{commit,status,duration,created_at}'
+
+# 3. 如果 build commit ≠ LATEST，手動觸發 rebuild
+gh api -X POST repos/JLforAi/iflocus-website/pages/builds
+
+# 4. 輪詢直到 status=built
+until [ "$(gh api repos/JLforAi/iflocus-website/pages/builds/latest --jq .status)" = "built" ]; do
+  sleep 8
+done
+
+# 5. 確認前台 HTML 真的更新（用 cache-bust query string 繞過 CDN）
+curl -sL --ssl-no-revoke "https://iflocus.com/case-XXX.html?bust=$(date +%s)" \
+  -o /tmp/live.html -w "size=%{size_download}\n"
+grep -c "YYYYMMDD-XXX\|新案例 id" /tmp/live.html  # 應 > 0
+```
+
+**Pages 沒觸發部署的常見原因**：
+- 推送時 `.git/*.lock` 殘留（鎖位但 commit 仍寫入）→ 清掉後手動 `gh api -X POST .../pages/builds`
+- 工作流被 disable（檢查 repo Settings → Pages 的 Source）
+- Jekyll build error（log 看 `error_count`，但通常仍會 deploy 上次成功版）
+- **GitHub 端 codeload / Pages 服務故障**（見下節）
+
+### Step 9.1：**遇到 GitHub Pages 服務故障時的處置**（2026-05-26 踩坑）
+
+**症狀**：
+- Push 後 pages-build-deployment workflow **完全沒被觸發**（不只是 build 失敗，是 run 列表都沒有新項目）
+- 手動 `gh api -X POST .../pages/builds` 後，build 卡在 `status: building` 半小時以上不動
+- 點進 Annotations 看到 `Failed to download archive 'https://codeload.github.com/actions/upload-pages-artifact/tar.gz/...'`
+- 另一條 annotation：`Internal server error. Correlation ID: xxxx-xxxx-xxxx`
+- 即便 `actions/checkout@v4` 在其他 workflow（如 SurveyAI）跑得正常，**只有 `actions/configure-pages` / `upload-pages-artifact` / `deploy-pages` 抓不到**
+
+**這代表**：GitHub 端的 Pages 服務在抓特定 action repo 的 tarball 時故障了，**不是您的問題**（不是額度、不是 token、不是 workflow yml）。Legacy build 內部也用同一組 action，所以 legacy 跟 Actions 兩條路會同時掛掉。
+
+**正確處置順序**（**先觀察、別亂改**）：
+
+1. **先確認是 GitHub 端故障**：
+   ```bash
+   # 從本地測 codeload 是否可達（如果本地 OK 但 runner fail = GitHub 端）
+   curl -sL --ssl-no-revoke -w "%{http_code}\n" -o /dev/null \
+     "https://codeload.github.com/actions/upload-pages-artifact/tar.gz/v3"
+   # 應該回 HTTP 200。如果是，那 runner 端有問題，不是您
+   ```
+   也開瀏覽器看 https://www.githubstatus.com — 通常會公告 incident
+
+2. **不要做的事**（這次的失敗教訓）：
+   - ❌ **不要把 Pages source 切到 `gh-pages` branch**（會讓整站變 404，舊版內容也消失）
+   - ❌ 不要連續送多個試錯 commit（`configure-pages@v5` / `@v4` / `@v3`...）只會在 Actions 列表製造一堆紅 X
+   - ❌ 不要急著加 `.nojekyll` 或切 `build_type` — 不會修好 codeload 故障
+
+3. **可以做的事**：
+   - ✅ **先等 30 分鐘**，GitHub 通常自我修復
+   - ✅ **維持 Pages source = main**（即使 build errored，舊版至少還在 serve）
+   - ✅ 觀察 `gh api repos/.../pages/builds/latest` 每 5-10 分鐘看一次是否恢復
+
+4. **真的等不到時的備援**（用第三方 action 繞開）：
+   建立 `.github/workflows/pages.yml`：
+   ```yaml
+   name: Deploy static site to Pages
+   on:
+     push: { branches: ["main"] }
+     workflow_dispatch:
+   permissions:
+     contents: write
+     pages: write
+     id-token: write
+   jobs:
+     deploy:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+           with: { persist-credentials: true, fetch-depth: 0 }
+         - uses: peaceiris/actions-gh-pages@v4
+           with:
+             github_token: ${{ secrets.GITHUB_TOKEN }}
+             publish_dir: .
+             publish_branch: gh-pages
+             force_orphan: true
+             cname: iflocus.com
+   ```
+   並把 default workflow permissions 改成 write：
+   ```bash
+   gh api -X PUT repos/JLforAi/iflocus-website/actions/permissions/workflow \
+     -f default_workflow_permissions=write -F can_approve_pull_request_reviews=true
+   ```
+   `peaceiris/actions-gh-pages` 不依賴 `actions/*-pages-*`，會把整站推到 `gh-pages` branch。
+
+   **重要**：完成後 **Pages source 仍維持 = main**，等 GitHub 自我修復後 legacy build 會直接拿 main 的內容 serve 出去（這次實測就是這樣最後成功的）。
+
+**結論**：codeload 故障 ≈ GitHub 端短暫災情，**沉住氣等比急著動手強**。
+
+---
+
+## 🛠️ CSS / JS 依賴（已在專案內，不需要重寫）
+
+| 元件 | 位置 |
+|------|------|
+| `.case-mockup-tabbed` / `.mockup-tab` / `.mockup-panel` widget | `css/style.css` ~line 1320 |
+| `.case-push-block` / `.screen-before` / `.screen-after` 疊層 + crossfade | `css/style.css` ~line 1300 |
+| `.finger-code` / `.finger1`–`.finger6` 點擊動畫 | `css/style.css` ~line 1320 |
+| `pushFadout` + `fingerTap1`–`6` keyframes | `css/style.css` ~line 1340 |
+| tab 切換 JS handler | `js/main.js` ~line 180 |
+
+新案例頁只要 `<link rel="stylesheet" href="css/style.css?v=...">` + `<script src="js/main.js"></script>` 就能用。
+
+---
+
+## 🎯 Finger 變體對照表
+
+從 AdLocus CSS 的 `@keyframes fingerTap*` 提取，挑「最接近推播訊息垂直位置」的變體：
+
+| variant | tap 位置 (top%) | 推播畫面適用 |
+|---------|----------------|------------|
+| finger1 | 7%  | iOS 鎖屏最頂端 / Android 通知第一則 |
+| finger2 | 15% | iOS / Android 通知上方 |
+| finger3 | 38% | 中上 / Diamond PUSH 上半 |
+| finger4 | 32% | Android 通知欄中間 |
+| finger5 | 46% | 中下 / 大版面廣告中段 |
+| finger6 | 26% | 大版面 banner / Bose 類整版廣告 |
+
+不確定時直接看 AdLocus 原版 HTML 用哪個（步驟 2 已抓出）。
+
+---
+
+## 🚧 已知踩坑點（避免重蹈覆轍）
+
+| 坑 | 解法 |
+|----|------|
+| `/tmp/` 在 Windows shell 不持久 | 用 `~/stash/`（自己 mkdir）|
+| Python `os.path` 處理 CJK 路徑會 UnicodeError | `PYTHONIOENCODING=utf-8` + `sys.stdout.reconfigure(encoding='utf-8')` |
+| curl 在 Windows 卡 SSL 撤銷檢查 | 加 `--ssl-no-revoke` |
+| Bash `ls` 顯示 CJK 變亂碼但檔案實際 OK | 用 `find` 或 Glob tool 替代 |
+| CJK 檔名 URL 要先 url-encode 才能 curl | 用 `python3 -c "import urllib.parse;print(urllib.parse.quote('活動頁'))"` |
+| AdLocus 圖淡出露白底很醜 | **必須**用 `.screen-after` 疊底層活動頁 |
+| `prefers-reduced-motion` safeguard 會關掉動畫 | 不要加，會被 OS 設定誤殺 |
+| Style.css 有 cache → 改了沒反應 | bump `?v=YYYYMMDD-xxx` query string |
+| `data-dt-location` attachment URL 直接回傳圖 | 不是 HTML 頁，不需另外解析 |
+| WP REST `parent=POST_ID` 漏掉某些 attachment | 用 `search=keyword` 全域搜（如聲寶 Diamond-PUSH parent=None）|
+| 頁面 HTML 裡的 `<img src>` 可能包含無關圖片（別的廣告、模板裝飾圖等） | **必須以 `wp/v2/media?parent=POST_ID` 的 attachment 清單為準**，不要直接抓頁面 HTML 裡的圖 URL；attachment id 才是確認歸屬的唯一依據 |
+| `display: inline-block` 在 grid 內可能不撐滿 | 加 `width: 100%` 補回 |
+
+---
+
+## ✍️ 用詞規則（**強制遵守**）
+
+- 公司：**絡客思行銷科技** / Locus Marketing Technology CO., LTD.
+- 服務：**iFLocus** / **AiLocus**（**不是**公司名，別寫「iFLocus 絡客思行銷科技」）
+- **案例頁正文一律用 `AiLocus`**（取代舊有 `iFLocus`）；SEO meta/og 標籤亦同步改用 `AiLocus`。新建/修改 case-*.html 時禁止再出現 `iFLocus` 字樣。
+- **禁止出現** `AdLocus` 字樣（前台任何位置；URL 例外：`ps.adlocus.com`）
+- **禁用浮誇詞**：業界最高 / 營收倍增 / 業界最佳表現 → 改寫 業界領先 / 實測 / 成長
+- 中文標點全形：，。；：！？
+- 不主動加 emoji（除非用戶要求）
+
+---
+
+## 📝 段落規則（**強制遵守**）
+
+**一個段落只承載一個主題**。當一個 `<p>` 裡有兩個獨立概念時，**一律拆成兩個段落**，不要靠句號硬接在一起。
+
+- ❌ 反例：`<p>iF 代表 Influencer、If、Infinity；Locus 代表場所與軌跡。iFLocus 以人為核心，整合影響者、場域數據與五感體驗，陪品牌建立能被記住的成長路徑。</p>`
+  （第一句講「名稱由來」、第二句講「品牌精神」，硬塞同段，閱讀沉重）
+- ✅ 正例：
+  ```html
+  <p>iF 代表 Influencer、If、Infinity；Locus 代表場所與軌跡。</p>
+  <p>iFLocus 以人為核心，整合影響者、場域數據與五感體驗，陪品牌建立能被記住的成長路徑。</p>
+  ```
+
+**判斷拆段的訊號**（任一條命中即應拆）：
+1. 句子之間主題跳躍（例：定義 → 行動 / 問題 → 解法 / 背景 → 數據）
+2. 連續兩個完整概念（看到 `。…。` 而非 `，…，`）
+3. 段落字數 > 60 字且包含 2 個以上獨立子句
+4. 介紹完一個名詞後接「我們 / 品牌 / 服務 + 動作」的句型
+
+**Hero 區塊段落寫法**：
+- Hero `<h1>` 用 `<br>` 強制換行，**讓主標題本身就有節奏**
+- Hero `<p>` 副標限制在 **一個段落 + 不超過 60 字**；如果想表達 2 件事就拆成 2 個 `<p>`
+- 多段 `<p>` 之間 CSS 已在 `.page-hero.hero-scenic p` 設好 margin — HTML 直接放兩個 `<p>` 即可，**不需要加 `<br><br>`**
+- **所有 hero 內容（tag / h1 / 多段 p / 按鈕）一律置中**（`.page-hero.hero-scenic` 已設 `text-align: center` + `align-items: center`），HTML 不需要再加 `style="text-align:..."` 覆寫
+- 不要為了「對齊到左側 1180px container」加 `padding-left: calc(...)` — hero 應該對稱、置中、跟內容區的 section 分開呼吸
+
+**Hero 文字換行控制（CJK 重點）**：
+- CSS 已套 `word-break: keep-all`、`text-wrap: balance`（h1）、`text-wrap: pretty`（p），瀏覽器會自動：
+  - 不在中文字之間斷行（不會出現「記|住」這種拆字）
+  - 多行標題自動均衡長度
+- 若副標仍在「奇怪的逗號之後」斷行，**手動在語意斷點插入單一 `<br>`**：
+  ```html
+  <p>iFLocus 以人為核心，整合影響者、場域數據與五感體驗，<br>陪品牌建立能被記住的成長路徑。</p>
+  ```
+  注意：這是「同段內視覺斷行」，跟「拆段」不同；段內換行用 `<br>`、段與段之間用 `<p>`
+
+**Case 頁與一般段落寫法**：
+- 條列式（3 點以上）一律用 `<ul>` / `<ol>` 而非一個 `<p>` 用頓號塞滿
+- 段落 + 條列並存時：用 `<p>` 給敘述句、`<ul>` 給可數要點，**不要混在同一個 `<p>`**
+- 同一段內如果出現「。」超過 2 次，先停下來想：能否拆？通常可以
+
+---
+
+## 🔎 在地 Preview
+
+```bash
+# Project 根目錄已設定好 .claude/launch.json (port 8765)
+# Claude Preview 直接呼叫 mcp__Claude_Preview__preview_start name="iflocus-preview"
+```
+
+開瀏覽器後可用 `preview_inspect` / `preview_screenshot` 驗證動畫。
+
+---
+
+## 🎬 一行驗收檢查
+
+部署後請：
+1. 強制重整 https://iflocus.com/case-XXX.html （Ctrl+Shift+R）
+2. 切換 tab（iOS / Android / Diamond）→ 推播畫面應換成該平台版本
+3. 觀察 4 秒：手指圓圈從右側滑入點擊 → 推播淡出 → 底層活動頁露出
+4. 案例分類頁（case-studies.html）對應卡片描述要更新成「跨平台/跨品牌」標題
+
+---
+
+## ✅ 完工自我檢查清單（commit 前必跑）
+
+```bash
+cd "/g/我的雲端硬碟/iflocus-website"
+PAGE=case-XXX.html
+
+echo "--- 1. 禁用詞 ---"
+grep -iE "AdLocus|業界最高|營收倍增|業界最佳表現" "$PAGE" || echo "(clean)"
+
+echo "--- 2. 所有 src 路徑皆在 git ---"
+grep -oP 'src="images/external/[^"]*"' "$PAGE" | sed 's/src="//;s/"//' | sort -u | while IFS= read -r p; do
+  [ -z "$(git ls-files "$p")" ] && echo "NOT-IN-GIT: $p"
+done && echo "(done)"
+
+echo "--- 3. 各圖片確實存在且 >1KB ---"
+grep -oP 'src="images/external/[^"]*"' "$PAGE" | sed 's/src="//;s/"//' | sort -u | while IFS= read -r p; do
+  [ ! -f "$p" ] && echo "MISSING: $p" && continue
+  sz=$(stat -c%s "$p" 2>/dev/null)
+  [ "$sz" -lt 1024 ] && echo "TOO_SMALL($sz): $p"
+done && echo "(done)"
+
+echo "--- 4. screen-before / screen-after 計數 ---"
+sb=$(grep -c "screen-before" "$PAGE")
+sa=$(grep -c "screen-after"  "$PAGE")
+echo "  screen-before=$sb  screen-after=$sa  push-only=$(( sb - sa ))"
+echo "  若 push-only > 0，必須有 :not(:has(.screen-after)) animation:none 規則"
+grep ":has(.screen-after)" "$PAGE" && echo "  (rule found)" || echo "  ⚠ MISSING :has() rule"
+
+echo "--- 5. 檔名大小寫衝突（同目錄相同名稱只差大小寫） ---"
+grep -oP 'images/external/[^"]+' "$PAGE" | sort -u | awk -F'/' '{print tolower($0)" "$0}' | sort | awk 'prev==$1{print "COLLISION: "$2} {prev=$1}' || echo "(none)"
+
+echo "--- 6. main.js 已引入 ---"
+grep -c "js/main.js" "$PAGE" | grep -q "^[1-9]" && echo "  (found)" || echo "  ⚠ MISSING <script src=js/main.js>"
+
+echo "--- 7. cache-bust query string 含產業碼 ---"
+grep "style.css?v=" "$PAGE" || echo "  ⚠ MISSING cache-bust"
+```
+
+**檢查項目說明**：
+
+| # | 檢查內容 | 若失敗怎麼辦 |
+|---|---------|------------|
+| 1 | 無禁用詞 | 全文搜尋替換 |
+| 2 | 所有圖路徑在 git index | `git add` 補上，或修正路徑 |
+| 3 | 圖存在且 >1KB | 重新 curl 下載；1KB 以下是伺服器 404 頁 |
+| 4 | push-only panel 有 animation:none | 在頁內 `<style>` 加 `:not(:has(.screen-after)) .screen-before { animation: none; }` |
+| 5 | 無大小寫衝突（Windows 不分大小寫，但 GitHub Pages Linux 區分）| 給衝突的其中一方重新命名（加品牌前綴，如 `kapiti-500x888.jpg`），更新 HTML，重新下載 |
+| 6 | main.js 已引入 | 在 `</body>` 前加 `<script src="js/main.js"></script>` |
+| 7 | cache-bust 有更新 | 改成 `?v=YYYYMMDD-XXX` |
+
+> 📌 **大小寫衝突的根本預防**：同一目錄若有多篇案例使用泛型活動頁名（`500x888.jpg`、`500X888.jpg`），下載時一律改以品牌前綴命名（`kapiti-500x888.jpg`、`duanchunzhen-500x888.jpg`），完全避免衝突。
+
+---
+
+_文件版本：v1.1（2026-05-26）— 新增自我檢查清單，來自食品餐飲案例遷移後沉澱_
