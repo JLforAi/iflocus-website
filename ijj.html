@@ -27,12 +27,28 @@
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','GA_MEASUREMENT_ID');</script>
   <link rel="stylesheet" href="css/locus-brand-tokens.css">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* iJJ 頁專用手機版修正（≤768px）——僅作用於本頁 Hero，桌機與全站 CSS 零變動 */
+    @media (max-width: 768px) {
+      #ijj-hero { padding-left: 24px; padding-right: 24px; }
+      #ijj-hero h1 { word-break: normal; overflow-wrap: anywhere; }
+      #ijj-hero p {
+        text-align: left;          /* 標題維持置中，內文段落齊左，窄螢幕不參差 */
+        word-break: normal;         /* 解 keep-all 在 iOS Safari 的長 CJK 不斷行/截字 */
+        overflow-wrap: anywhere;
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+  </style>
 </head>
 <body data-brand="ailocus">
 <script src="js/components.js"></script>
 
 <!-- ① HERO：iJJ 是什麼 ＋ 身分揭露（雙色：iFLocus 金 × AiLocus 紫 = 顧問經驗 × AI 智能） -->
-<div class="page-hero hero-scenic" style="background-image:linear-gradient(150deg,rgba(8,6,16,0.42) 0%,rgba(8,6,16,0.58) 100%),linear-gradient(120deg,var(--logo-orange) 0%,var(--logo-purple) 100%)">
+<div id="ijj-hero" class="page-hero hero-scenic" style="background-image:linear-gradient(150deg,rgba(8,6,16,0.42) 0%,rgba(8,6,16,0.58) 100%),linear-gradient(120deg,var(--logo-orange) 0%,var(--logo-purple) 100%)">
   <div class="tag" style="background:rgba(255,255,255,0.16);color:#fff;margin-bottom:16px">AI 分身 · 顧問經驗 × AI 智能</div>
   <h1>認識 iJJ<br>Joseph 的 AI 分身</h1>
   <p>iJJ 由絡客思執行長 Joseph（林宏儒）三十年跨領域實戰方法論蒸餾而成，用他的思維框架與說話習慣回答問題。</p>
