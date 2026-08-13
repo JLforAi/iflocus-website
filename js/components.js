@@ -1,3 +1,17 @@
+// ===== GOOGLE ANALYTICS (GA4) =====
+(function () {
+  if (window.gtag) return; // 防重複初始化
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-EC2PDN71T6';
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag('js', new Date());
+  gtag('config', 'G-EC2PDN71T6');
+})();
+
 // Shared header and footer components
 
 const HEADER_HTML = `
