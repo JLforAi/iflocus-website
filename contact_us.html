@@ -113,29 +113,32 @@
         <h2 style="font-size:22px;font-weight:700;margin-bottom:8px">填寫合作需求</h2>
         <p style="color:var(--text-light);font-size:14px;margin-bottom:28px">請填寫以下資訊，我們將於 1–2 個工作日內回覆您。</p>
         <form id="contactForm">
+          <input type="hidden" name="_subject" value="【官網】合作需求表單">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" style="display:none">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
             <div class="form-group">
               <label>公司名稱 *</label>
-              <input type="text" placeholder="貴公司名稱" required>
+              <input type="text" name="company" placeholder="貴公司名稱" required>
             </div>
             <div class="form-group">
               <label>聯絡人 *</label>
-              <input type="text" placeholder="您的姓名" required>
+              <input type="text" name="contact" placeholder="您的姓名" required>
             </div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
             <div class="form-group">
               <label>E-mail *</label>
-              <input type="email" placeholder="your@email.com" required>
+              <input type="email" name="email" placeholder="your@email.com" required>
             </div>
             <div class="form-group">
               <label>聯絡電話</label>
-              <input type="tel" placeholder="02-XXXX-XXXX">
+              <input type="tel" name="phone" placeholder="02-XXXX-XXXX">
             </div>
           </div>
           <div class="form-group">
             <label>感興趣的服務</label>
-            <select>
+            <select name="service">
               <option value="">請選擇服務類型</option>
               <option>影響力營銷顧問</option>
               <option>運動行銷 / KOL 合作</option>
@@ -152,7 +155,7 @@
           </div>
           <div class="form-group">
             <label>需求說明</label>
-            <textarea placeholder="請簡述您的行銷需求、目標受眾、預算範圍等資訊，讓我們能為您提供最適切的建議…"></textarea>
+            <textarea name="message" placeholder="請簡述您的行銷需求、目標受眾、預算範圍等資訊，讓我們能為您提供最適切的建議…"></textarea>
           </div>
           <div class="form-group" style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
             <input type="checkbox" id="privacyAgree" name="privacyAgree" required style="margin-top:4px;flex-shrink:0;width:auto">
