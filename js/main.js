@@ -163,17 +163,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+
+    const cb = document.getElementById('privacyAgree');
+    if (cb && !cb.checked) return;
+
     const btn = form.querySelector('button[type="submit"]');
     const original = btn.textContent;
-    btn.textContent = '已送出，感謝您的來信！';
+    const payload = {};
+    new FormData(form).forEach(function (value, key) { payload[key] = value; });
+
     btn.disabled = true;
-    btn.style.background = '#28a745';
-    setTimeout(function () {
-      btn.textContent = original;
-      btn.disabled = false;
-      btn.style.background = '';
-      form.reset();
-    }, 4000);
+
+    fetch('https://formsubmit.co/ajax/sales@iflocus.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('submit failed');
+        btn.textContent = '已送出，感謝您的來信！';
+        btn.style.background = '#28a745';
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.disabled = false;
+          btn.style.background = '';
+          form.reset();
+        }, 4000);
+      })
+      .catch(function () {
+        btn.textContent = '送出失敗，請直接來信 sales@iflocus.com';
+        btn.style.background = '#dc3545';
+        btn.disabled = false;
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.style.background = '';
+        }, 4000);
+      });
   });
 })();
 
