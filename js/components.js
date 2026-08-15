@@ -52,6 +52,7 @@ const HEADER_HTML = `
           </ul>
         </li>
         <li><a href="ijj.html">iJJ<span class="ijj-nav-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;margin-left:5px;vertical-align:middle;background:linear-gradient(135deg,var(--logo-orange),var(--logo-purple))"></span></a></li>
+        <li><a href="insights.html">觀點</a></li>
         <li><a href="about_us.html">關於我們</a></li>
         <li><a href="news.html">最新消息</a></li>
         <li><a href="contact_us.html" class="nav-contact-btn">聯絡我們</a></li>
