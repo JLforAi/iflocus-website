@@ -2085,3 +2085,17 @@ a.fb-video-cta-card {
   .insight-quote { padding: 20px 22px; font-size: 17px; }
   .insight-card .card-body { padding: 24px; }
 }
+
+/* ===== INSIGHT ARTICLE HERO IMAGE（觀點文章頂部題圖）===== */
+.insight-hero-img {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto 32px;
+  display: block;
+  border-radius: 16px;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+@media (max-width: 768px) {
+  .insight-hero-img { border-radius: 0; }
+}
