@@ -1947,3 +1947,141 @@ a.fb-video-cta-card {
   .grid-3-2center > * { flex-basis: 100%; max-width: 100%; }
 }
 
+
+/* ===== INSIGHTS（觀點）— 文章列表與文章頁版型 =====
+   Append-only：未改動任何既有規則。顏色一律引用既有 token
+   （--text / --text-light / --bg-light / --border / --brand-text /
+   --logo-orange），不新增任何色值。 */
+
+/* 文章頁／列表頁的頂部留白 — 讓內容避開 fixed 的 .site-header(72px)，
+   與 .page-hero 既有的 margin-top:72px 對齊。 */
+.insight-page {
+  margin-top: 72px;
+}
+
+/* ---- 文章本體 ---- */
+.insight-article {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.insight-article h1 {
+  font-size: clamp(26px, 3.4vw, 36px);
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--text);
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+  word-break: keep-all;
+}
+
+/* 沿用站內標題字級體系（clamp，落在 .card-title 20px 與 .section-title
+   之間），上方留白加大以拉開章節節奏。 */
+.insight-article h2 {
+  font-size: clamp(20px, 2.4vw, 26px);
+  font-weight: 700;
+  line-height: 1.55;
+  color: var(--text);
+  letter-spacing: 0.01em;
+  margin-top: 56px;
+  margin-bottom: 16px;
+  word-break: keep-all;
+}
+
+.insight-article p {
+  font-size: 17px;
+  line-height: 1.9;
+  color: var(--text);
+  margin-bottom: 24px;
+  letter-spacing: 0.01em;
+}
+
+.insight-article strong {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.insight-article a {
+  color: var(--brand-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.insight-article a:hover {
+  opacity: 0.75;
+}
+
+/* ---- 日期／作者列 ---- */
+.insight-meta {
+  font-size: 14px;
+  color: var(--text-light);
+  letter-spacing: 0.02em;
+  line-height: 1.7;
+}
+.insight-article .insight-meta {
+  margin-top: 16px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ---- #Joe師說 引言框 ---- */
+.insight-quote {
+  margin: 40px 0;
+  padding: 24px 28px;
+  background: var(--bg-light);
+  border-left: 4px solid var(--logo-orange);
+  border-radius: 0 12px 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.85;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+/* ---- 文末出處 ---- */
+.insight-article .insight-source {
+  margin-top: 48px;
+  margin-bottom: 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-light);
+}
+
+/* ---- 列表卡：沿用 .card 視覺語彙（HTML 同時掛 .card .insight-card）---- */
+.insight-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+}
+.insight-card .card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 28px;
+}
+.insight-card .insight-meta {
+  margin-bottom: 12px;
+}
+.insight-card .card-title {
+  line-height: 1.55;
+}
+.insight-card .card-text {
+  flex: 1;
+  font-size: 15px;
+}
+.insight-card-more {
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand-text);
+}
+
+@media (max-width: 768px) {
+  .insight-article h2 { margin-top: 44px; }
+  .insight-article p { font-size: 16px; }
+  .insight-quote { padding: 20px 22px; font-size: 17px; }
+  .insight-card .card-body { padding: 24px; }
+}
