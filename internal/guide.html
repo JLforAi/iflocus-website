@@ -100,7 +100,6 @@ html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC','Pin
 </head>
 <body data-brand="ailocus">
 
-<div id="pw-screen" style="display:none"></div>
 
 <div id="main">
 <div class="page-wrap">
@@ -436,25 +435,6 @@ html,body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC','Pin
 </div>
 
 <script>
-const PASS = 'iflocus2025';
-function checkPw(){
-  const v = document.getElementById('pw-input').value;
-  if(v === PASS){
-    localStorage.setItem('guide-auth','1');
-    document.getElementById('pw-screen').style.display='none';
-    document.getElementById('main').style.display='block';
-  } else {
-    document.getElementById('pw-err').textContent='密碼錯誤，請再試一次';
-    const inp = document.getElementById('pw-input');
-    inp.style.borderColor='var(--red)';
-    setTimeout(()=>{ inp.style.borderColor=''; document.getElementById('pw-err').textContent=''; },1500);
-  }
-}
-document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkPw()});
-if(localStorage.getItem('guide-auth')==='1' || localStorage.getItem('survey-auth')==='1'){
-  document.getElementById('pw-screen').style.display='none';
-  document.getElementById('main').style.display='block';
-}
 
 async function copyCode(btn){
   const block = btn.parentElement;
