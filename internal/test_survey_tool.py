@@ -10,6 +10,14 @@ SurveyAI 測試腳本
   python test_survey_tool.py --google-form <url>
   python test_survey_tool.py --surveycake  <url>
   python test_survey_tool.py --all
+
+環境變數：
+  SURVEY_TOOL_PASSWORD  survey.html 的通行密碼。未設定時，需要通過密碼閘門的
+                        測試項（1.3 之後）會標記為 SKIP 並印出提示，不影響
+                        1.1／1.2 等不需密碼的測試項。
+                        設定方式：
+                          PowerShell  $env:SURVEY_TOOL_PASSWORD = "<密碼>"
+                          bash        export SURVEY_TOOL_PASSWORD='<密碼>'
 """
 
 import sys, os, time, json, argparse, io
@@ -22,7 +30,7 @@ from playwright.sync_api import sync_playwright, expect, TimeoutError as PWTimeo
 BASE_DIR   = Path(__file__).parent
 HTML_PATH  = BASE_DIR / "survey.html"
 HTML_URL   = HTML_PATH.as_uri()
-PASSWORD   = "iflocus2025"
+PASSWORD   = os.environ.get("SURVEY_TOOL_PASSWORD")
 HEADLESS   = False          # 改 True 可不顯示瀏覽器
 SLOW_MO    = 120            # 毫秒，可視化除錯用
 
@@ -45,6 +53,10 @@ def fail(name, reason=""):
     results.append(("FAIL", name))
     log(f"  ✗  {name}{(' — '+reason) if reason else ''}", FAIL_COLOR)
 
+def skip(name, reason=""):
+    results.append(("SKIP", name))
+    log(f"  ○  {name}{(' — '+reason) if reason else ''}", WARN_COLOR)
+
 def section(title):
     log(f"\n{'═'*60}", INFO_COLOR)
     log(f"  {title}", INFO_COLOR)
@@ -52,9 +64,15 @@ def section(title):
 
 def summary():
     log(f"\n{'─'*60}")
-    passed = sum(1 for r in results if r[0]=="PASS")
-    failed = sum(1 for r in results if r[0]=="FAIL")
-    log(f"  結果：{passed} 通過 / {failed} 失敗 / {len(results)} 項", PASS_COLOR if failed==0 else FAIL_COLOR)
+    passed  = sum(1 for r in results if r[0]=="PASS")
+    failed  = sum(1 for r in results if r[0]=="FAIL")
+    skipped = sum(1 for r in results if r[0]=="SKIP")
+    log(f"  結果：{passed} 通過 / {failed} 失敗 / {skipped} 略過 / {len(results)} 項", PASS_COLOR if failed==0 else FAIL_COLOR)
+    if skipped:
+        log("  略過項目（未設定 SURVEY_TOOL_PASSWORD）：", WARN_COLOR)
+        for s, n in results:
+            if s == "SKIP":
+                log(f"    • {n}", WARN_COLOR)
     if failed:
         log("  失敗項目：", FAIL_COLOR)
         for s, n in results:
@@ -95,6 +113,15 @@ def test_survey_html(p):
         fail("錯誤密碼被拒絕", str(e))
 
     # ── 1.3 正確密碼進入 ─────────────────────────────────────────
+    if not PASSWORD:
+        log("\n  ⚠  未設定環境變數 SURVEY_TOOL_PASSWORD，略過需要通過密碼閘門的測試項。", WARN_COLOR)
+        log("     設定後重跑即可執行完整測試：", WARN_COLOR)
+        log("       PowerShell  $env:SURVEY_TOOL_PASSWORD = \"<密碼>\"", WARN_COLOR)
+        log("       bash        export SURVEY_TOOL_PASSWORD='<密碼>'", WARN_COLOR)
+        skip("正確密碼進入工具", "未設定 SURVEY_TOOL_PASSWORD")
+        skip("survey.html 密碼閘門後的所有測試項（1.4～）", "相依於 1.3")
+        browser.close(); return
+
     try:
         page.fill("#pw-input", PASSWORD)
         page.click("button.btn-pw")
