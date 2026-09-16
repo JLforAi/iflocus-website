@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>9月拍攝行程與腳本｜工作人員限閱</title>
+<style>
+:root{--ink:#16182A;--ink2:#242844;--gold:#C9A24B;--goldl:#E7D0A0;
+--coral:#EC5C8D;--blue:#2AA7DF;--green:#2FA36B;--orange:#F0954A;--purple:#7E5BD8;
+--panel:#F5F4FA;--mute:#6B6B7B;--text:#2A2A38}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif;background:#FBFAFE;color:var(--text);line-height:1.6}
+#gate{position:fixed;inset:0;background:var(--ink);z-index:99;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:24px;text-align:center}
+#gate h2{color:#fff;font-size:1.2rem;margin-bottom:6px}
+#gate p{color:#C8C4DE;font-size:.82rem;margin-bottom:18px;line-height:1.7}
+#gate input{padding:12px 16px;border-radius:10px;border:none;font-size:1rem;width:min(280px,80vw);text-align:center;letter-spacing:2px}
+#gate button{margin-top:12px;padding:11px 34px;border-radius:10px;border:none;background:var(--gold);color:var(--ink);font-weight:bold;font-size:.95rem;cursor:pointer}
+#gate .err{color:var(--coral);font-size:.8rem;margin-top:10px;min-height:1em}
+#content{display:none}
+header{background:var(--ink);color:#fff;padding:22px 16px 14px}
+.wrap{max-width:900px;margin:0 auto}
+h1{font-size:1.15rem}
+h1 .g{color:var(--gold)}
+.sub{color:#C8C4DE;font-size:.76rem;margin-top:5px}
+.warn{background:#4A2030;border-left:4px solid var(--coral);color:#F3D9E2;font-size:.75rem;padding:9px 12px;border-radius:0 8px 8px 0;margin-top:11px;line-height:1.6}
+nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #E8E6F2;z-index:10;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+nav .wrap{display:flex;gap:4px;padding:8px 12px}
+.tab{border:1.5px solid #D8D5E6;background:#fff;color:var(--mute);border-radius:20px;padding:7px 15px;font-size:.83rem;cursor:pointer;flex:0 0 auto}
+.tab.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:bold}
+main{max-width:900px;margin:0 auto;padding:16px 14px 60px}
+.sec{display:none}
+.sec.on{display:block}
+.dayhead{font-size:1.02rem;font-weight:bold;color:var(--ink);border-left:4px solid var(--gold);padding-left:10px;margin:6px 0 13px}
+.slot{background:#fff;border:1px solid #E8E6F2;border-radius:12px;margin-bottom:11px;overflow:hidden;box-shadow:0 2px 8px rgba(30,26,60,.05)}
+.sh{background:var(--ink);color:#fff;padding:8px 13px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.time{background:var(--gold);color:var(--ink);font-weight:bold;font-size:.78rem;border-radius:6px;padding:2px 8px}
+.grp{background:var(--ink2);color:var(--goldl);font-size:.7rem;font-weight:bold;border-radius:4px;padding:2px 8px}
+.tier{font-size:.66rem;font-weight:bold;border-radius:4px;padding:2px 7px;margin-left:auto}
+.tier.vip{background:#5B3A6E;color:#EBD3F5}
+.tier.pm{background:#3A4A6E;color:#D3E2F5}
+.tier.bm{background:#3A5A4A;color:#D3F5E2}
+.tier.na{background:#3A3A4A;color:#C8C8D8}
+.sb{padding:11px 14px}
+.r{margin-bottom:8px}
+.r:last-child{margin-bottom:0}
+.k{font-size:.68rem;color:var(--mute);font-weight:bold;letter-spacing:.5px;margin-bottom:2px}
+.v{font-size:.85rem;color:var(--text);white-space:pre-line}
+.v.loc{font-weight:bold;color:var(--ink)}
+.v.note{color:var(--mute);font-size:.79rem}
+.ids{display:flex;flex-wrap:wrap;gap:5px;margin-top:3px}
+.idc{background:#FCE4EA;color:#B0335A;font-size:.74rem;font-weight:bold;border-radius:5px;padding:2px 8px;cursor:pointer}
+.idc.miss{background:#FFF0D0;color:#8A6420;border:1px dashed #C9A24B}
+.idc.warn{background:#E4EEFB;color:#2B5C8A;border:1px dashed #2AA7DF}
+.meal{background:#FBF0D8;color:#9A7B1E;font-size:.7rem;font-weight:bold;border-radius:4px;padding:2px 8px}
+/* script index */
+#search{width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid #D8D5E6;font-size:.92rem;margin-bottom:12px}
+.sc{background:#fff;border:1px solid #E8E6F2;border-radius:11px;padding:12px 14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(30,26,60,.04)}
+.sch{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.sid{background:var(--ink);color:var(--gold);font-weight:bold;font-size:.8rem;border-radius:5px;padding:2px 9px}
+.stier{font-size:.66rem;font-weight:bold;border-radius:4px;padding:2px 7px}
+.stier.vip{background:#EFE0F8;color:#5B3A6E}
+.stier.prem{background:#E0EAF8;color:#3A4A6E}
+.stier.base{background:#E0F5E8;color:#2A6A48}
+.stier.na{background:#EEE;color:#777}
+.sdur{font-size:.74rem;color:var(--mute);margin-left:auto}
+.stitle{font-size:.92rem;font-weight:bold;color:var(--ink);margin-bottom:6px}
+.smeta{font-size:.78rem;color:var(--mute);margin-bottom:3px}
+.smeta b{color:#555}
+.spoint{font-size:.8rem;color:var(--text);margin-top:6px;line-height:1.6}
+.note-box{background:var(--panel);border-left:4px solid var(--coral);border-radius:0 8px 8px 0;padding:12px 14px;font-size:.81rem;margin-bottom:14px;line-height:1.7}
+.note-box b{color:#B0335A}
+.act{background:#fff;border:1px solid #E8E6F2;border-radius:11px;padding:12px 14px;margin-bottom:10px}
+.act h4{font-size:.88rem;color:var(--ink);margin-bottom:5px}
+.act p{font-size:.8rem;color:var(--mute);line-height:1.65}
+footer{text-align:center;font-size:.7rem;color:#A8A4C0;padding:18px}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <h2>🔒 工作人員限閱</h2>
+  <p>9月澳門拍攝行程與腳本<br><b style="color:#E7D0A0">本頁僅供工作團隊使用</b><br>請輸入通行碼</p>
+  <input type="password" id="pw" placeholder="通行碼" autocomplete="off">
+  <button onclick="unlock()">進入</button>
+  <div class="err" id="err"></div>
+</div>
+
+<div id="content">
+<header><div class="wrap">
+  <h1>9月澳門拍攝行程與腳本 <span class="g">｜</span> FINAL</h1>
+  <div class="sub">一杆開運・中秋黃金假期　·　9/17（四）–9/20（日）四天　·　腳本 44 支</div>
+  <div class="warn">⚠️ <b>本頁僅供工作人員查閱，請勿轉傳予活動人員或外部人士。</b>內容含分組安排、腳本細節與內部備註，拍攝結束後本頁將下架。</div>
+  <div style="margin-top:9px;font-size:.72rem;color:#C8C4DE;line-height:1.7">腳本標記：<span style="background:#FFF0D0;color:#8A6420;border:1px dashed #C9A24B;border-radius:5px;padding:1px 7px">橘框</span> 總覽查無此編號　<span style="background:#E4EEFB;color:#2B5C8A;border:1px dashed #2AA7DF;border-radius:5px;padding:1px 7px">藍框</span> 編號與內容疑似不符　→ 詳見「待確認」頁</div>
+</div></header>
+
+<nav><div class="wrap">
+  <span class="tab on" data-s="d1">Day1 9/17</span>
+  <span class="tab" data-s="d2">Day2 9/18</span>
+  <span class="tab" data-s="d3">Day3 9/19</span>
+  <span class="tab" data-s="d4">Day4 9/20</span>
+  <span class="tab" data-s="idx">腳本索引</span>
+  <span class="tab" data-s="act">活動資訊</span>
+  <span class="tab" data-s="chk">待確認</span>
+</div></nav>
+
+<main>
+
+<!-- ============ DAY 1 ============ -->
+<section class="sec on" id="d1">
+<div class="dayhead">Day 1・9/17（四）國風 ＋ 玉兔 ＋ 漢服 ＋ 萊佛士</div>
+
+<div class="slot"><div class="sh"><span class="time">10:00–11:30</span><span class="grp">全員</span><span class="tier na">準備</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">蒼蘭訣</div></div>
+<div class="r"><div class="k">內容</div><div class="v">蒼蘭訣挑衣服 ＋ 配飾</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">隊員 ×6</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">女孩須化好全妝到場</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">11:00–11:30</span><span class="grp">妝造</span><span class="tier pm">Pre / Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">蒼蘭訣（室內）</div></div>
+<div class="r"><div class="k">內容</div><div class="v">蒼蘭訣主題妝造（全員同步，含玉兔妝＋漢服造型）</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">玉兔＋嫦娥 ×2、漢服 ×4</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">妝造物料／髮飾／漢服</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">僅今日做國風系妝造；舞蹈組同步熱排 M903／M910</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">11:30–12:30</span><span class="grp">好時辰</span><span class="tier bm">Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">蒼蘭訣（室內・協調後的試吃位）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M901</span><span class="idc">M923</span><span class="idc miss">M924</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">玉兔三金美食打卡（偷吃被抓包）＋ 懶人包好時辰三金特寫段</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">玉兔＋嫦娥 ×2、漢服 ×4</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">兔耳／月白國風服／金箔蛋撻／金運壽司</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">兩條同場：玉兔妝畢即開拍；金條福利段備拍活動時間與參與條件</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">12:30–14:00</span><span class="meal">午餐 / 休整</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">百樂潮州</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">餐廳空鏡＋就餐花絮側拍</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">14:30–17:30</span><span class="grp">漢服</span><span class="tier vip">Pre</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">悅榕莊 套房（室內）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M934</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">漢服主題拍攝：悅榕莊中式奢華空間 × 漢服造型</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">隊員 ×6</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">漢服 ×6 套／配飾</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">漢服主題為新增內容；與 M910 群舞同體系妝髮順場轉場；可拍套房以酒店確認為準</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">16:30–20:00</span><span class="grp">群舞</span><span class="tier pm">Pre / Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河國風美陳／平整活動區（室外）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc warn">M911</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">六人國風群舞・莫問歸期</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">隊員 ×6</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">月白／淺金／玉綠國風裙 ×6</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">豎屏前後三人錯位；另補橫排全景供活動記錄；M923 金運活動點位段隨動線順拍
+⚠ 編號疑義：內容為「莫問歸期」，總覽對應為 M910（M911 為單人跑步路線）</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">同時段</span><span class="grp">A 組</span><span class="tier bm">Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河草坪／中秋美陳前（室外）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M903</span><span class="idc">M904</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">玉兔國風手勢舞・銀河草坪</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">A 玉兔＋嫦娥 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">兔耳／桂花枝／鵝黃國風裙／毛絨兔</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">手勢舞先排完整段；抱兔與雙手舞步分鏡拍攝</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">同時段</span><span class="grp">A＋B 組</span><span class="tier bm">Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河大堂 → 綠植休憩區 → 餐飲位 → 連廊（黃昏段）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M902</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">玉兔下班遊銀河・變裝轉場（4 點位）</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">A 玉兔＋嫦娥 ×2、B 漢服 ×4</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">兔耳提籃／月白國風服／桂花</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">與漢服組並行；四點位隨動線一次走完</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">收工前</span><span class="grp">口播</span><span class="tier bm">Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河大堂（金色夜景前奏・室內）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M921</span><span class="idc miss">M924</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">懶人包口播主位 ＋ 金運活動點位段</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">隊員 ×6</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">金／月白／玉綠造型／口播提詞板</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">口播主位大堂一次拍完；天浪／時尚匯點位素材與 M914／M920 共用；<b>18:30 收工</b></div></div>
+</div></div>
+</section>
+
+<!-- ============ DAY 2 ============ -->
+<section class="sec" id="d2">
+<div class="dayhead">Day 2・9/18（五）天浪 ＋ 新店 ＋ 高級性感（萊佛士）＋ Bar</div>
+
+<div class="slot"><div class="sh"><span class="time">09:00–12:00</span><span class="grp">全員</span><span class="tier pm">Pre / Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">天浪淘園（JW 萬豪私人泳池／白沙灘／單獨草坪・室外）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M933</span><span class="idc">M916</span><span class="idc">M921</span><span class="idc miss">M924</span><span class="idc">G04</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">Sportcation 水上段：沙灘高爾夫（新增）→ 私人泳池 → 單獨草坪，區分之前拍過的場地</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">隊員 ×6</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">泳裝／防水妝／高爾夫套裝</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">9:00 到場；新來的女孩 ×2 主線＋隊員穿插；主題＝閨蜜高爾夫運動初挑戰；M923 天浪點位素材同場補
+水中舞不佔首日，安排於今日傍晚天浪淘園閉園前 1 小時補拍，1–2 人、現場自行對接</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">12:00–14:00</span><span class="meal">午餐 / 休整</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">啦啦隊酒店休息梳洗</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">休整＋準備小禮服妝髮（萊佛士組／Bar 組）</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">14:30–17:30</span><span class="grp">A 組</span><span class="tier vip">VIP</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">萊佛士套房（下午茶・室內）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M932</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">兔女郎 高級性感風：萊佛士房間質感打卡</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">A 隊員 ×2（雙人輪拍）</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">小禮服／配飾</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">高級性感風；雙人輪拍；萊佛士大堂吧「流光映翠」下午茶是否可作拍攝元素待確認</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">14:30–16:30</span><span class="grp">B 組</span><span class="tier vip">VIP / Pre</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">時尚匯：RL 新店 ＋ 昂跑 On 門店 ＋ 連廊（室內）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc miss">M914</span><span class="idc">M923</span><span class="idc">M921</span><span class="idc miss">M924</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">Sportcation 時尚匯段（RL 新店試衣＋昂跑運動裝備）＋懶人包時尚匯點位段＋街舞 Fit Check 第 4 套</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">B 隊員 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">RL 造型／昂跑跑鞋／試衣間／RL 協調色 Polo</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">第 4 套與半島 3 套（9.20 上午）成片銜接</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">14:30–15:30</span><span class="grp">C 組</span><span class="tier vip">VIP</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">RC 下午茶</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc miss">M924</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">秋季主題下午茶</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">C 隊員 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">小禮服／當期餐飲出品</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">以預訂確認為準</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">16:30–17:30</span><span class="meal">全員休整</span></div><div class="sb"><div class="r"><div class="v note">—</div></div></div></div>
+
+<div class="slot"><div class="sh"><span class="time">17:30</span><span class="grp">A 組</span><span class="tier vip">VIP</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">萊佛士下午茶（室內）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M932</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">兔女郎 高級性感風：萊佛士房間質感打卡（續）</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">A 隊員 ×2（雙人輪拍）</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">18:30–20:00</span><span class="grp">A 組</span><span class="tier vip">VIP / Pre</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河大堂／時尚匯連廊／外立面夜景（室外）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M920</span><span class="idc">M921</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">電影感銀河・建築與人物</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">A 隊員 ×1</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">拍前用現場圖確認</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">17:30–21:30</span><span class="grp">B 組</span><span class="tier vip">VIP</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河六間酒吧：千里吧／長廊酒吧／麗思酒廊／8½ Otto e Mezzo BOMBANA／萊佛士大堂吧／安達仕酒吧</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M936</span><span class="idc">M921</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">高級感 Bar Hopping：6 站酒吧氛圍體驗</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">B 隊員 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">小禮服（潮流感重一點的服飾都可以）</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">高級感圈層社交展示</div></div>
+</div></div>
+</section>
+
+<!-- ============ DAY 3 ============ -->
+<section class="sec" id="d3">
+<div class="dayhead">Day 3・9/19（六）大草坪 ＋ 下午茶 ＋ 星際 ＋ 跑步（三組並行）</div>
+
+<div class="slot"><div class="sh"><span class="time">09:00–10:00</span><span class="grp">全員</span><span class="tier pm">Pre / Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河大草坪／平整活動區</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M907</span><span class="idc">M910</span><span class="idc">G17</span><span class="idc">G19</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">三人啦啦操 ＋ 四人陣型齊舞（草坪版）</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">全員 ×6（3 人／4 人輪拍）</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">高爾夫套裝／白花球／協調色 Polo</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">M909 以草坪版拍攝；取消原夜場練習場機位</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">10:00–11:00</span><span class="grp">全員</span><span class="tier pm">Pre / Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河大草坪／綠植步道</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">G05</span><span class="idc">G10</span><span class="idc">G06</span><span class="idc miss">M28</span><span class="idc miss">M914</span><span class="idc">G14</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">四人穿搭 Lookbook ＋ 慢動作走秀（草坪版）</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">隊員 ×4（其餘輪換候場）</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">四套協調色造型／腕表</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">使用草坪、綠植背景；晨間自然光；不安排球場、球車或擊球鏡頭</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">11:00–12:00</span><span class="grp">全員</span><span class="tier pm">Pre / Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河大草坪</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M905</span><span class="idc">M908</span><span class="idc">G17</span><span class="idc">G04</span><span class="idc">G07</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">大小姐與女保鏢 ＋ 單人穿搭（草坪改編版）</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">隊員 ×2 ＋ 單人輪拍</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">黑衣墨鏡／蓬蓬裙／單人穿搭造型</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">專業、高光揮杆混剪向本月暫不安排</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">12:00–14:00</span><span class="meal">午餐 / 分組</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">彭慶記</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">下午分三組各 2 人：A 下午茶組；B 星際組；C 跑步組
+三組並行，分開安排攝影及交通；星際組沿用新來的女孩 ×2</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">14:30–18:30</span><span class="grp">C 跑步組</span><span class="tier pm">Pre / Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河綠植步行道 → 時尚匯</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc miss">M913</span><span class="idc">M921</span><span class="idc">M912</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">跑步度假・銀河輕運動日常（場內段：起點＋全線）／黃昏段補充機位</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">C 隊員 ×1</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">輕運動服／跑鞋／耳機</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">跑步線與 9.20 下午段成片銜接；與尚坊組並行；晨昏兩段成片銜接</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">下午</span><span class="grp">A 組</span><span class="tier bm">Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河大草坪</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M904</span><span class="idc">G12</span><span class="idc">G13</span><span class="idc">G15</span><span class="idc">G16</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">大草坪高爾夫輕鬆搞笑：高爾夫套裝玩鬧 ＋ 大小姐與保鏢反差（草坪版玩鬧花絮）</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">A 隊員 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">高爾夫套裝／玩具球杆／白花球／協調色 Polo／墨鏡</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">僅草坪玩鬧，<b>不進真實球場、無真實擊球</b></div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">下午</span><span class="grp">A＋C 組</span><span class="tier pm">Pre / Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河連廊（室外）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M916</span><span class="idc">M915</span><span class="idc">M938</span><span class="idc">M921</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">機位合集（銀河段）＋ 閨蜜轉場銀河收尾段</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">A＋C 隊員 ×1–4</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">銀河段機位隨動線順拍；M915 收尾段連廊完成；M918 傍晚段此時段補拍</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">16:00–17:00</span><span class="grp">B 星際組</span><span class="tier vip">VIP</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">星際酒店裝修後套房</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M931</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">星際酒店房間開箱：雙人入住、空間與細節</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">B 隊員 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">小禮服／行李箱／房卡</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">裝修後的套房；高級性感風；完成後轉天際泳池</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">17:15–18:30</span><span class="grp">B 星際組</span><span class="tier vip">VIP</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">星際酒店天際泳池（4 pax in total）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M930</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">泳池度假氛圍 ＋ Vlog 傍晚過渡段</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">B 隊員 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">泳裝／外搭／防水妝</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">依現場開放時段拍攝；<b>18:30 前結束</b></div></div>
+</div></div>
+</section>
+
+<!-- ============ DAY 4 ============ -->
+<section class="sec" id="d4">
+<div class="dayhead">Day 4・9/20（日）澳門外景 ＋ 尚坊 ＋ 藝術展覽</div>
+
+<div class="slot"><div class="sh"><span class="time">09:00–12:00</span><span class="grp">A 組</span><span class="tier bm">Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">半島：衣灣斜巷 → 崗頂前地 → 市政署／議事亭前地</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M917</span><span class="idc">M916</span><span class="idc">M918</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">澳門 Citywalk・14 圖機位攻略（圖文・半島段）</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">A 隊員 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">14P 素材／實走路線圖</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">快拍主點多角度；以「遊人身份」分小組，只用輕型拍攝工具</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">09:00–12:00</span><span class="grp">B 組</span><span class="tier bm">Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">半島：玫瑰堂 → 瘋堂斜巷 ＋ 對稱街景點位</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M922</span><span class="idc">M921</span><span class="idc">M919</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">對稱構圖看澳門 ＋ 街舞 Fit Check（半島 3 套）＋ 青春 MV 白天段</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">B 隊員 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">長裙草帽／黃紅藍街頭風 3 套</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">同點位順拍；M922 現場勘對稱軸；M918 白天段與 M917 點位復用，傍晚段當晚回銀河補</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">09:00–12:00</span><span class="grp">C 組</span><span class="tier vip">VIP / Pre</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河戶外出入口 → 嘉模聖母堂 → 官也街 → 回銀河</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M912</span><span class="idc">M915</span><span class="idc">M923</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">銀河出發 City Run・氹仔慢跑路線 ＋ 機位合集（氹仔段）＋ 閨蜜轉場外景段</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">C 隊員 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">跑步服／跑鞋／路線圖／協調色便裝</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">路線先實走再拍；M916 氹仔段（官也街）順拍；M915 外景段隨氹仔線同場拍攝</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">12:00–14:00</span><span class="meal">午餐 / 休整</span></div>
+<div class="sb">
+<div class="r"><div class="k">備註</div><div class="v note">外景組不統一午餐、自行用餐／休整後分組（自理，半島／氹仔外景途中）</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">14:30–18:30</span><span class="grp">B 組</span><span class="tier bm">Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河大草坪／平整活動區</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M904</span><span class="idc">G11</span><span class="idc">G16</span><span class="idc">G18</span><span class="idc">G13</span><span class="idc">G15</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">大草坪高爾夫輕鬆搞笑（草坪版玩鬧花絮，補足輕鬆搞笑鏡頭）</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">B 隊員 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">高爾夫套裝／玩具球杆／白花球／協調色 Polo／墨鏡</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">原華嫂×一飯封神行程取消，改為大草坪高爾夫輕鬆搞笑；<b>僅草坪玩鬧，不進真實球場、無真實擊球</b></div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">14:30–18:30</span><span class="grp">C 跑步組</span><span class="tier pm">Pre / Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河綠植步行道／黃昏段</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M912</span><span class="idc miss">M913</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">跑步度假・黃昏段補充機位（與 9.19 場內段成片銜接）</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">C 隊員 ×2</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">與尚坊組並行；晨昏兩段成片銜接</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">下午</span><span class="grp">全員</span><span class="tier pm">Pre / Mass</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">銀河內部（天浪淘園 TBC）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc miss">新增</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">羅杰杜彼「寰宇律動展覽」（9.11–9.25）、《夢想之旅》高孝午藝術展（9.18–11.17，時尚大道中）</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">隊員 ×6</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">度假裝</div></div>
+</div></div>
+
+<div class="slot"><div class="sh"><span class="time">17:30–18:30</span><span class="grp">A 組</span><span class="tier vip">VIP</span></div>
+<div class="sb">
+<div class="r"><div class="k">地點</div><div class="v loc">尚坊下午茶（悅榕莊 31 樓・室內）</div></div>
+<div class="r"><div class="k">腳本</div><div class="ids"><span class="idc">M937</span><span class="idc">M921</span></div></div>
+<div class="r"><div class="k">內容</div><div class="v">尚坊泰國美食：獲獎名廚 Jan 出品 × 餐廳 31 樓景觀</div></div>
+<div class="r"><div class="k">出鏡</div><div class="v">A 隊員 ×2</div></div>
+<div class="r"><div class="k">元素</div><div class="v note">當期餐飲出品／度假小裙子穿搭</div></div>
+<div class="r"><div class="k">備註</div><div class="v note">尚坊＝悅榕莊 31 樓泰餐（名廚 Jan Ruangnukulkit）；外景組回銀河後前往</div></div>
+</div></div>
+</section>
+
+<!-- ============ 腳本索引 ============ -->
+<section class="sec" id="idx">
+<div class="dayhead">腳本索引（44 支）</div>
+<input type="text" id="search" placeholder="🔍 輸入編號、主題或地點快速搜尋（例如 M901、高爾夫、天浪）">
+<div id="sclist">
+      <div class="sc" data-search="M901 玉兔好時辰·三金美食打卡（偷吃被抓包劇情向） 銀河內部 玉兔妝少女×1 + 畫外手×1（第二人只伸手入畫）">
+        <div class="sch"><span class="sid">M901</span><span class="stier base">Base Mass</span><span class="sdur">15.5s</span></div>
+        <div class="stitle">玉兔好時辰·三金美食打卡（偷吃被抓包劇情向）</div>
+        <div class="smeta"><b>帳號</b> 副號B ｜ <b>地點</b> 銀河內部</div>
+        <div class="smeta"><b>出鏡</b> 玉兔妝少女×1 + 畫外手×1（第二人只伸手入畫）</div>
+        <div class="spoint">固定機位微劇情：犯困搗藥→偷啃金箔蛋撻→被畫外手揪耳抓包→賣萌收尾，美食打卡套“偷吃被抓包”橋段，記憶點在那隻畫外手</div>
+      </div>
+      <div class="sc" data-search="M902 玉兔在銀河內·各種轉場（變裝+多場景快切模板） 銀河內部 玉兔少女×1">
+        <div class="sch"><span class="sid">M902</span><span class="stier base">Base Mass</span><span class="sdur">19.4s</span></div>
+        <div class="stitle">玉兔在銀河內·各種轉場（變裝+多場景快切模板）</div>
+        <div class="smeta"><b>帳號</b> 副號C ｜ <b>地點</b> 銀河內部</div>
+        <div class="smeta"><b>出鏡</b> 玉兔少女×1</div>
+        <div class="spoint">現代裝鋪墊→4.5s閃白變裝玉兔→之後14s內11次硬切、一景一動作、道具輪換，搗藥動作首尾呼應，泡泡光點造“銀河”感，是銀河內轉場鏈模板</div>
+      </div>
+      <div class="sc" data-search="M903 玉兔妝×國風舞·銀河草坪（玉兔公主人設舞） 銀河大草坪 玉兔妝少女×1（白兔×1）">
+        <div class="sch"><span class="sid">M903</span><span class="stier base">Base Mass</span><span class="sdur">12.6s</span></div>
+        <div class="stitle">玉兔妝×國風舞·銀河草坪（玉兔公主人設舞）</div>
+        <div class="smeta"><b>帳號</b> 副號B ｜ <b>地點</b> 銀河大草坪</div>
+        <div class="smeta"><b>出鏡</b> 玉兔妝少女×1（白兔×1）</div>
+        <div class="spoint">固定機位半身國風手勢舞，兔耳+真白兔+桂花枝三件套做層次，靠手姿、抱兔、花枝擋臉製造轉場契機，適合銀河草坪/裝置前快速拍</div>
+      </div>
+      <div class="sc" data-search="M903原型 M903舞蹈原型·追光獨舞動作庫（原創參考） 銀河大草坪 玉兔少女×1">
+        <div class="sch"><span class="sid">M903原型</span><span class="stier na">—</span><span class="sdur">21.7s</span></div>
+        <div class="stitle">M903舞蹈原型·追光獨舞動作庫（原創參考）</div>
+        <div class="smeta"><b>帳號</b> 內部參考（不發佈） ｜ <b>地點</b> 銀河大草坪</div>
+        <div class="smeta"><b>出鏡</b> 玉兔少女×1</div>
+        <div class="spoint">M903草坪舞的動作原型：黑棚圓形追光下一鏡到底，控腿/翻腕/下腰/轉身/造型定格，給啦啦隊排隊形與動作段落用</div>
+      </div>
+      <div class="sc" data-search="M904 高爾夫單人跳舞·搞笑反差（大小姐與保鏢） 高爾夫球場 “大小姐”×1（蓬蓬裙）+“女保鏢”×1（閨蜜客串，黑衣墨鏡），均為女生">
+        <div class="sch"><span class="sid">M904</span><span class="stier prem">Premium</span><span class="sdur">12.1s</span></div>
+        <div class="stitle">高爾夫單人跳舞·搞笑反差（大小姐與保鏢）</div>
+        <div class="smeta"><b>帳號</b> 主號+副號A ｜ <b>地點</b> 高爾夫球場</div>
+        <div class="smeta"><b>出鏡</b> “大小姐”×1（蓬蓬裙）+“女保鏢”×1（閨蜜客串，黑衣墨鏡），均為女生</div>
+        <div class="spoint">雙人設cos反差：黑衣女保鏢（閨蜜客串）全程遞杆遞Tee，蓬蓬裙“大小姐”揮完杆原地開心蹦跳轉圈，笑點在結尾情緒釋放；一鏡到底；兩人均為女生</div>
+      </div>
+      <div class="sc" data-search="M905 高爾夫雙人專業向·盛夏下場Vlog（電影感） 高爾夫球場 女生×2（藏藍裙/米白裙，均白空頂帽）">
+        <div class="sch"><span class="sid">M905</span><span class="stier vip">VIP</span><span class="sdur">43.5s</span></div>
+        <div class="stitle">高爾夫雙人專業向·盛夏下場Vlog（電影感）</div>
+        <div class="smeta"><b>帳號</b> 主號+副號A ｜ <b>地點</b> 高爾夫球場</div>
+        <div class="smeta"><b>出鏡</b> 女生×2（藏藍裙/米白裙，均白空頂帽）</div>
+        <div class="spoint">雙人專業下場vlog模板：空鏡開場→選杆→並肩走→交替揮杆正反打→英文花字（Focused/Challenging/Precise/Elegant）定氣質→並肩背影收尾</div>
+      </div>
+      <div class="sc" data-search="M907 高爾夫時尚單人·老錢風Golf Day（Ralph Lauren線） 高爾夫球場 女生×1">
+        <div class="sch"><span class="sid">M907</span><span class="stier vip">VIP</span><span class="sdur">12.8s</span></div>
+        <div class="stitle">高爾夫時尚單人·老錢風Golf Day（Ralph Lauren線）</div>
+        <div class="smeta"><b>帳號</b> 主號+副號A ｜ <b>地點</b> 高爾夫球場</div>
+        <div class="smeta"><b>出鏡</b> 女生×1</div>
+        <div class="spoint">全白老錢風單人：背影回頭出場→手套腕錶細節特寫→空揮擺裙→冷臉揮杆甩髮→全片只笑一次做反差→扛杆定格；對應RL“品位開運”</div>
+      </div>
+      <div class="sc" data-search="M908 高爾夫雙人·陪打觀賽互動（啦啦隊×高球大使參考） 高爾夫球場 女生×2-3（澳門復刻：女高球大使/女教練×1 + 啦啦隊員×1）">
+        <div class="sch"><span class="sid">M908</span><span class="stier vip">VIP</span><span class="sdur">24.2s</span></div>
+        <div class="stitle">高爾夫雙人·陪打觀賽互動（啦啦隊×高球大使參考）</div>
+        <div class="smeta"><b>帳號</b> 主號+副號A ｜ <b>地點</b> 高爾夫球場</div>
+        <div class="smeta"><b>出鏡</b> 女生×2-3（澳門復刻：女高球大使/女教練×1 + 啦啦隊員×1）</div>
+        <div class="spoint">陪打觀賽互動模板：航拍球洞開場→討論球道/看線/並肩走的陪打動作→拼貼貼紙轉場→低角度+球洞POV創意機位，供啦啦隊×女高球大使（女教練）同框套用，出鏡均為女生</div>
+      </div>
+      <div class="sc" data-search="M910 啦啦隊國風群舞·莫問歸期（六人橫排色卡） 高爾夫球場 女生×6（馬卡龍色系漢服，一人一色；啦啦隊）">
+        <div class="sch"><span class="sid">M910</span><span class="stier base">Base Mass</span><span class="sdur">17.9s</span></div>
+        <div class="stitle">啦啦隊國風群舞·莫問歸期（六人橫排色卡）</div>
+        <div class="smeta"><b>帳號</b> 副號B ｜ <b>地點</b> 高爾夫球場</div>
+        <div class="smeta"><b>出鏡</b> 女生×6（馬卡龍色系漢服，一人一色；啦啦隊）</div>
+        <div class="spoint">多人國風群舞模板：6人馬卡龍色漢服橫排=行走色卡，固定全景一鏡到底，整齊度優先+橫排波浪手，花海/國風裝置場景出片，對應“國風開場秀”（人數上限6人）</div>
+      </div>
+      <div class="sc" data-search="M911 單人跑步路線·跑著去吃飯（xf&amp;b / Flowers卡點） 銀河周邊外景 女生×1">
+        <div class="sch"><span class="sid">M911</span><span class="stier base">Base Mass</span><span class="sdur">38.5s</span></div>
+        <div class="stitle">單人跑步路線·跑著去吃飯（xf&amp;b / Flowers卡點）</div>
+        <div class="smeta"><b>帳號</b> 副號C ｜ <b>地點</b> 銀河周邊外景</div>
+        <div class="smeta"><b>出鏡</b> 女生×1</div>
+        <div class="spoint">“跑步→抵達餐廳吃飯”閉環：UI點歌開場，歌詞逐句卡花字，街景/海灘/日落時間流逝，終點進店點單+食物特寫；銀河復刻為跑到好食辰吃金運美食</div>
+      </div>
+      <div class="sc" data-search="M912 銀河必跑路線·City Run詳細口播 銀河周邊外景 跑者女生×1（跑步背心+空頂帽）">
+        <div class="sch"><span class="sid">M912</span><span class="stier vip">VIP</span><span class="sdur">約160s</span></div>
+        <div class="stitle">銀河必跑路線·City Run詳細口播</div>
+        <div class="smeta"><b>帳號</b> 主號 ｜ <b>地點</b> 銀河周邊外景</div>
+        <div class="smeta"><b>出鏡</b> 跑者女生×1（跑步背心+空頂帽）</div>
+        <div class="spoint">銀河必跑路線成片口播：清晨延時開場→明珠大堂起點→地圖亮5km路線→出銀河點Ralph&#x27;s Coffee→龍環葡韻→官也街→海邊折返→回銀河F&amp;B（Ralph&#x27;s Coffee/CHA BEI秋梨桂花/華嫂叉燒盒）→總結帶9-10月活動→片尾回閃</div>
+      </div>
+      <div class="sc" data-search="M915 0.5倍旅行轉場·閨蜜團一景一造型（慢動作轉場） 銀河+外景 閨蜜女生×4">
+        <div class="sch"><span class="sid">M915</span><span class="stier prem">Premium</span><span class="sdur">17.1s</span></div>
+        <div class="stitle">0.5倍旅行轉場·閨蜜團一景一造型（慢動作轉場）</div>
+        <div class="smeta"><b>帳號</b> 副號B ｜ <b>地點</b> 銀河+外景</div>
+        <div class="smeta"><b>出鏡</b> 閨蜜女生×4</div>
+        <div class="spoint">多人閨蜜轉場模板：每1-1.3s換場景、對鏡定格pose，靠0.5倍慢動作+動作銜接做無縫轉場，服裝色呼應場景；澳門版=半島街景海邊拍戶外段，進銀河拍室內段（時尚匯/明珠大堂夢想萌友/天浪淘園/酒店房）</div>
+      </div>
+      <div class="sc" data-search="M916 特種兵1h拍完澳門機位·編號機位打卡模板 銀河+外景 女生×1（草帽，粉吊帶花裙→黃吊帶黑裙兩套）">
+        <div class="sch"><span class="sid">M916</span><span class="stier base">Base Mass</span><span class="sdur">16.1s</span></div>
+        <div class="stitle">特種兵1h拍完澳門機位·編號機位打卡模板</div>
+        <div class="smeta"><b>帳號</b> 副號B ｜ <b>地點</b> 銀河+外景</div>
+        <div class="smeta"><b>出鏡</b> 女生×1（草帽，粉吊帶花裙→黃吊帶黑裙兩套）</div>
+        <div class="spoint">效率型機位合集模板：統一坐/站/走pose+草帽，“序號+地名”花字串場；澳門版=半島10個免費機位拍完，搭免費穿梭巴士到氹仔銀河續拍室內機位（明珠大堂夢想萌友/時尚匯穹頂/Ralph&#x27;s Coffee），戶外+度假區一次集齊</div>
+      </div>
+      <div class="sc" data-search="M917 澳門citywalk童話小路·圖文機位攻略（衣灣斜巷） 銀河+外景 半島段純風景機位；銀河延展段安排啦啦隊女生×1出鏡（舉杯/合影）">
+        <div class="sch"><span class="sid">M917</span><span class="stier base">Base Mass</span><span class="sdur">圖文12P（無視頻）</span></div>
+        <div class="stitle">澳門citywalk童話小路·圖文機位攻略（衣灣斜巷）</div>
+        <div class="smeta"><b>帳號</b> 副號C ｜ <b>地點</b> 銀河+外景</div>
+        <div class="smeta"><b>出鏡</b> 半島段純風景機位；銀河延展段安排啦啦隊女生×1出鏡（舉杯/合影）</div>
+        <div class="spoint">圖文citywalk機位攻略範本：主打卡點多角度+路線地圖+沿途機位，正文給路線/拍法/交通/美食，收藏率高；澳門版在半島段後加2-3P“下午回銀河”：明珠大堂夢想萌友、時尚匯首店、CHA BEI/Ralph&#x27;s Coffee下午茶，路線圖補銀河段</div>
+      </div>
+      <div class="sc" data-search="M918 懷舊青春MV感·澳門citywalk空鏡情緒片 銀河+外景 啦啦隊女生×1（情緒出鏡，不搶空鏡氛圍）+路人">
+        <div class="sch"><span class="sid">M918</span><span class="stier base">Base Mass</span><span class="sdur">41.6s</span></div>
+        <div class="stitle">懷舊青春MV感·澳門citywalk空鏡情緒片</div>
+        <div class="smeta"><b>帳號</b> 副號B ｜ <b>地點</b> 銀河+外景</div>
+        <div class="smeta"><b>出鏡</b> 啦啦隊女生×1（情緒出鏡，不搶空鏡氛圍）+路人</div>
+        <div class="spoint">空鏡情緒MV模板：老店招/雕像/自行車靜物講懷舊，白天→黃昏→夜推進情緒，全片安排1名啦啦隊女生做情緒點綴；澳門版結尾從老城暖橙夜街轉場到銀河金色夜景（時尚匯/明珠大堂/穹頂仰拍），由該女生背影走入銀河燈光，老城懷舊與現代銀河做對照，全片只靠BGM無口播</div>
+      </div>
+      <div class="sc" data-search="M919 用電影感打開澳門·銀河度假區仰拍特寫模板 銀河+外景 啦啦隊女生×1（草帽+馬甲，多為背影）">
+        <div class="sch"><span class="sid">M919</span><span class="stier vip">VIP</span><span class="sdur">19.3s</span></div>
+        <div class="stitle">用電影感打開澳門·銀河度假區仰拍特寫模板</div>
+        <div class="smeta"><b>帳號</b> 主號 ｜ <b>地點</b> 銀河+外景</div>
+        <div class="smeta"><b>出鏡</b> 啦啦隊女生×1（草帽+馬甲，多為背影）</div>
+        <div class="spoint">度假區電影感模板：用Ralph&#x27;s Coffee杯首尾呼應，中間仰拍銀河建築+物件特寫+女生背影串聯、一鏡一景快切；核心鏡頭全部落在銀河自有場景——時尚匯歐式穹頂/柱廊、明珠大堂夢想萌友、Ralph&#x27;s Coffee門頭、鑽石地面、金色連廊，金色夜景只拍銀河自有場景，不拍任何其他度假村建築</div>
+      </div>
+      <div class="sc" data-search="M920 銀河金色十月兩日Vlog·9-10月活動版（Solotrip） 銀河內部 女生博主×1（solo，多套老錢風/運動風穿搭，髮型髮色不要求）">
+        <div class="sch"><span class="sid">M920</span><span class="stier vip">VIP</span><span class="sdur">約312s</span></div>
+        <div class="stitle">銀河金色十月兩日Vlog·9-10月活動版（Solotrip）</div>
+        <div class="smeta"><b>帳號</b> 主號 ｜ <b>地點</b> 銀河內部</div>
+        <div class="smeta"><b>出鏡</b> 女生博主×1（solo，多套老錢風/運動風穿搭，髮型髮色不要求）</div>
+        <div class="spoint">銀河金色十月兩日vlog成片，動線=入住→時尚匯黃金週購物禮遇（Ralph&#x27;s Coffee等首店+羅傑杜彼展）→高孝午藝術展/夢想萌友→CHA BEI秋日茶→9.19高球日→天浪淘園+天際泳池星光派對→秋日美饌→華嫂限定/秋日三金小食（金箔蛋撻·楊枝金撈·金箔taco）→晨跑SPA→老城+夜景，每個活動一個花字小標題</div>
+      </div>
+      <div class="sc" data-search="M921 澳門街景舞蹈fit check·換裝×彩色街景 銀河+外景 啦啦隊女生×1（黃T卡其+藍披肩 / 紅T黑馬甲 / 藍襯衫藍中褲 / Ralph Lauren老錢風 四套；髮型髮色不要求）">
+        <div class="sch"><span class="sid">M921</span><span class="stier base">Base Mass</span><span class="sdur">40.5s</span></div>
+        <div class="stitle">澳門街景舞蹈fit check·換裝×彩色街景</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河+外景</div>
+        <div class="smeta"><b>出鏡</b> 啦啦隊女生×1（黃T卡其+藍披肩 / 紅T黑馬甲 / 藍襯衫藍中褲 / Ralph Lauren老錢風 四套；髮型髮色不要求）</div>
+        <div class="spoint">街景舞蹈模板：同一段舞多場景復刻、換裝色呼應場景；澳門版前三套在半島街景跳，第四套換Ralph Lauren老錢風進銀河時尚大道/明珠大堂夢想萌友前跳，自然植入時尚匯首店</div>
+      </div>
+      <div class="sc" data-search="M922 韋斯安德森打開澳門·對稱馬卡龍色空鏡 銀河+外景 啦啦隊女生×1（棕長裙白帽，畫面正中小點綴；空鏡段也由她入畫，髮型髮色不要求）">
+        <div class="sch"><span class="sid">M922</span><span class="stier prem">Premium</span><span class="sdur">42.7s</span></div>
+        <div class="stitle">韋斯安德森打開澳門·對稱馬卡龍色空鏡</div>
+        <div class="smeta"><b>帳號</b> 副號B ｜ <b>地點</b> 銀河+外景</div>
+        <div class="smeta"><b>出鏡</b> 啦啦隊女生×1（棕長裙白帽，畫面正中小點綴；空鏡段也由她入畫，髮型髮色不要求）</div>
+        <div class="spoint">風格化空鏡模板：糖果色建築對稱空鏡+人物正中小點綴+圓形遮罩轉場+復古credits；澳門版半島馬卡龍樓之後，用圓形遮罩轉進銀河歐式穹頂/柱廊/天浪淘園做對稱收尾，把度假區自然接進城市片</div>
+      </div>
+      <div class="sc" data-search="M923 黃金週懶人包·1分鐘口播攻略（拿金條/吃金食/過金假） 銀河內部 啦啦隊員×1（正對鏡頭口播，金/月白/玉綠造型，避免大面積紅）">
+        <div class="sch"><span class="sid">M923</span><span class="stier prem">Premium</span><span class="sdur">約65s</span></div>
+        <div class="stitle">黃金週懶人包·1分鐘口播攻略（拿金條/吃金食/過金假）</div>
+        <div class="smeta"><b>帳號</b> 主號 ｜ <b>地點</b> 銀河內部</div>
+        <div class="smeta"><b>出鏡</b> 啦啦隊員×1（正對鏡頭口播，金/月白/玉綠造型，避免大面積紅）</div>
+        <div class="spoint">懶人包公式=黃金3秒hook→三板塊導覽→①黃金週送金條怎麼參與（規則以官方現場為準，不口播未確認細則）→②好食辰三金（金箔蛋撻拉絲/金黃楊枝金撈/金箔金箔taco，字幕“食金運，行大運”）→③黃金週玩什麼（天浪淘園玩水躺平/SPA放鬆/時尚匯首店逛買拍/高孝午展+夢想萌友，全程不提運動與高爾夫）→行動號召；像朋友分享一樣簡單明瞭，看完就想訂行程</div>
+      </div>
+      <div class="sc" data-search="M928 同一杆·六人高光揮杆混剪 高爾夫球場 啦啦隊女生×6（每人一段高光揮杆，）">
+        <div class="sch"><span class="sid">M928</span><span class="stier vip">VIP</span><span class="sdur">22s</span></div>
+        <div class="stitle">同一杆·六人高光揮杆混剪</div>
+        <div class="smeta"><b>帳號</b> 主號+副號A ｜ <b>地點</b> 高爾夫球場</div>
+        <div class="smeta"><b>出鏡</b> 啦啦隊女生×6（每人一段高光揮杆，）</div>
+        <div class="spoint">六人一杆接力混剪：一人完整一杆定調→一次揮杆六人按相位無縫接力→六杆擊球高光連切卡鼓點→最遠/最帥慢鏡重放→並排同步收杆定格→球道遠景字卡「一杆開運·澳門銀河」</div>
+      </div>
+      <div class="sc" data-search="G04 走到哪揮到哪·多場景空揮混剪 銀河大草坪（澳門復刻） 隊員×3（空手揮杆→球場揮杆）">
+        <div class="sch"><span class="sid">G04</span><span class="stier prem">Premium</span><span class="sdur">20s</span></div>
+        <div class="stitle">走到哪揮到哪·多場景空揮混剪</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×3（空手揮杆→球場揮杆）</div>
+        <div class="spoint">空氣揮杆球癮混剪：便利店/等紅燈/電梯全是練習場，match cut切真球場</div>
+      </div>
+      <div class="sc" data-search="G05 高爾夫穿搭Lookbook·多套造型混剪 展現不同隊員打高爾夫風采 銀河大草坪（澳門復刻） 隊員×4以上（不同造型）">
+        <div class="sch"><span class="sid">G05</span><span class="stier prem">Premium</span><span class="sdur">20s</span></div>
+        <div class="stitle">高爾夫穿搭Lookbook·多套造型混剪 展現不同隊員打高爾夫風采</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×4以上（不同造型）</div>
+        <div class="spoint">四套造型Lookbook卡點，GOLF LIKE A GIRL，穿搭+運動雙垂直流量</div>
+      </div>
+      <div class="sc" data-search="G06 四人陣型齊舞 動態跳躍感 銀河大草坪（澳門復刻） 隊員×4">
+        <div class="sch"><span class="sid">G06</span><span class="stier prem">Premium</span><span class="sdur">18s</span></div>
+        <div class="stitle">四人陣型齊舞 動態跳躍感</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×4</div>
+        <div class="spoint">四人四色+頭頂人設標籤（認真練球的/愛拍照的/超搞鬼的/負責搞笑的）</div>
+      </div>
+      <div class="sc" data-search="G07 一人練習 搞笑揮空 銀河大草坪（澳門復刻） 隊員×1">
+        <div class="sch"><span class="sid">G07</span><span class="stier prem">Premium</span><span class="sdur">15s</span></div>
+        <div class="stitle">一人練習 搞笑揮空</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×1</div>
+        <div class="spoint">一人社恐練球：揮空偷看→和球對視沉默→打中裝帥，擬人花字是靈魂</div>
+      </div>
+      <div class="sc" data-search="G10 會診式教學·一群教練圍著一個人 銀河大草坪（澳門復刻） 隊員×5-6">
+        <div class="sch"><span class="sid">G10</span><span class="stier prem">Premium</span><span class="sdur">15s</span></div>
+        <div class="stitle">會診式教學·一群教練圍著一個人</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×5-6</div>
+        <div class="spoint">誇張群像：一人揮杆五個教練圍著「會診」，扶肩趴地扶胯各就各位</div>
+      </div>
+      <div class="sc" data-search="G11 有你在發揮更好·搞笑陪打 銀河大草坪（澳門復刻） 隊員×2（陪打）">
+        <div class="sch"><span class="sid">G11</span><span class="stier prem">Premium</span><span class="sdur">16s</span></div>
+        <div class="stitle">有你在發揮更好·搞笑陪打</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×2（陪打）</div>
+        <div class="spoint">陪打情緒流：她揮杆我比她先衝出去看球，同步慶祝比球飛得還高</div>
+      </div>
+      <div class="sc" data-search="G12 揮杆揮到起飛 搞笑 銀河大草坪（澳門復刻） 隊員×1">
+        <div class="sch"><span class="sid">G12</span><span class="stier prem">Premium</span><span class="sdur">12s</span></div>
+        <div class="stitle">揮杆揮到起飛 搞笑</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×1</div>
+        <div class="spoint">荒誕特效：揮杆像直升機→整個人像球一樣彈射升空，12s短平快</div>
+      </div>
+      <div class="sc" data-search="G13 揮杆像談戀愛·雙人互動教學 銀河大草坪（澳門復刻） 隊員×2">
+        <div class="sch"><span class="sid">G13</span><span class="stier prem">Premium</span><span class="sdur">18s</span></div>
+        <div class="stitle">揮杆像談戀愛·雙人互動教學</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×2</div>
+        <div class="spoint">知識點擬人：重心偏左=想象被親臉頰，錯誤❌/正確✅對照教學</div>
+      </div>
+      <div class="sc" data-search="G14 四人球場拍照姿勢合集（圖文帖） 銀河大草坪（澳門復刻） 隊員×4">
+        <div class="sch"><span class="sid">G14</span><span class="stier prem">Premium</span><span class="sdur">圖文6張</span></div>
+        <div class="stitle">四人球場拍照姿勢合集（圖文帖）</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×4</div>
+        <div class="spoint">圖文帖6張：閨蜜球場拍照構圖教程（前景遮擋/手套框/對角線疊頭/影子）</div>
+      </div>
+      <div class="sc" data-search="G15 You Me &amp; Golf·俯拍閨蜜儀式感 銀河大草坪（澳門復刻） 隊員×2（不露臉）">
+        <div class="sch"><span class="sid">G15</span><span class="stier prem">Premium</span><span class="sdur">12s</span></div>
+        <div class="stitle">You Me &amp; Golf·俯拍閨蜜儀式感</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×2（不露臉）</div>
+        <div class="spoint">純俯拍不露臉，球杆交叉X+白鞋白襪，極簡儀式感</div>
+      </div>
+      <div class="sc" data-search="G16 新手翻車·球杆比球飛得遠 銀河大草坪（澳門復刻） 隊員×1-2（一人翻車一人笑）">
+        <div class="sch"><span class="sid">G16</span><span class="stier prem">Premium</span><span class="sdur">15s</span></div>
+        <div class="stitle">新手翻車·球杆比球飛得遠</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×1-2（一人翻車一人笑）</div>
+        <div class="spoint">新手翻車名場面：球杆比球飛得遠，鏡頭猛搖追杆是笑點</div>
+      </div>
+      <div class="sc" data-search="G17 一人擊球兩人嗨·閨蜜卡點慶祝 銀河大草坪（澳門復刻） 隊員×3">
+        <div class="sch"><span class="sid">G17</span><span class="stier prem">Premium</span><span class="sdur">18s</span></div>
+        <div class="stitle">一人擊球兩人嗨·閨蜜卡點慶祝</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×3</div>
+        <div class="spoint">三人同步慶祝卡點：她切杆我們同步起跳，動作循環兩輪</div>
+      </div>
+      <div class="sc" data-search="G18 朋友圈 vs 現實·人設反差 銀河大草坪（澳門復刻） 隊員×1-2">
+        <div class="sch"><span class="sid">G18</span><span class="stier prem">Premium</span><span class="sdur">15s</span></div>
+        <div class="stitle">朋友圈 vs 現實·人設反差</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×1-2</div>
+        <div class="spoint">IG動態UI框：Public精修vs Private翻車快切，反差共鳴</div>
+      </div>
+      <div class="sc" data-search="G19 三人三角陣型·同步揮杆 銀河大草坪（澳門復刻） 隊員×2 教練1">
+        <div class="sch"><span class="sid">G19</span><span class="stier prem">Premium</span><span class="sdur">15s</span></div>
+        <div class="stitle">三人三角陣型·同步揮杆</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 銀河大草坪（澳門復刻）</div>
+        <div class="smeta"><b>出鏡</b> 隊員×2 教練1</div>
+        <div class="spoint">三人三角陣型完全同步揮杆，整齊爽感，教練入鏡</div>
+      </div>
+      <div class="sc" data-search="M930 尊尚星光派對·雙人閨蜜泳池派對Vlog（Elite Summer Party） 星級酒店 啦啦隊女生×2">
+        <div class="sch"><span class="sid">M930</span><span class="stier prem">Premium</span><span class="sdur">22s</span></div>
+        <div class="stitle">尊尚星光派對·雙人閨蜜泳池派對Vlog（Elite Summer Party）</div>
+        <div class="smeta"><b>帳號</b> 主號 ｜ <b>地點</b> 星級酒店</div>
+        <div class="smeta"><b>出鏡</b> 啦啦隊女生×2</div>
+        <div class="spoint">雙人閨蜜夜場派對Vlog：入場→天際泳池夜景→特飲碰杯→現場音樂表演→池邊雙人跳舞→分享佳餚→池畔踢水→派對信息收尾，突出動感音樂/現場表演/特飲佳餚/夜景的壓軸氛圍</div>
+      </div>
+      <div class="sc" data-search="M931 星際酒店套房開箱·雙人閨蜜Room Tour 星級酒店 啦啦隊女生×2">
+        <div class="sch"><span class="sid">M931</span><span class="stier prem">Premium</span><span class="sdur">23s</span></div>
+        <div class="stitle">星際酒店套房開箱·雙人閨蜜Room Tour</div>
+        <div class="smeta"><b>帳號</b> 主號 ｜ <b>地點</b> 星級酒店</div>
+        <div class="smeta"><b>出鏡</b> 啦啦隊女生×2</div>
+        <div class="spoint">雙人閨蜜套房開箱：刷卡開門驚喜→客廳空間→入住禮遇→主臥床品→衣帽間梳妝→大理石浴室→客房細節→落地景觀收尾，突出空間感/入住禮遇/園區景觀與躺平度假感</div>
+      </div>
+      <div class="sc" data-search="M932 兔女郎可愛風·雙人白色蕾絲造型片（甜系非性感） 星級酒店房間（萊佛士） 女生×2（一白一淺粉）">
+        <div class="sch"><span class="sid">M932</span><span class="stier prem">Premium</span><span class="sdur">約19s</span></div>
+        <div class="stitle">兔女郎可愛風·雙人白色蕾絲造型片（甜系非性感）</div>
+        <div class="smeta"><b>帳號</b> 主號 ｜ <b>地點</b> 星級酒店房間（萊佛士）</div>
+        <div class="smeta"><b>出鏡</b> 女生×2（一白一淺粉）</div>
+        <div class="spoint">白色蕾絲兔耳造型片：對鏡扶耳/托腮/跪坐抱膝/抵唇wink/轉圈定格，暖調柔光甜系</div>
+      </div>
+      <div class="sc" data-search="M933 天浪淘園·彩色群像玩水+沙灘高爾夫玩鬧 天浪淘園（白沙灘/衝浪池/漂流河） 女生×4-6（一人一色）">
+        <div class="sch"><span class="sid">M933</span><span class="stier base">Base Mass</span><span class="sdur">約26s</span></div>
+        <div class="stitle">天浪淘園·彩色群像玩水+沙灘高爾夫玩鬧</div>
+        <div class="smeta"><b>帳號</b> 副號A ｜ <b>地點</b> 天浪淘園（白沙灘/衝浪池/漂流河）</div>
+        <div class="smeta"><b>出鏡</b> 女生×4-6（一人一色）</div>
+        <div class="spoint">群像瘋玩+雙人鬆弛，含白沙灘玩具高爾夫玩鬧轉場（非球場教學）</div>
+      </div>
+      <div class="sc" data-search="M934 酒店空間漢服造型片·雙人古今match cut轉場 銀河酒店空間（屏風/廊柱/旋轉樓梯） 漢服女生×2（玉綠+月白）">
+        <div class="sch"><span class="sid">M934</span><span class="stier base">Base Mass</span><span class="sdur">約24s</span></div>
+        <div class="stitle">酒店空間漢服造型片·雙人古今match cut轉場</div>
+        <div class="smeta"><b>帳號</b> 副號B ｜ <b>地點</b> 銀河酒店空間（屏風/廊柱/旋轉樓梯）</div>
+        <div class="smeta"><b>出鏡</b> 漢服女生×2（玉綠+月白）</div>
+        <div class="spoint">現代↔漢服動作匹配無縫轉場、雙人對稱舞、高角度俯拍裙襬、團扇提燈</div>
+      </div>
+      <div class="sc" data-search="M935 BOMBANA意式米其林·雙人桌邊黑松露 銀河 8½ Otto e Mezzo BOMBANA 女生×2">
+        <div class="sch"><span class="sid">M935</span><span class="stier vip">VIP</span><span class="sdur">約26s</span></div>
+        <div class="stitle">BOMBANA意式米其林·雙人桌邊黑松露</div>
+        <div class="smeta"><b>帳號</b> 主號 ｜ <b>地點</b> 銀河 8½ Otto e Mezzo BOMBANA</div>
+        <div class="smeta"><b>出鏡</b> 女生×2</div>
+        <div class="spoint">金吊燈吧檯→逐道上菜→主廚桌邊現刨黑松露（最強動態），暖金電影感</div>
+      </div>
+      <div class="sc" data-search="M936 銀河Bar Hopping·雙人六家酒吧巡禮 安達仕→長廊Long Bar→麥卡倫→麗思51F→千里吧→BOMBANA Bar 女生×2">
+        <div class="sch"><span class="sid">M936</span><span class="stier prem">Premium</span><span class="sdur">約40s</span></div>
+        <div class="stitle">銀河Bar Hopping·雙人六家酒吧巡禮</div>
+        <div class="smeta"><b>帳號</b> 主號 ｜ <b>地點</b> 安達仕→長廊Long Bar→麥卡倫→麗思51F→千里吧→BOMBANA Bar</div>
+        <div class="smeta"><b>出鏡</b> 女生×2</div>
+        <div class="spoint">一套look連喝六家，♪店名角標、找門/招牌酒/碰杯，暗調暖光微醺感</div>
+      </div>
+      <div class="sc" data-search="M937 尚坊Saffron·雙人空中泰式fine dining 悅榕莊31樓 尚坊 女生×2">
+        <div class="sch"><span class="sid">M937</span><span class="stier vip">VIP</span><span class="sdur">約28s</span></div>
+        <div class="stitle">尚坊Saffron·雙人空中泰式fine dining</div>
+        <div class="smeta"><b>帳號</b> 主號 ｜ <b>地點</b> 悅榕莊31樓 尚坊</div>
+        <div class="smeta"><b>出鏡</b> 女生×2</div>
+        <div class="spoint">拱門長廊縱深→現場泰樂→龍蝦金邊粉等位上，浪漫暗調</div>
+      </div>
+      <div class="sc" data-search="M938 你不知道的銀河隱藏機位·雙人出片合集 銀河全域（樓梯/連廊/畫廊/名店街/大堂） 女生×2（白/米白長裙）">
+        <div class="sch"><span class="sid">M938</span><span class="stier prem">Premium</span><span class="sdur">約34s</span></div>
+        <div class="stitle">你不知道的銀河隱藏機位·雙人出片合集</div>
+        <div class="smeta"><b>帳號</b> 主號 ｜ <b>地點</b> 銀河全域（樓梯/連廊/畫廊/名店街/大堂）</div>
+        <div class="smeta"><b>出鏡</b> 女生×2（白/米白長裙）</div>
+        <div class="spoint">旋轉樓梯俯拍/連廊穹頂/畫廊框景/名店倒影/夢想萌友仰拍等10機位，背影+引導線</div>
+      </div>
+</div>
+</section>
+
+<!-- ============ 活動資訊 ============ -->
+<section class="sec" id="act">
+<div class="dayhead">活動資訊彙總</div>
+
+<div class="act"><h4>1. 好食辰・金運壽司塔可</h4>
+<p>（9.17 M901／M923 好時辰段）即日起至 11 月 15 日；每日 12:00／16:00／20:00 三個吉時限量供應；位置近水晶大堂及川渝人家；三款口味＝龍蝦牛油果醬／燒汁日式鰻魚／麻辣雪花牛肉，鋪金箔，寓意財氣逼人。</p></div>
+
+<div class="act"><h4>2. 一味知秋・秋季菜單</h4>
+<p>（9.19 下午茶三選一）① 8½ Otto e Mezzo BOMBANA——米其林星廚 Marino 以倫巴第經典風味重塑秋季菜單；② 山里（大倉 28 樓）——松茸／野菌／當造海鮮的日式旬味；③ 奈和美（大倉大堂）——秋季海鮮御膳＋桂花拿鐵；另 CHA BEI 有秋梨桂花茶＋栗子南瓜蘋果秋季鹹甜點心，可作第四站備選。</p></div>
+
+<div class="act"><h4>3. 尊尚星光派對 Elite Summer Party 2026</h4>
+<p>（9.19 星際線）9 月 19 日（六）19:30；星際酒店天際泳池；動感音樂＋現場娛樂表演＋特飲美食。</p></div>
+
+<div class="act"><h4>4. Negroni Week 尼格羅尼周</h4>
+<p>（9.18 Bar 線場地參考）2026 年 9 月 21 日至 27 日；銀河六間酒吧＝千里吧／長廊酒吧／麗思酒廊／8½ Otto e Mezzo BOMBANA／萊佛士大堂吧／安達仕酒吧；經典 Negroni ＋調酒師限定創作。<b>註：活動 9.21 開幕，提前拍攝。</b></p></div>
+
+<div class="act"><h4>5. 黃金周購物禮遇</h4>
+<p>（9.18 新店段／9.20 連廊素材）Ralph Lauren 及即將開幕的澳門首家 Ralph's Coffee、Loro Piana 全新精品店、Moose Knuckles 港澳首間專門店、昂跑煥新升級專門店、APM Monaco／Scent Library／Vinavest 全新專門店、Prada／Versace 限定店、羅杰杜彼「寰宇律動展覽」（9.11–9.25）、Starbucks Reserve；《夢想之旅》高孝午藝術展 9.18–11.17 時尚大道中；超巨型「夢想萌友」10.1–11.19 明珠大堂；美食＝源·公館（粵菜家宴）／承·鐵板料理／萊佛士大堂吧（流光映翠下午茶）。</p></div>
+</section>
+
+<!-- ============ 待確認 ============ -->
+<section class="sec" id="chk">
+<div class="dayhead">⚠️ 待確認事項（逐格比對後整理）</div>
+
+<div class="note-box"><b>一、行程表引用、但腳本總覽（44 支）查無之編號　共 5 個</b><br><br>
+<b>M924</b>（出現 5 次・影響最大）：9/17 好時辰段、9/17 大堂口播段、9/18 天浪段、9/18 時尚匯段、9/18 RC 下午茶段<br>
+<b>M914</b>（出現 4 次）：9/18 時尚匯段、9/19 草坪穿搭段（腳本欄）；9/17 大堂段備註、活動資訊「星際線」（引用）<br>
+<b>M913</b>（出現 2 次）：9/19 跑步組、9/20 跑步線收尾<br>
+<b>M909</b>（出現 1 次）：9/19 上午備註「M909 以草坪版拍攝」<br>
+<b>M28</b>（出現 1 次）：9/19 草坪穿搭段（總覽無此編號，亦無 M028）</div>
+
+<div class="note-box"><b>二、編號與內容疑似不符　1 處</b><br><br>
+9/17　16:30–20:00「<b>六人國風群舞・莫問歸期</b>」標註腳本為 <b>M911</b>。<br>
+惟總覽中：<br>
+・M911 ＝ 單人跑步路線・跑著去吃飯（副號 C）<br>
+・<b>M910 ＝ 啦啦隊國風群舞・莫問歸期（副號 B）</b><br>
+該時段內容與 M910 相符，疑為 M910 之誤植。</div>
+
+<div class="note-box"><b>三、總覽有腳本、行程表未排定　2 支</b><br><br>
+<b>M935</b>（BOMBANA 意式米其林・雙人黑松露／主號）——全表未出現此編號；BOMBANA 僅以「場地」形式出現於 9/18 Bar Hopping（M936）與活動資訊中，未見獨立拍攝時段。<br><br>
+<b>M928</b>（同一杆・六人高光揮杆混剪／主號＋副號 A）——9/19 備註已載明「專業、高光揮杆混剪向本月暫不安排」，惟總覽仍列為發布腳本，建議確認是否正式取消。<br><br>
+<span style="color:#6B6B7B">（M903原型 於總覽標示為「內部參考（不發布）」，未排定拍攝屬正常，不列入本項。）</span></div>
+
+<div class="note-box"><b>四、待現場或酒店確認之項目</b><br>
+・悅榕莊套房可拍範圍（9/17 漢服段）以酒店確認為準<br>
+・萊佛士大堂吧「流光映翠」下午茶是否可作拍攝元素（9/18）<br>
+・RC 下午茶以預訂確認為準（9/18）<br>
+・星際天際泳池依現場開放時段（9/19，18:30 前結束）<br>
+・天浪淘園藝術展覽段 TBC（9/20）</div>
+</section>
+
+<div class="note-box" style="margin-top:20px"><b>現場通用提醒：</b>草坪高爾夫段僅做草坪玩鬧，不進真實球場、無真實擊球；三組並行日（9.19、9.20）需分開安排攝影與交通；每日收工時間依各段備註為準。</div>
+
+</main>
+<footer>絡客思行銷科技｜澳門專案・工作人員限閱（9月 FINAL）</footer>
+</div>
+
+<script>
+var KEY="locus0917";
+function unlock(){
+  var v=document.getElementById('pw').value.trim();
+  if(v===KEY){sessionStorage.setItem('sp9_ok','1');show();}
+  else{document.getElementById('err').textContent='通行碼錯誤，請再試一次';}
+}
+function show(){document.getElementById('gate').style.display='none';document.getElementById('content').style.display='block';}
+if(sessionStorage.getItem('sp9_ok')==='1')show();
+document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')unlock();});
+
+document.querySelectorAll('.tab').forEach(function(t){t.addEventListener('click',function(){
+  document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+  t.classList.add('on');
+  document.querySelectorAll('.sec').forEach(function(d){d.classList.remove('on')});
+  document.getElementById(t.dataset.s).classList.add('on');
+  window.scrollTo(0,0);
+});});
+
+// 腳本搜尋
+var si=document.getElementById('search');
+if(si){si.addEventListener('input',function(){
+  var q=si.value.trim().toLowerCase();
+  document.querySelectorAll('#sclist .sc').forEach(function(c){
+    c.style.display=(!q||c.dataset.search.toLowerCase().indexOf(q)>-1)?'':'none';
+  });
+});}
+
+// 點腳本編號 → 跳到索引並搜尋
+document.querySelectorAll('.idc').forEach(function(c){c.addEventListener('click',function(){
+  var id=c.textContent.trim();
+  if(id==='新增')return;
+  document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on')});
+  document.querySelector('.tab[data-s="idx"]').classList.add('on');
+  document.querySelectorAll('.sec').forEach(function(d){d.classList.remove('on')});
+  document.getElementById('idx').classList.add('on');
+  si.value=id; si.dispatchEvent(new Event('input'));
+  window.scrollTo(0,0);
+});});
+</script>
+</body>
+</html>
