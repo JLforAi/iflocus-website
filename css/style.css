@@ -2135,3 +2135,8 @@ a.fb-video-cta-card {
     margin-right: auto;
   }
 }
+
+/* ailocus.html 城市 3D 展示：沿用 .omo-demo-frame，僅覆寫預覽背景圖 */
+.omo-demo-frame.ailocus-demo-frame {
+  background-image: url("../images/ailocus-demo-poster.jpg");
+}
