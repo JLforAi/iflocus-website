@@ -84,6 +84,8 @@ body.embed .panel{padding:10px 10px 10px 14px}
 body.embed #caption{font-size:14px;min-height:42px}
 @media (max-width:600px){.noti{max-width:136px;padding:5px 7px 5px 5px}.noti span{font-size:10px}.noti b{font-size:9px}.noti i{width:18px;height:18px;font-size:10px}}
 #err{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:24px;text-align:center}
+.back-btn{pointer-events:auto;flex:none}
+body.embed .back-btn{display:none}
 </style>
 </head>
 <body>
@@ -97,7 +99,8 @@ body.embed #caption{font-size:14px;min-height:42px}
   <div class="tag" id="tSocial">線上粉絲</div>
 </div>
 <header class="top">
-  <div class="t"><h1>iFLocus OMO 影響力擴散</h1><p>門店活動 × 台灣啦啦隊 × 雲端推播　<a id="back" href="/iflocusOMO.html">回到 iFLocus</a></p></div>
+  <a class="btnlink back-btn" id="back" href="/iflocusOMO.html" aria-label="返回 iFLocus OMO 服務介紹">‹ 返回</a>
+  <div class="t"><h1>iFLocus OMO 影響力擴散</h1><p>門店活動 × 台灣啦啦隊 × 雲端推播</p></div>
   <div class="acts">
     <a class="btnlink" id="full" href="?" target="_top">全螢幕互動</a>
     <button class="ghost" id="sound" type="button" aria-pressed="false">開啟音效</button>
