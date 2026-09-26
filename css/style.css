@@ -2121,3 +2121,6 @@ a.fb-video-cta-card {
 @media (min-width: 769px) {
   .omo-demo-frame { aspect-ratio: 16 / 9; }
 }
+.omo-title-seg { display: inline-block; }
+.omo-demo-cta { margin-top: 24px; }
+.omo-demo-subtitle { text-wrap: balance; }
