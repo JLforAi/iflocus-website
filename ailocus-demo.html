@@ -298,11 +298,14 @@ const pins=[['☕',3,5,3,7.2,9.6],['🍜',-3,5,3,11.4,13.8],['🛍️',9,5,5,17.
 
 /* labels */
 const labelsEl=document.getElementById('labels');
-const ZL=[['住宅區',-6,3.8,-6],['辦公區',6,10.8,-6],['商圈',3,4.6,4.5],['夜市',-9,2.2,6.2],['公園',3,2.4,11.2],['轉運站',0,2.2,0,'hub']].map(([t,x,y,z,c])=>{
+const ZL=[['住宅區',-6,3.8,-6],['辦公區',6,10.8,-6],['商圈',7.5,4.6,3],['夜市',-9,2.2,6.2],['公園',3,2.4,11.2],['轉運站',0,2.2,0,'hub']].map(([t,x,y,z,c])=>{
   const d=document.createElement('div');d.className='tag'+(c?' '+c:'');d.textContent=t;labelsEl.appendChild(d);return {d,v:new THREE.Vector3(x,y,z)};});
 const V=new THREE.Vector3();
-function placeTags(){const w=innerWidth,h=innerHeight;ZL.forEach(l=>{V.copy(l.v).project(camera);const ok=V.z<1&&Math.abs(V.x)<1.05&&V.y<0.95&&V.y>-0.55;
-  l.d.style.opacity=ok?1:0;l.d.style.left=((V.x+1)/2*w)+'px';l.d.style.top=((1-V.y)/2*h)+'px';});}
+function placeTags(){const w=innerWidth,h=innerHeight;const boxes=[];
+  ZL.forEach(l=>{V.copy(l.v).project(camera);const ok=V.z<1&&Math.abs(V.x)<1.05&&V.y<0.95&&V.y>-0.55;
+    let x=(V.x+1)/2*w,y=(1-V.y)/2*h;const bw=l.d.offsetWidth||44,bh=l.d.offsetHeight||22;
+    for(let k=0;k<4;k++){const hit=boxes.find(b=>Math.abs(b.x-x)<(b.w+bw)/2+4&&Math.abs(b.y-y)<(b.h+bh)/2+2);if(!hit)break;y=hit.y-(hit.h+bh)/2-3;}
+    if(ok)boxes.push({x,y,w:bw,h:bh});l.d.style.opacity=ok?1:0;l.d.style.left=x+'px';l.d.style.top=y+'px';});}
 
 /* ---------- UI ---------- */
 const slider=document.getElementById('slider'),clock=document.getElementById('clock'),cap=document.getElementById('caption'),playBtn=document.getElementById('play');
@@ -327,9 +330,14 @@ if(!EMBED){
   const up=e=>{pointers.delete(e.pointerId);pinchD=0;};el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);
   el.addEventListener('wheel',e=>{e.preventDefault();radius=Math.min(80,Math.max(12,radius*(1+e.deltaY*0.001)));lastInteract=performance.now();},{passive:false});
 }
-function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;const portrait=w/h<0.8;camera.fov=portrait?55:40;camera.updateProjectionMatrix();
-  if(performance.now()-lastInteract>1e6){radius=portrait?58:(EMBED?38:40);target.set(0,portrait?-2.2:-1.2,portrait?2.5:2.5);}}
-addEventListener('resize',resize);resize();
+function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=w/h<0.8?50:40;
+  /* fit the city into the free area between header and bottom panel */
+  const panelH=(document.querySelector('.dock')||{}).offsetHeight||0,topH=(document.querySelector('.top')||{}).offsetHeight||0;
+  const freeH=Math.max(120,h-panelH-topH);camera.setViewOffset(w,h,0,(panelH-topH)/2,w,h);camera.updateProjectionMatrix();
+  const tv=Math.tan(camera.fov*Math.PI/360),th=tv*w/h;
+  const dW=30/(2*th),dH=19/(2*tv*freeH/h);
+  if(performance.now()-lastInteract>1e6){radius=Math.min(80,Math.max(20,Math.max(dW,dH)));target.set(0,-0.5,2);}}
+addEventListener('resize',resize);resize();setTimeout(resize,600);if(document.fonts)document.fonts.ready.then(resize);
 
 /* ---------- loop ---------- */
 const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
