@@ -2124,3 +2124,14 @@ a.fb-video-cta-card {
 .omo-title-seg { display: inline-block; }
 .omo-demo-cta { margin-top: 24px; }
 .omo-demo-subtitle { text-wrap: balance; }
+
+/* locusad.html「服務品牌類型」：桌機固定 3＋3。原容器的 grid-template-columns 寫在 inline style，
+   故此處需 !important 才能覆蓋；768px 以下不套用，維持原本 auto-fit 排法。 */
+@media (min-width: 769px) {
+  .industry-grid-3col {
+    grid-template-columns: repeat(3, 1fr) !important;
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
