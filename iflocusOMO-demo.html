@@ -86,6 +86,10 @@ body.embed #caption{font-size:14px;min-height:42px}
 #err{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:24px;text-align:center}
 .back-btn{pointer-events:auto;flex:none}
 body.embed .back-btn{display:none}
+@media (max-width:600px){
+  body:not(.embed) .top .t p{display:none}
+  body:not(.embed) .top h1{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
 </style>
 </head>
 <body>
