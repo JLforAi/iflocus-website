@@ -128,8 +128,11 @@ body.embed .back-btn{display:none}
 </div>
 <div id="err">3D 引擎沒有載入成功，請重新整理頁面再試一次。</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+// The scene-init IIFE below reads window.THREE, so it must not run until the deferred
+// three.js script above has executed — wait for DOMContentLoaded rather than running inline.
+document.addEventListener('DOMContentLoaded',function(){
 (function(){
 const EMBED=new URLSearchParams(location.search).get('embed')==='1';
 if(EMBED)document.body.classList.add('embed');
@@ -506,6 +509,7 @@ function frame(now){
 }
 requestAnimationFrame(frame);
 })();
+});
 </script>
 </body>
 </html>
