@@ -338,5 +338,15 @@
 
 <script src="js/main.js"></script>
 <script src="js/cta-tap-fallback.js" defer></script>
+<script>
+// The embedded OMO 3D demo (iflocusOMO-demo.html?embed=1) doesn't load its own gtag.js —
+// it forwards its events here so we don't ship a second copy of the GA script in the iframe.
+window.addEventListener('message', function (e) {
+  if (e.origin !== 'https://iflocus.com') return;
+  const d = e.data;
+  if (!d || d.source !== 'iflocus-omo-demo' || d.type !== 'gtag' || !Array.isArray(d.args)) return;
+  if (window.gtag) window.gtag.apply(null, d.args);
+});
+</script>
 </body>
 </html>

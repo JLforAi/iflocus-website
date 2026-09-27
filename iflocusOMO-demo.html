@@ -18,13 +18,23 @@
 <meta name="twitter:description" content="門店活動 × 台灣啦啦隊 × 絡客思雲端推播的 OMO 3D 互動展示：從門店應援、周邊路人推播、線上擴散到粉絲導回門店消費。">
 <meta name="twitter:image" content="https://iflocus.com/images/iflocus-omo-poster.jpg">
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EC2PDN71T6"></script>
 <script>
-window.dataLayer=window.dataLayer||[];
-function gtag(){dataLayer.push(arguments);}
-gtag('js',new Date());
 const isEmbed=new URLSearchParams(location.search).get('embed')==='1';
-gtag('config','G-EC2PDN71T6',{send_page_view:!isEmbed});
+if(isEmbed){
+  // Embedded in iflocusOMO.html: the parent page already loads gtag.js and sends its own
+  // pageview, so don't load a second copy here — forward demo events to the parent's gtag
+  // via postMessage instead (see the matching listener in iflocusOMO.html).
+  window.gtag=function(){
+    try{parent.postMessage({source:'iflocus-omo-demo',type:'gtag',args:Array.prototype.slice.call(arguments)},'https://iflocus.com');}catch(e){}
+  };
+}else{
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag=gtag;
+  gtag('js',new Date());
+  gtag('config','G-EC2PDN71T6');
+  const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-EC2PDN71T6';document.head.appendChild(s);
+}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
