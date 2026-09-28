@@ -18,6 +18,7 @@
 **前後對照**：每個「頁面 × 尺寸」組合，各截一張 `main`（修改前）版本、一張 branch（修改後）版本。
 
 **存放位置**：截圖存在 repo 外的 `C:\Users\ljose\iflocus-shots\<branch 名稱>\`，**不 commit 進 repo**。
+清理：每次開始新的 iflocus 任務前，檢查 `C:\Users\ljose\iflocus-shots\` 下各資料夾，對應 branch 已 merge 或已關閉的，整個資料夾刪除；仍在進行中的 PR 保留。
 
 **回報格式**：PR 描述中附「截圖對照表」，逐列列出：
 
