@@ -128,7 +128,7 @@ single-context（根目錄 `GLOSSARY.md` + `docs/adr/`，目前皆尚未建立�
 
 ### 碰到以下任一，停下來問，絕不自動執行
 - 刪資料、刪目錄、批次改檔。
-- 改 .github/workflows/、deploy 設定、CNAME、robots、sitemap 以外的任何部署相關檔。
+- 改 .github/workflows/、deploy 設定、CNAME、robots、sitemap，或任何其他部署相關檔。
 - 動到 secrets、token、金鑰、密碼、付費或變現相關設定。
 - 改 .gitignore、CLAUDE.md 既有內容。
 - 超出本輪 Scope 的重構。
