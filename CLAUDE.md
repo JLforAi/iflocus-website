@@ -94,3 +94,13 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+## Agent skills
+
+### Issue tracker
+
+Issues 與 specs 放在 GitHub Issues（JLforAi/iflocus-website），以 `gh` CLI 操作。See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+single-context（根目錄 `GLOSSARY.md` + `docs/adr/`，目前皆尚未建立）。See `docs/agents/domain.md`.
