@@ -221,7 +221,7 @@ done
 ### Step 8：Cache-bust + Commit + Push
 - 在 case-XXX.html 的 `<link rel="stylesheet" href="css/style.css?v=YYYYMMDD-XXX">` 升版號
 - Commit 訊息描述變更（用過去的 commit 為參考）
-- `git push`，等 GitHub Pages 部署（1-3 分鐘）
+- `git push`，等部署完成。部署流程：push 到 main → `.github/workflows/deploy.yml` 用 `peaceiris/actions-gh-pages` 推到 `gh-pages`（排除 `.github`、`.claude`、`docs`、根目錄 `*.md`、`skills-lock.json`、`.gitignore`）→ GitHub Pages 從 `gh-pages` / 建置。要等 deploy.yml 跑完、Pages 再建置完，才算上線
 
 ### Step 9：**驗證 GitHub Pages 部署成功**（**強制做，別跳過**）
 
@@ -233,11 +233,15 @@ LATEST=$(git rev-parse HEAD)
 REMOTE=$(git ls-remote origin main | awk '{print $1}')
 [ "$LATEST" = "$REMOTE" ] && echo "✅ remote=local" || echo "❌ NOT pushed"
 
-# 2. 查最新 Pages build commit 是否就是 LATEST
+# 2. 等 deploy.yml 跑完，再查最新 Pages build commit 是否就是 gh-pages 最新 commit
+#    （Pages 來源是 gh-pages，build commit 是 gh-pages 的 SHA，不是 main 的 LATEST；
+#     gh-pages 的 commit 訊息為 "deploy: <main 的 SHA>"）
+gh run list --workflow=deploy.yml --limit 1
+GHP=$(git ls-remote origin gh-pages | awk '{print $1}')
 gh api repos/JLforAi/iflocus-website/pages/builds/latest \
   --jq '{commit,status,duration,created_at}'
 
-# 3. 如果 build commit ≠ LATEST，手動觸發 rebuild
+# 3. 如果 build commit ≠ GHP，手動觸發 rebuild
 gh api -X POST repos/JLforAi/iflocus-website/pages/builds
 
 # 4. 輪詢直到 status=built
@@ -253,7 +257,8 @@ grep -c "YYYYMMDD-XXX\|新案例 id" /tmp/live.html  # 應 > 0
 
 **Pages 沒觸發部署的常見原因**：
 - 推送時 `.git/*.lock` 殘留（鎖位但 commit 仍寫入）→ 清掉後手動 `gh api -X POST .../pages/builds`
-- 工作流被 disable（檢查 repo Settings → Pages 的 Source）
+- 工作流被 disable（檢查 repo Settings → Pages 的 Source，應為 `gh-pages` / root）
+- deploy.yml 失敗 → gh-pages 沒更新，Pages 只會重建舊內容（先看 `gh run list --workflow=deploy.yml`）
 - Jekyll build error（log 看 `error_count`，但通常仍會 deploy 上次成功版）
 - **GitHub 端 codeload / Pages 服務故障**（見下節）
 
@@ -280,48 +285,20 @@ grep -c "YYYYMMDD-XXX\|新案例 id" /tmp/live.html  # 應 > 0
    也開瀏覽器看 https://www.githubstatus.com — 通常會公告 incident
 
 2. **不要做的事**（這次的失敗教訓）：
-   - ❌ **不要把 Pages source 切到 `gh-pages` branch**（會讓整站變 404，舊版內容也消失）
+   - ❌ **故障期間不要切換 Pages source**（2026-05-26 當時 gh-pages 尚未備妥，切過去讓整站變 404、舊版內容也消失；2026-10-11 起 source 已正式改為 `gh-pages`，故障時也不要切回 main 試錯）
    - ❌ 不要連續送多個試錯 commit（`configure-pages@v5` / `@v4` / `@v3`...）只會在 Actions 列表製造一堆紅 X
    - ❌ 不要急著加 `.nojekyll` 或切 `build_type` — 不會修好 codeload 故障
 
 3. **可以做的事**：
    - ✅ **先等 30 分鐘**，GitHub 通常自我修復
-   - ✅ **維持 Pages source = main**（即使 build errored，舊版至少還在 serve）
+   - ✅ **維持 Pages source 不變（目前 = `gh-pages` / root）**（即使 build errored，舊版至少還在 serve）
    - ✅ 觀察 `gh api repos/.../pages/builds/latest` 每 5-10 分鐘看一次是否恢復
 
-4. **真的等不到時的備援**（用第三方 action 繞開）：
-   建立 `.github/workflows/pages.yml`：
-   ```yaml
-   name: Deploy static site to Pages
-   on:
-     push: { branches: ["main"] }
-     workflow_dispatch:
-   permissions:
-     contents: write
-     pages: write
-     id-token: write
-   jobs:
-     deploy:
-       runs-on: ubuntu-latest
-       steps:
-         - uses: actions/checkout@v4
-           with: { persist-credentials: true, fetch-depth: 0 }
-         - uses: peaceiris/actions-gh-pages@v4
-           with:
-             github_token: ${{ secrets.GITHUB_TOKEN }}
-             publish_dir: .
-             publish_branch: gh-pages
-             force_orphan: true
-             cname: iflocus.com
-   ```
-   並把 default workflow permissions 改成 write：
-   ```bash
-   gh api -X PUT repos/JLforAi/iflocus-website/actions/permissions/workflow \
-     -f default_workflow_permissions=write -F can_approve_pull_request_reviews=true
-   ```
-   `peaceiris/actions-gh-pages` 不依賴 `actions/*-pages-*`，會把整站推到 `gh-pages` branch。
-
-   **重要**：完成後 **Pages source 仍維持 = main**，等 GitHub 自我修復後 legacy build 會直接拿 main 的內容 serve 出去（這次實測就是這樣最後成功的）。
+4. **這個備援已是常態流程**（2026-10-11 起）：
+   2026-05-26 當時臨時用 `peaceiris/actions-gh-pages` 繞開 `actions/*-pages-*`，現在已成為正式部署方式：
+   push 到 main → `.github/workflows/deploy.yml` 用 `peaceiris/actions-gh-pages` 推到 `gh-pages`（排除 `.github`、`.claude`、`docs`、根目錄 `*.md`、`skills-lock.json`、`.gitignore`）→ GitHub Pages 從 `gh-pages` / 建置（設定見 `.github/workflows/deploy.yml`）。
+   `peaceiris/actions-gh-pages` 不依賴 `actions/*-pages-*`，所以 codeload 故障時 deploy.yml 通常仍能把內容推到 gh-pages；
+   但 Pages 的 legacy build 本身仍可能受影響 → 照上面 1–3 觀察，等 GitHub 自我修復後重建即可。
 
 **結論**：codeload 故障 ≈ GitHub 端短暫災情，**沉住氣等比急著動手強**。
 
