@@ -104,3 +104,50 @@ Issues 與 specs 放在 GitHub Issues（JLforAi/iflocus-website），以 `gh` CL
 ### Domain docs
 
 single-context（根目錄 `GLOSSARY.md` + `docs/adr/`，目前皆尚未建立）。See `docs/agents/domain.md`.
+
+## 協作鐵則（每次 session 預設生效）
+
+### 回覆與語言
+- 一律以繁體中文回覆，含進度更新、錯誤訊息說明與完成回報。
+- 每份指令開頭標明使用的模型與 effort；指令沒標時主動問。
+
+### 分支與提交
+- 永遠開 feature/ 或 fix/ 或 chore/ 前綴的分支，絕不直接 commit 或 push 到 main 或部署分支。
+- 每個改動走 PR，PR 內文必須貼驗證指令的實際輸出，不可只寫「已驗證」。
+- 不改寫歷史、不 force push。
+
+### 視覺系統
+- 未經明確同意，不動顏色、class、style、design tokens（locus-brand-tokens.css 及任何 data-brand 選擇器）。
+- CSS 只能附加，不能修改或刪除既有規則。
+
+### 動手前
+- 大改動、刪檔、或不熟的區域，先做唯讀掃描並回報觀察，等指令再動手。
+- 唯讀階段不做任何寫入或刪除，即使本檔其他規則有清理要求也一樣；要刪先停下來問。
+- 改文案、改結構、改設定，先給 before/after，文字改動用 git diff --word-diff 驗證。
+- 只做指令列的 Scope；Non-scope 的東西即使看到問題也只回報、不順手修。
+
+### 碰到以下任一，停下來問，絕不自動執行
+- 刪資料、刪目錄、批次改檔。
+- 改 .github/workflows/、deploy 設定、CNAME、robots、sitemap，或任何其他部署相關檔。
+- 動到 secrets、token、金鑰、密碼、付費或變現相關設定。
+- 改 .gitignore、CLAUDE.md 既有內容。
+- 超出本輪 Scope 的重構。
+
+### 失敗與不確定
+- 失敗、不確定、文件與程式對不上，直接講，以源碼為準，不粉飾、不硬補。
+
+### 完成回報固定格式（每次任務結束都用這十項）
+1. 處理了哪個任務
+2. commit hash（完整）與 commit message
+3. 是否已 push、PR 編號與連結
+4. 修改了哪些檔（清單）
+5. 改了什麼（摘要）
+6. 用什麼指令驗證、實際輸出是什麼
+7. 有沒有超出 Scope、有沒有碰到 Non-scope
+8. 還有什麼沒做完
+9. 有沒有需要本人確認的風險
+10. 下一步建議
+
+### 公司資訊
+- 公司名稱用「Locus Marketing Technology」或「絡客思行銷科技」，對外文件負責人頭銜為執行長／CEO。
+
