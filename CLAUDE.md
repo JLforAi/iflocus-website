@@ -151,3 +151,4 @@ single-context（根目錄 `GLOSSARY.md` + `docs/adr/`，目前皆尚未建立�
 ### 公司資訊
 - 公司名稱用「Locus Marketing Technology」或「絡客思行銷科技」，對外文件負責人頭銜為執行長／CEO。
 
+- 修改 css/*.css 或 js/components.js 後，必須重新產生對應的 .min 檔（CSS 用 clean-css -O0，JS 用 terser），並在同一個 commit 提交。
