@@ -120,6 +120,7 @@ single-context（根目錄 `GLOSSARY.md` + `docs/adr/`，目前皆尚未建立�
 - 每個改動走 PR，PR 內文必須貼驗證指令的實際輸出，不可只寫「已驗證」。
 - 不改寫歷史、不 force push。
 - 修改 css/*.css 或 js/components.js 後，必須重新產生對應的 .min 檔（CSS 用 clean-css -O0，JS 用 terser），並在同一個 commit 提交。
+- check-min 鎖定 clean-css-cli 5.6.3、terser 5.51.2；本機產生 .min 時須使用相同版本，若要升級工具，需同時更新 .github/workflows/check-min.yml 中的版本號。
 - 技術類 PR：驗證全數通過即可自動 merge。
 - 內容類 PR：所有事實都附來源才可自動 merge；任一條沒有來源就停下來等確認。
 
