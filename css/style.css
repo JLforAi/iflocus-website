@@ -2122,7 +2122,7 @@ a.fb-video-cta-card {
   .omo-demo-frame { aspect-ratio: 16 / 9; }
 }
 .omo-title-seg { display: inline-block; }
-.omo-demo-cta { margin-top: 24px; }
+.omo-demo-cta { margin-top: 25px; }
 .omo-demo-subtitle { text-wrap: balance; }
 
 /* locusad.html「服務品牌類型」：桌機固定 3＋3。原容器的 grid-template-columns 寫在 inline style，
