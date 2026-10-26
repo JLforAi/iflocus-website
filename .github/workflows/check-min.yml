@@ -1,0 +1,44 @@
+name: Check minified files
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check-min:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install minifiers (版本與 CLAUDE.md 規則相同工具，鎖定版本)
+        run: npm install --no-save --no-package-lock --prefix "$RUNNER_TEMP/min" clean-css-cli@5.6.3 terser@5.51.2
+
+      - name: Regenerate and compare .min files
+        run: |
+          BIN="$RUNNER_TEMP/min/node_modules/.bin"
+          OUT="$RUNNER_TEMP/regen"
+          mkdir -p "$OUT"
+          "$BIN/cleancss" -O0 -o "$OUT/style.min.css" css/style.css
+          "$BIN/cleancss" -O0 -o "$OUT/locus-brand-tokens.min.css" css/locus-brand-tokens.css
+          "$BIN/terser" js/components.js -c -m -o "$OUT/components.min.js"
+          fail=0
+          for pair in "css/style.min.css:style.min.css" "css/locus-brand-tokens.min.css:locus-brand-tokens.min.css" "js/components.min.js:components.min.js"; do
+            repo="${pair%%:*}"; gen="$OUT/${pair##*:}"
+            if cmp -s "$gen" "$repo"; then
+              echo "OK   $repo"
+            else
+              echo "::error file=$repo::$repo 與原檔重新 minify 的結果不一致，請重新產生 .min 並與原檔改動在同一個 commit 提交"
+              fail=1
+            fi
+          done
+          exit $fail
