@@ -34,8 +34,17 @@
     <h2 class="section-title"><span class="omo-title-seg">從 App 到啦啦隊女孩，</span><span class="omo-title-seg">流量入口的轉變</span></h2>
     <p class="section-subtitle omo-demo-subtitle">過去我們以 App 聯播網做流量，把品牌訊息推播到手機；現在，每位啦啦隊女孩都是一個流量入口，粉絲主動靠近、主動追蹤，再帶著信任回到品牌。</p>
     <div class="omo-demo-frame sports-traffic-frame">
-      <iframe src="/sports-traffic-demo.html?embed=1" loading="lazy" title="流量的轉變 3D 互動展示"></iframe>
+      <iframe data-src="/sports-traffic-demo.html?embed=1" title="流量的轉變 3D 互動展示"></iframe>
     </div>
+    <script>
+    // 3D demo 改為使用者第一次互動（scroll/touchstart/pointerdown/wheel/keydown）才載入；載入前顯示 .omo-demo-frame 既有海報
+    (function(){
+      var f=document.currentScript.previousElementSibling.querySelector('iframe[data-src]');
+      var ev=['scroll','touchstart','pointerdown','wheel','keydown'];
+      function go(){ ev.forEach(function(e){ window.removeEventListener(e,go,true); }); if(!f.src) f.src=f.getAttribute('data-src'); }
+      ev.forEach(function(e){ window.addEventListener(e,go,{capture:true,passive:true}); });
+    })();
+    </script>
     <div class="flex-center omo-demo-cta">
       <a href="/sports-traffic-demo.html" class="btn btn-primary">全螢幕互動</a>
     </div>
