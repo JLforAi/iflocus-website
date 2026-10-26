@@ -29,6 +29,10 @@
 
 **發現非預期差異時**：先停下，不開 PR，回報給使用者，等待確認後再繼續。
 
+**已知雜訊來源**：3D demo（WebGL 畫面與動畫進度）、IG／FB 嵌入（內容與高度不固定）、CSS 輪播（案例頁推播示意圖等 keyframes 動畫）、固定導覽列（逐區塊截圖時會疊入畫面）。
+
+**比對方法**：以 Playwright `animations: 'disabled'` 截圖、逐區塊（body 頂層區塊）比對，並先跑一次 main 對 main 自比作為雜訊基準；差異在基準內視為無差異。
+
 ## 行為規則（Karpathy guidelines，來源 forrestchang/andrej-karpathy-skills）
 
 Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
@@ -112,10 +116,18 @@ single-context（根目錄 `GLOSSARY.md` + `docs/adr/`，目前皆尚未建立�
 - 每份指令開頭標明使用的模型與 effort；指令沒標時主動問。
 
 ### 分支與提交
-- 永遠開 feature/ 或 fix/ 或 chore/ 前綴的分支，絕不直接 commit 或 push 到 main 或部署分支。
+- 永遠開 feature/、fix/、chore/、perf/、content/ 或 docs/ 前綴的分支，絕不直接 commit 或 push 到 main 或部署分支。
 - 每個改動走 PR，PR 內文必須貼驗證指令的實際輸出，不可只寫「已驗證」。
 - 不改寫歷史、不 force push。
 - 修改 css/*.css 或 js/components.js 後，必須重新產生對應的 .min 檔（CSS 用 clean-css -O0，JS 用 terser），並在同一個 commit 提交。
+- 技術類 PR：驗證全數通過即可自動 merge。
+- 內容類 PR：所有事實都附來源才可自動 merge；任一條沒有來源就停下來等確認。
+
+### 效能報告
+- 本機 Lighthouse 用於歷次 before/after 對照；每輪結束另對正式站 iflocus.com 跑一次手機版，兩組數字都要報，對外引用以正式站為準。
+
+### 對外事實
+- 工單中的新聞、里程碑、數字、頭銜等事實，必須附來源（信件、合約、新聞連結擇一）；沒有來源的一律標「待確認」、不上線。
 
 ### 視覺系統
 - 未經明確同意，不動顏色、class、style、design tokens（locus-brand-tokens.css 及任何 data-brand 選擇器）。
