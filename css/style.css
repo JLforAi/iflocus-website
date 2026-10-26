@@ -2148,3 +2148,13 @@ a.fb-video-cta-card {
 .omo-demo-frame.sports-resort-frame {
   background-image: url("../images/sports-resort-demo-poster.jpg");
 }
+
+/* iflocusOMO.html 3D demo 海報：與 demo 起始畫面同鏡頭（手機 4:5 直式鏡頭／桌機 16:9 橫式鏡頭）；og:image 仍用原 iflocus-omo-poster.jpg */
+.omo-demo-frame:has(> iframe[data-src*="iflocusOMO-demo"]) {
+  background-image: url("../images/iflocus-omo-poster-mobile.webp");
+}
+@media (min-width: 769px) {
+  .omo-demo-frame:has(> iframe[data-src*="iflocusOMO-demo"]) {
+    background-image: url("../images/iflocus-omo-poster-desktop.webp");
+  }
+}
