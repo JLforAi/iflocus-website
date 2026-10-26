@@ -407,7 +407,7 @@ if(!EMBED){
   const up=e=>{pointers.delete(e.pointerId);pinchD=0;};el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);
   el.addEventListener('wheel',e=>{e.preventDefault();radius=Math.min(80,Math.max(10,radius*(1+e.deltaY*0.001)));lastInteract=performance.now();},{passive:false});
 }
-function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;const portrait=w/h<0.8;camera.fov=portrait?52:40;camera.updateProjectionMatrix();
+function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;const portrait=w/h<0.81;camera.fov=portrait?52:40;camera.updateProjectionMatrix();
   if(performance.now()-lastInteract>1e6){radius=portrait?37:33;}}
 addEventListener('resize',resize);resize();
 
