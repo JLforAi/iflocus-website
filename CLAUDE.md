@@ -115,6 +115,7 @@ single-context（根目錄 `GLOSSARY.md` + `docs/adr/`，目前皆尚未建立�
 - 永遠開 feature/ 或 fix/ 或 chore/ 前綴的分支，絕不直接 commit 或 push 到 main 或部署分支。
 - 每個改動走 PR，PR 內文必須貼驗證指令的實際輸出，不可只寫「已驗證」。
 - 不改寫歷史、不 force push。
+- 修改 css/*.css 或 js/components.js 後，必須重新產生對應的 .min 檔（CSS 用 clean-css -O0，JS 用 terser），並在同一個 commit 提交。
 
 ### 視覺系統
 - 未經明確同意，不動顏色、class、style、design tokens（locus-brand-tokens.css 及任何 data-brand 選擇器）。
@@ -151,4 +152,3 @@ single-context（根目錄 `GLOSSARY.md` + `docs/adr/`，目前皆尚未建立�
 ### 公司資訊
 - 公司名稱用「Locus Marketing Technology」或「絡客思行銷科技」，對外文件負責人頭銜為執行長／CEO。
 
-- 修改 css/*.css 或 js/components.js 後，必須重新產生對應的 .min 檔（CSS 用 clean-css -O0，JS 用 terser），並在同一個 commit 提交。

@@ -70,8 +70,17 @@
     <h2 class="section-title"><span class="omo-title-seg">門店活動 × 台灣啦啦隊，</span><span class="omo-title-seg">線上線下一起導流</span></h2>
     <p class="section-subtitle omo-demo-subtitle">台灣啦啦隊到客戶門店應援，絡客思雲端平台同步把活動推播送到周邊路人手機，現場人潮再擴散到線上，最後把線上粉絲導回門店消費。</p>
     <div class="omo-demo-frame">
-      <iframe src="/iflocusOMO-demo.html?embed=1" loading="lazy" title="iFLocus OMO 3D 互動展示"></iframe>
+      <iframe data-src="/iflocusOMO-demo.html?embed=1" title="iFLocus OMO 3D 互動展示"></iframe>
     </div>
+    <script>
+    // 3D demo 改為使用者第一次互動（scroll/touchstart/pointerdown/wheel/keydown）才載入；載入前顯示 .omo-demo-frame 既有海報
+    (function(){
+      var f=document.currentScript.previousElementSibling.querySelector('iframe[data-src]');
+      var ev=['scroll','touchstart','pointerdown','wheel','keydown'];
+      function go(){ ev.forEach(function(e){ window.removeEventListener(e,go,true); }); if(!f.src) f.src=f.getAttribute('data-src'); }
+      ev.forEach(function(e){ window.addEventListener(e,go,{capture:true,passive:true}); });
+    })();
+    </script>
     <div class="flex-center omo-demo-cta">
       <a href="/iflocusOMO-demo.html" class="btn btn-primary">全螢幕互動</a>
     </div>
