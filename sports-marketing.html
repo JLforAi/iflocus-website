@@ -157,7 +157,7 @@
 
       <figure class="fb-video-card">
         <div class="fb-video-frame">
-          <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1920276022041641%2F&show_text=false" width="500" height="280" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy" title="iFLocus 運動行銷案例影片"></iframe>
+          <iframe data-src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1920276022041641%2F&show_text=false" width="500" height="280" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" title="iFLocus 運動行銷案例影片"></iframe>
           <div class="fb-video-fallback">
             <p>影片載入中…若無法顯示</p>
             <a href="https://www.facebook.com/reel/1920276022041641/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">點此前往 FB 觀看</a>
@@ -168,7 +168,7 @@
 
       <figure class="fb-video-card">
         <div class="fb-video-frame">
-          <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1277864924255832%2F&show_text=false" width="500" height="280" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy" title="運動大玩家X台灣啦啦隊女孩澳門之旅試鏡說明會側拍"></iframe>
+          <iframe data-src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1277864924255832%2F&show_text=false" width="500" height="280" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" title="運動大玩家X台灣啦啦隊女孩澳門之旅試鏡說明會側拍"></iframe>
           <div class="fb-video-fallback">
             <p>影片載入中…若無法顯示</p>
             <a href="https://www.facebook.com/reel/1277864924255832/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">點此前往 FB 觀看</a>
@@ -198,6 +198,16 @@
       </a>
 
     </div>
+    <script>
+    // FB 影片改為接近畫面時才載入（rootMargin 3000px）；框尺寸由 .fb-video-frame 固定，未載入前外觀不變
+    (function(){
+      var fs=document.currentScript.previousElementSibling.querySelectorAll('iframe[data-src]');
+      function load(f){ if(!f.src) f.src=f.getAttribute('data-src'); }
+      if(!('IntersectionObserver' in window)){ fs.forEach(load); return; }
+      var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ io.unobserve(e.target); load(e.target); } }); },{rootMargin:'3000px 0px'});
+      fs.forEach(function(f){ io.observe(f); });
+    })();
+    </script>
     <div class="flex-center" style="margin-top:32px">
       <a href="https://www.facebook.com/LOCUS.iFLocus/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">查看更多影片 → 前往 LOCUS 粉絲團</a>
     </div>
