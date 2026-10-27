@@ -2158,3 +2158,21 @@ a.fb-video-cta-card {
     background-image: url("../images/iflocus-omo-poster-desktop.webp");
   }
 }
+
+/* 淺色底上的 .btn-outline：原規則為白字白框（供深色 .page-hero／.cta-section 使用），放在淺色區塊會看不見。
+   以下以直接父子結構只命中淺色區塊內的按鈕；深色底（.page-hero、.cta-section、.fb-video-fallback、行內深色底）不受影響。 */
+section > .section-inner > .flex-center > .btn-outline,
+.about-mini > .btn-outline,
+.pricing-highlight > .flex-center > .btn-outline,
+.fb-dual-actions > .btn-outline {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+section > .section-inner > .flex-center > .btn-outline:hover,
+.about-mini > .btn-outline:hover,
+.pricing-highlight > .flex-center > .btn-outline:hover,
+.fb-dual-actions > .btn-outline:hover {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}

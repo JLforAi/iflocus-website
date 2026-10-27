@@ -130,6 +130,7 @@ single-context（根目錄 `GLOSSARY.md` + `docs/adr/`，目前皆尚未建立�
 
 ### 對外事實
 - 工單中的新聞、里程碑、數字、頭銜等事實，必須附來源（信件、合約、新聞連結擇一）；沒有來源的一律標「待確認」、不上線。
+- 來源類型另含：網站既有文案（需註明出處頁面與區塊）、Joseph 在對話中的明確確認（需註明日期）。
 
 ### 視覺系統
 - 未經明確同意，不動顏色、class、style、design tokens（locus-brand-tokens.css 及任何 data-brand 選擇器）。
