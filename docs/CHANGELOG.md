@@ -11,3 +11,7 @@
 
 - 3D demo 改為首次渲染後淡入，移除保險計時器（iflocusOMO、ailocus、sports-marketing 首支 demo）：互動後 iframe 先保持透明、海報持續顯示，demo 畫出第一個畫面後以 postMessage 通知外層才淡入；不支援 WebGL 時維持顯示海報。
 - 首頁數字區改為「300 萬 單次最大推送」，來源：Joseph 2026-10-27 確認此推送量目前仍可達成（含合作夥伴量）。
+
+## 2026-10-28
+
+- FB 嵌入改為接近畫面才載入（corporate-training、iflocusOMO、sports-marketing 的 FB Reel）：頁面載入時不設 src，以 IntersectionObserver 在接近畫面時才載入（rootMargin：corporate-training、iflocusOMO 1200px；sports-marketing 3000px）。corporate-training 首屏不再下載 FB 影片。
