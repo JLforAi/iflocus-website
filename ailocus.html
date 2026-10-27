@@ -50,7 +50,11 @@
     (function(){
       var f=document.currentScript.previousElementSibling.querySelector('iframe[data-src]');
       var ev=['scroll','touchstart','pointerdown','wheel','keydown'];
-      function go(){ ev.forEach(function(e){ window.removeEventListener(e,go,true); }); if(!f.src) f.src=f.getAttribute('data-src'); }
+      function show(){ f.style.transition='opacity .3s'; f.style.opacity='1'; }
+      function go(){ ev.forEach(function(e){ window.removeEventListener(e,go,true); }); if(f.src) return;
+        f.style.opacity='0'; f.src=f.getAttribute('data-src'); }
+      // demo 畫出第一個畫面後會 postMessage 通知；只接受本站 origin 且來源為此 iframe 的訊息
+      window.addEventListener('message',function(e){ var d=e.data; if(e.origin!==location.origin||e.source!==f.contentWindow||!d||d.source!=='iflocus-demo'||d.type!=='ready') return; show(); });
       ev.forEach(function(e){ window.addEventListener(e,go,{capture:true,passive:true}); });
     })();
     </script>

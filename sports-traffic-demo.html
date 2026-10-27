@@ -101,6 +101,7 @@ if(EMBED)document.body.classList.add('embed');
 const track=(name)=>{try{if(window.gtag)gtag('event',name,{event_category:'playmasters_demo',embed:EMBED?'1':'0'});}catch(e){}};
 (function(){const f=document.getElementById('full');const u=new URL(location.href);u.searchParams.delete('embed');f.href=u.pathname+(u.search||'');f.addEventListener('click',()=>track('playmasters_demo_fullscreen'));})();
 if(!window.THREE){document.getElementById('err').style.display='flex';return;}
+try{const c=document.createElement('canvas');if(!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl'))))throw 0;}catch(e){document.getElementById('err').style.display='flex';return;}
 
 /* ================= sound ================= */
 const SND={ctx:null,on:false,last:{}};
@@ -385,7 +386,7 @@ function frame(now){
   prevT=t;
   if(!reduce&&now-lastInteract>4000&&pointers.size===0)theta+=dt*0.07;
   camera.position.set(target.x+radius*Math.sin(phi)*Math.cos(theta),target.y+radius*Math.cos(phi),target.z+radius*Math.sin(phi)*Math.sin(theta));
-  camera.lookAt(target);renderer.render(scene,camera);placeTags(t);
+  camera.lookAt(target);renderer.render(scene,camera);if(!window.__demoReadySent){window.__demoReadySent=1;try{if(parent!==window)parent.postMessage({source:'iflocus-demo',type:'ready'},location.origin);}catch(e){}}placeTags(t);
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);

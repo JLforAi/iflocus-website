@@ -101,6 +101,7 @@ if(EMBED)document.body.classList.add('embed');
 const track=(name)=>{try{if(window.gtag)gtag('event',name,{event_category:'playmasters_demo',embed:EMBED?'1':'0'});}catch(e){}};
 (function(){const f=document.getElementById('full');const u=new URL(location.href);u.searchParams.delete('embed');f.href=u.pathname+(u.search||'');f.addEventListener('click',()=>track('playmasters_demo_fullscreen'));})();
 if(!window.THREE){document.getElementById('err').style.display='flex';return;}
+try{const c=document.createElement('canvas');if(!(window.WebGLRenderingContext&&(c.getContext('webgl')||c.getContext('experimental-webgl'))))throw 0;}catch(e){document.getElementById('err').style.display='flex';return;}
 
 /* ================= sound ================= */
 const SND={ctx:null,on:false,last:{}};
