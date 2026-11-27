@@ -1,0 +1,176 @@
+/* ============================================================
+   LOCUS 集團 — 全站品牌色彩系統 Design Tokens
+   品牌架構：
+     LOCUS（絡客思行銷科技）= 母站，網址 iflocus.com，彩虹字標。
+       └ 三項服務： iFLocus（影響力）/ AiLocus（數據）/ BrandDrop（品牌頁）
+     母字標的彩虹「收」了三服務的色：橘≈iFLocus、紫=AiLocus、紅=BrandDrop族。
+   色彩邏輯：LOCUS 藍=全站 UI 骨架 | 三服務各自主色=頁面識別 | 中性+語意=共用
+   用法：在 <body> 加 data-brand="iflocus|ailocus|branddrop"
+        服務頁的 accent 自動切換，元件 CSS 不需更動。
+        不加 data-brand → 預設 LOCUS 藍（母站首頁 / 共用頁）。
+
+   ※ 註：原檔末段「範例元件」區塊（.btn-primary / .section-title /
+     .site-footer 等，原檔自註「可刪，僅供參考」）已移除——
+     那些是全站真實類別名，會與 css/style.css 衝突（例：.section-title
+     會被加上一條 border-bottom 底線），原樣保留會改到視覺。
+     本檔只保留純 token 定義。
+   ============================================================ */
+
+:root {
+  /* ---------- LOCUS 母品牌彩虹字標（取自 iflocus.com Logo，僅供重製 Logo 用）----------
+     字標四色不是 UI token，是 Logo 本體；UI 行動色一律用下方 --locus-500 深藍。 */
+  --logo-orange: #ED9E33;   /* ≈ iFLocus 金橘 */
+  --logo-purple: #7E3D8E;   /* = AiLocus 紫 */
+  --logo-red:    #D4252F;   /* BrandDrop 紅橘家族 */
+  --logo-blue:   #44A9DE;   /* LOCUS 自身（淺藍變體）*/
+
+  /* ---------- LOCUS UI 行動藍（全站骨架，永不隨頁面改變）---------- */
+  --locus-50:  #EBF5FF;
+  --locus-100: #CCE5FF;
+  --locus-200: #99CCFF;
+  --locus-300: #5CADFF;
+  --locus-400: #1F8FFF;
+  --locus-500: #0066CC;   /* 主色 */
+  --locus-600: #0054A7;
+  --locus-700: #004387;
+  --locus-800: #003366;
+  --locus-900: #002549;
+
+  /* ---------- 共用中性灰（錨點 = Logo 灰 #3D3939）---------- */
+  --neutral-50:  #F5F4F4;
+  --neutral-100: #E6E5E5;
+  --neutral-200: #CECACA;
+  --neutral-300: #B0ABAB;
+  --neutral-400: #938B8B;
+  --neutral-500: #3D3939;
+  --neutral-600: #322F2F;
+  --neutral-700: #282626;
+  --neutral-800: #1E1D1D;
+  --neutral-900: #161515;
+
+  /* ---------- 共用語意色（四品牌通用）---------- */
+  --success: #0FA67A;
+  --warning: #E08A00;
+  --danger:  #D6342C;   /* 系統錯誤/失敗狀態（勿挪作內容強調） */
+  --emphasis: #C0392B;  /* 數據/內容強調紅（獨立於品牌紅與系統 --danger） */
+  --info:    var(--locus-500);
+
+  /* ---------- 全站固定骨架（不隨 data-brand 改變）---------- */
+  --shell-nav-bg:   #FFFFFF;
+  --shell-nav-text: var(--neutral-700);
+  --shell-link:     var(--locus-600);   /* 共用連結色一律藍 */
+  --shell-footer-bg: var(--neutral-50);
+  --shell-accent:    var(--locus-500);  /* nav 底線 / logo 點綴 */
+
+  /* ---------- 子品牌變數的「預設值」= LOCUS 藍 ---------- */
+  /* 元件只引用 --brand-* 這組，頁面層覆寫即可整頁換色 */
+  --brand-50:  var(--locus-50);
+  --brand-100: var(--locus-100);
+  --brand-300: var(--locus-300);
+  --brand-500: var(--locus-500);   /* 品牌主色 */
+  --brand-600: var(--locus-600);   /* hover */
+  --brand-700: var(--locus-700);
+  --brand-900: var(--locus-900);
+  --brand-tint:     var(--locus-50);   /* 區塊淡底 */
+  --brand-fill:     var(--locus-500);  /* 按鈕/色塊底 */
+  --brand-fill-hover: var(--locus-600);
+  --brand-text:     var(--locus-500);  /* 白底可用文字（藍 500 通過 AA）*/
+  --brand-on-fill:  #FFFFFF;           /* 色塊上的文字色 */
+}
+
+/* ============================================================
+   子品牌主題 — 在 <body data-brand="..."> 覆寫 --brand-*
+   ============================================================ */
+
+/* ---------- iFLocus 金橘（網紅／創意）取自 Logo #EB9520 ---------- */
+[data-brand="iflocus"] {
+  --brand-50:  #FDF6EC;
+  --brand-100: #FBE9D0;
+  --brand-300: #F2B869;
+  --brand-500: #EB9520;
+  --brand-600: #C97B12;
+  --brand-700: #A2630F;
+  --brand-900: #583608;
+  --brand-tint:       #FDF6EC;
+  --brand-fill:       #EB9520;
+  --brand-fill-hover: #C97B12;
+  --brand-text:       #A2630F;   /* ⚠ 金橘很亮，白底文字最淺只能到 700 */
+  --brand-on-fill:    #583608;   /* ⚠ 金橘底配「白字」也不及格(2.37)，按鈕用深棕字 */
+}
+
+/* ---------- AiLocus 紫（AI／數據）---------- */
+[data-brand="ailocus"] {
+  --brand-50:  #F7F1F9;
+  --brand-100: #ECDBF0;
+  --brand-300: #C18DCE;
+  --brand-500: #7E3D8E;
+  --brand-600: #673274;
+  --brand-700: #53285E;
+  --brand-900: #2D1633;
+  --brand-tint:       #F7F1F9;
+  --brand-fill:       #7E3D8E;
+  --brand-fill-hover: #673274;
+  --brand-text:       #7E3D8E;   /* 紫 500 白底文字 = AAA，可直接用 */
+  --brand-on-fill:    #FFFFFF;
+}
+
+/* ---------- BrandDrop 黑橘（品牌頁生成）暗底品牌．取自實際頁面 ----------
+   ※ 線上頁面已完成、色彩已鎖定，勿改動。此區僅作系統登錄用。
+   ※ 與 iFLocus 同屬暖橘家族（BrandDrop 掛在 branddrop.iflocus.com 之下），
+     靠「暗底 + 更紅的橘(#FF4500)」與 iFLocus 的「亮底金橘」區隔。 */
+[data-brand="branddrop"] {
+  --brand-50:  #FFF0EB;
+  --brand-100: #FFDACC;
+  --brand-300: #FF885C;
+  --brand-500: #FF4500;   /* OrangeRed accent */
+  --brand-600: #D13900;
+  --brand-700: #A82E00;
+  --brand-900: #5C1900;
+  --brand-tint:       #FFF0EB;
+  --brand-fill:       #FF4500;
+  --brand-fill-hover: #D13900;
+  --brand-text:       #D13900;   /* ⚠ 亮底文字最淺到 600；暗底可直接用 #FF4500 */
+  --brand-on-fill:    #FFFFFF;   /* ⚠ 白字僅 AA-large，CTA 文字需夠大夠粗 */
+  /* BrandDrop 專屬：招牌暗底 */
+  --brand-surface:    #0F0F0F;
+  --brand-on-surface: #FFFFFF;   /* 白字 vs 黑底 = AAA */
+}
+
+/* ---------- locusad 紅（場域推播產品線）取自 LOCUS 彩虹字標的紅 ----------
+   套用頁：locusad.html + 14 個場域推播 case 頁
+   色階乾淨：500 白底當文字 / 當按鈕底配白字 皆過 AA，整條可直接用。 */
+[data-brand="locusad"] {
+  --brand-50:  #FCEEEE;
+  --brand-100: #F7D4D6;
+  --brand-300: #E7747B;
+  --brand-500: #D4252F;   /* = 字標紅 */
+  --brand-600: #AE1E27;
+  --brand-700: #8C181F;
+  --brand-900: #4C0D11;
+  --brand-tint:       #FCEEEE;
+  --brand-fill:       #D4252F;
+  --brand-fill-hover: #AE1E27;
+  --brand-text:       #D4252F;   /* 紅 500 白底文字 = AA，可直接用 */
+  --brand-on-fill:    #FFFFFF;   /* 白字 vs 紅底 = AA(5.12) */
+}
+
+/* ---------- locus_ps 藍（選用）取自 LOCUS 彩虹字標的亮藍 ----------
+   ※ 預設不需要：locus_ps 不掛 data-brand 即用母站 LOCUS 藍 (#0066CC)。
+   ※ 只有當你要 locus_ps 用「更亮的 LOGO 藍」做識別時，才在該頁
+     <body data-brand="locusps">；否則略過此區。
+   ⚠ LOGO 亮藍 #44A9DE 太淺：當文字/按鈕底會不及格，故 fill/text 改用深藍版，
+     #44A9DE 只保留在 tint/hero。注意這會與母站 #0066CC 形成兩種藍。 */
+[data-brand="locusps"] {
+  --brand-50:  #EEF7FC;
+  --brand-100: #D4EBF7;
+  --brand-300: #74BFE7;
+  --brand-500: #44A9DE;   /* = 字標亮藍（識別/hero 用）*/
+  --brand-600: #2491CA;
+  --brand-700: #1D75A3;
+  --brand-900: #104059;
+  --brand-tint:       #EEF7FC;
+  --brand-fill:       #1D75A3;   /* ⚠ 用深藍(700)，白字才及格 */
+  --brand-fill-hover: #16587B;
+  --brand-text:       #1D75A3;   /* ⚠ 亮藍當文字不及格，文字一律 700 */
+  --brand-on-fill:    #FFFFFF;
+}
